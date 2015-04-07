@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fusebill.eCommerceWorkflow", "Fusebill.eCommerceWorkflow\Fusebill.eCommerceWorkflow.csproj", "{9EC80D0D-F54A-43C7-8316-116D3145CF41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fusebill.ApiWrapper", "Fusebill.ApiWrapper\Fusebill.ApiWrapper.csproj", "{D0E8350A-460C-46FC-86E8-CA64842297E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9EC80D0D-F54A-43C7-8316-116D3145CF41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EC80D0D-F54A-43C7-8316-116D3145CF41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EC80D0D-F54A-43C7-8316-116D3145CF41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0E8350A-460C-46FC-86E8-CA64842297E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0E8350A-460C-46FC-86E8-CA64842297E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0E8350A-460C-46FC-86E8-CA64842297E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0E8350A-460C-46FC-86E8-CA64842297E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -145,11 +145,12 @@ namespace Fusebill.ApiWrapper
             return GetEntities<CustomerSummary>(url);
         }
 
-        //public ResultList<CustomerSummary> GetCustomers(QueryOptions queryOptions, CustomerAdvancedSearch advancedSearch)
-        //{
-        //    var url = RestUriBuilder.BuildUri("customerSummary", 0, "search", queryOptions, advancedSearch);
-        //    return GetEntities<CustomerSummary>(url);
-        //}
+        public Customer GetCustomer(long id)
+        {
+            var url = RestUriBuilder.BuildUri("customers", id);
+            return GetEntity<Customer>(url);
+        }
+
 
         #endregion
     }

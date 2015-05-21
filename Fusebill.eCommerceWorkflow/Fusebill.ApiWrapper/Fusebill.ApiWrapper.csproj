@@ -56,11 +56,12 @@
     <Compile Include="Dto\Get\CustomerSalesTrackingCode.cs" />
     <Compile Include="Dto\Get\CustomerSummary.cs" />
     <Compile Include="Dto\Get\CustomFieldDefaultValue.cs" />
-    <Compile Include="Dto\Get\DraftCharge - Copy.cs" />
     <Compile Include="Dto\Get\DraftCharge.cs" />
     <Compile Include="Dto\Get\DraftChargeGroup.cs" />
     <Compile Include="Dto\Get\DraftDiscount.cs" />
     <Compile Include="Dto\Get\InvoicePreview.cs" />
+    <Compile Include="Dto\Get\IPagingHeaderData.cs" />
+    <Compile Include="Dto\Get\PagingHeaderData.cs" />
     <Compile Include="Dto\Get\Plan.cs" />
     <Compile Include="Dto\Get\PlanCustomField.cs" />
     <Compile Include="Dto\Get\PlanFrequency.cs" />
@@ -76,10 +77,8 @@
     <Compile Include="Contracts\IExtractDataFromHeader.cs" />
     <Compile Include="Contracts\IJsonDeserializer.cs" />
     <Compile Include="Contracts\ILog.cs" />
-    <Compile Include="Dto\Get\IPagingHeaderData.cs" />
     <Compile Include="Contracts\IParseHttpResponse.cs" />
     <Compile Include="Contracts\IRestUriBuilder.cs" />
-    <Compile Include="Dto\Get\PagingHeaderData.cs" />
     <Compile Include="JsonDeserializer.cs" />
     <Compile Include="ParseHttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

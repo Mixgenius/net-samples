@@ -164,7 +164,7 @@
     <Compile Include="Controllers\FusebillController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\NoLog.cs" />
+    <Compile Include="Common\NoLog.cs" />
     <Compile Include="Controllers\PlansController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />

@@ -48,6 +48,13 @@
   <ItemGroup>
     <Compile Include="ApiClientException.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Contracts\IClient.cs" />
+    <Compile Include="Contracts\IExecuteHttpRequest.cs" />
+    <Compile Include="Contracts\IExtractDataFromHeader.cs" />
+    <Compile Include="Contracts\IJsonDeserializer.cs" />
+    <Compile Include="Contracts\ILog.cs" />
+    <Compile Include="Contracts\IParseHttpResponse.cs" />
+    <Compile Include="Contracts\IRestUriBuilder.cs" />
     <Compile Include="Dto\ApiError.cs" />
     <Compile Include="Dto\Get\BaseDto.cs" />
     <Compile Include="Dto\Get\Customer.cs" />
@@ -72,13 +79,6 @@
     <Compile Include="ExecuteHttpRequest.cs" />
     <Compile Include="ExtractDataFromHeader.cs" />
     <Compile Include="HttpResponseHelper.cs" />
-    <Compile Include="Contracts\IClient.cs" />
-    <Compile Include="Contracts\IExecuteHttpRequest.cs" />
-    <Compile Include="Contracts\IExtractDataFromHeader.cs" />
-    <Compile Include="Contracts\IJsonDeserializer.cs" />
-    <Compile Include="Contracts\ILog.cs" />
-    <Compile Include="Contracts\IParseHttpResponse.cs" />
-    <Compile Include="Contracts\IRestUriBuilder.cs" />
     <Compile Include="JsonDeserializer.cs" />
     <Compile Include="ParseHttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

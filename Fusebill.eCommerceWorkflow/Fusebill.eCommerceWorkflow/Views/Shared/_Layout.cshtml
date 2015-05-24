@@ -11,16 +11,20 @@
     <header>
         <div class="content-wrapper">
             <div class="float-left">
-                <img src="~/Images/fusebill_logo-white.png"/>
+                <img src="~/Images/fusebill_logo-white.png" />
                 <p class="site-title">
-                    <a href="~/">Fusebill Web API</a></p>
+                    <a href="~/">Fusebill Web API</a>
+                </p>
             </div>
             <div class="float-right">
                 <nav>
                     <ul id="menu">
                         <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                        <li>@Html.ActionLink("Help", "Index", "Help", new { area = "" }, null)</li>
-                        <li>@Html.ActionLink("Samples", "Index", "Samples", new { area = "" }, null)</li>
+                        <li><a href="http://help.fusebill.com/api-overview">Help</a></li>
+                        <li>
+
+                            @Html.ActionLink("Samples", "Index", "Sample", new { area = "" }, null)
+                        </li>
                     </ul>
                 </nav>
             </div>

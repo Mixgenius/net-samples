@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace Fusebill.eCommerceWorkflow.Controllers
 {
-    public class RegistrationController : Controller
+    public class SampleController : Controller
     {
         //
-        // GET: /Registration/
+        // GET: /Sample/
 
         public ActionResult Index()
         {

@@ -161,7 +161,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Areas\Samples\SamplesAreaRegistration.cs" />
-    <Compile Include="Controllers\RegistrateController.cs" />
+    <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\FusebillController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -169,10 +169,16 @@
     <Compile Include="Controllers\PlansController.cs" />
     <Compile Include="Controllers\SampleController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\WizardController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ListOfPlans_VM.cs" />
+    <Compile Include="Models\RegistrationSample\Step1_Plans_VM.cs" />
+    <Compile Include="Models\RegistrationSample\Step3_Customer_VM.cs" />
+    <Compile Include="Models\RegistrationSample\Step4_PreviewInvoice_VM.cs" />
+    <Compile Include="Models\RegistrationSample\Step5_CreatePayment_VM.cs" />
+    <Compile Include="Models\RegistrationSample\Step2_Products_VM.cs" />
+    <Compile Include="Models\Wizard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -293,7 +299,10 @@
     <Content Include="Views\Plans\Index.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
     <Content Include="Views\Sample\Index.cshtml" />
-    <Content Include="Views\Registrate\Index.cshtml" />
+    <Content Include="Views\Registration\Step2.cshtml" />
+    <Content Include="Views\Wizard\Index.cshtml" />
+    <Content Include="Views\Wizard\Complete.cshtml" />
+    <Content Include="Views\Registration\index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

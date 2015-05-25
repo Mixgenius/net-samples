@@ -34,6 +34,7 @@
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
@@ -57,6 +58,7 @@
     <Compile Include="Contracts\IRestUriBuilder.cs" />
     <Compile Include="Dto\ApiError.cs" />
     <Compile Include="Dto\Get\BaseDto.cs" />
+    <Compile Include="Dto\Get\ChargeModel.cs" />
     <Compile Include="Dto\Get\Customer.cs" />
     <Compile Include="Dto\Get\CustomerAcquisition.cs" />
     <Compile Include="Dto\Get\CustomerReference.cs" />
@@ -68,11 +70,17 @@
     <Compile Include="Dto\Get\DraftDiscount.cs" />
     <Compile Include="Dto\Get\InvoicePreview.cs" />
     <Compile Include="Dto\Get\IPagingHeaderData.cs" />
+    <Compile Include="Dto\Get\OrderToCashCycle.cs" />
     <Compile Include="Dto\Get\PagingHeaderData.cs" />
     <Compile Include="Dto\Get\Plan.cs" />
     <Compile Include="Dto\Get\PlanCustomField.cs" />
     <Compile Include="Dto\Get\PlanFrequency.cs" />
+    <Compile Include="Dto\Get\PlanOrderToCashCycle.cs" />
+    <Compile Include="Dto\Get\PlanProduct.cs" />
+    <Compile Include="Dto\Get\PlanProductCustomField.cs" />
     <Compile Include="Dto\Get\Price.cs" />
+    <Compile Include="Dto\Get\PricingModel.cs" />
+    <Compile Include="Dto\Get\QuantityRange.cs" />
     <Compile Include="Dto\Get\State.cs" />
     <Compile Include="Dto\Get\Country.cs" />
     <Compile Include="Dto\Get\Tax.cs" />

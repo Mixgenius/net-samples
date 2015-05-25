@@ -151,6 +151,13 @@ namespace Fusebill.ApiWrapper
             return GetEntity<Customer>(url);
         }
 
+        public ResultList<PlanProduct> GetPlanProductsByPlanId(long id, QueryOptions queryOptions)
+        {
+            var url = RestUriBuilder.BuildUri("plans", id, "planProducts", queryOptions);
+            return GetEntities<PlanProduct>(url);
+
+        }
+
 
         #endregion
     }

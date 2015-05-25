@@ -12,7 +12,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         {
 
             // 1 - Get Plans
-            // secure.fusebill.com/v1/plans/
+            //s ecure.fusebill.com/v1/plans/
             // 2 - Get Products for Plan
             // secure.fusebill.com/v1/plans/21334/planproducts/
             // 3 - Create a Customer

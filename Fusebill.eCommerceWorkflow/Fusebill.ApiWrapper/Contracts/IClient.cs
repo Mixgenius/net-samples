@@ -16,6 +16,12 @@ namespace Fusebill.ApiWrapper
 
         ResultList<Plan> GetPlans(QueryOptions queryOptions);
         ResultList<Plan> GetActivePlans(QueryOptions queryOptions);
+
+
+        
+        ResultList<PlanProduct> GetPlanProductsByPlanId(long id, QueryOptions queryOptions);
+
+
         Plan GetPlan(long id);
         List<Country> GetCountries();
         ResultList<CustomerSummary> GetCustomers(QueryOptions queryOptions);

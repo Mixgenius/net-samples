@@ -50,6 +50,8 @@ namespace Fusebill.ApiWrapper.Dto.Get
         {
             return ChangeSummary == null && ChangePreview != null;
         }
+
+
     }
 
     public class PlanChangeSummary

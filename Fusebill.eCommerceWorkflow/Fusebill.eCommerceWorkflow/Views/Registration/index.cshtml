@@ -1,0 +1,36 @@
+﻿@model Fusebill.eCommerceWorkflow.Models.Step1_Plans_VM
+
+@{
+    Layout = "";
+    ViewBag.Title = "Registration Sample";
+}
+
+
+<h2>Registration AHHHHHH!!!!</h2>
+
+<h3>Plans</h3>
+@using (Html.BeginForm("GetPlanProducts", "Registration", FormMethod.Post)) 
+{
+    foreach (var plan in Model.AvailablePlans)
+    {
+
+        <div style="float: left; width: 500px;">
+            <h4>@plan.Name</h4>
+            <p>Description: @plan.Description</p>
+
+            <p>Long Description:  @plan.LongDescription</p>
+            <ul>
+                <li>1 user</li>
+                <li>Limited Access</li>
+                <li>5MB of space</li>
+                <li>No support</li>
+                <hidden name="planId">@plan.Id</hidden>
+            </ul>
+            <input name="btnBuyPlan" type="submit" value="Buy" />
+            <br />
+            <br />
+        </div>
+    }
+
+}
+

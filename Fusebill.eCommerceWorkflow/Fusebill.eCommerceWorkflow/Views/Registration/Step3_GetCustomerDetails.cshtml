@@ -1,0 +1,53 @@
+﻿@model Fusebill.eCommerceWorkflow.Models.Step3_Customer_VM
+
+@{
+    ViewBag.Title = "Step3_GetCustomerDetails";
+}
+
+<h2>Registration AHHHHHH!!!! => Customer Info</h2>
+
+@using (Html.BeginForm("Step4_GetPreviewInvoice","Registration", FormMethod.Post))
+{
+
+    
+            <h4>Contact Information</h4>
+            @Html.Label("First Name:") <br />
+            @Html.EditorFor(m => m.FirstName) <br /> <br />
+
+            @Html.Label("Last Name:") <br />
+            @Html.EditorFor(m => m.LastName) <br /> <br />
+
+            @Html.Label("Email address:") <br />
+            @Html.EditorFor(m => m.Email) <br /> <br />
+
+            @Html.Label("Phone:") <br />
+            @Html.EditorFor(m => m.Phone) <br /> <br />
+
+            @Html.Label("Company Name:") <br />
+            @Html.EditorFor(m => m.CompanyName) <br /> <br />
+
+            @Html.Label("Usage:") <br />
+            @Html.EditorFor(m => m.Usage) <br /> <br />
+
+            @Html.Label("Mandatory:") <br />
+            @Html.EditorFor(m => m.Mandatory) <br /> <br />
+
+            @Html.Label("Default Value:") <br />
+            @Html.EditorFor(m => m.DefaultValue) <br /> <br />
+
+
+            <h4>Billing Address</h4>
+            @Html.Label("Address 1:") <br />
+            @Html.EditorFor(m => m.Address1) <br /> <br />
+
+            @Html.Label("Address 2:") <br />
+            @Html.EditorFor(m => m.Address2) <br /> <br />
+
+            @Html.Label("City:") <br />
+            @Html.EditorFor(m => m.City) <br /> <br />
+
+            @Html.Label("Zip Code:") <br />
+            @Html.EditorFor(m => m.ZipCode) <br /> <br />
+    
+    <input type="submit" value="Proceed to Invoice Preview" />
+})

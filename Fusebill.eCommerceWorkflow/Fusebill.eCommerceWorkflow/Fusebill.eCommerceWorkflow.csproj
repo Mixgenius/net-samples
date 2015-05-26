@@ -173,6 +173,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\RegistrationSample\CustomerBillingInfo.cs" />
+    <Compile Include="Models\RegistrationSample\CustomerCheckOutInfo.cs" />
     <Compile Include="Models\RegistrationSample\Step1_Plans_VM.cs" />
     <Compile Include="Models\RegistrationSample\Step3_Customer_VM.cs" />
     <Compile Include="Models\RegistrationSample\Step4_PreviewInvoice_VM.cs" />
@@ -299,10 +301,13 @@
     <Content Include="Views\Plans\Index.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
     <Content Include="Views\Sample\Index.cshtml" />
-    <Content Include="Views\Registration\Step2.cshtml" />
+    <Content Include="Views\Registration\Step2_GetPlanProducts.cshtml" />
     <Content Include="Views\Wizard\Index.cshtml" />
     <Content Include="Views\Wizard\Complete.cshtml" />
     <Content Include="Views\Registration\index.cshtml" />
+    <Content Include="Views\Registration\Step3_GetCustomerDetails.cshtml" />
+    <Content Include="Views\Registration\Step4_GetPreviewInvoice.cshtml" />
+    <Content Include="Views\Registration\Step5_GetCustomerCheckout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

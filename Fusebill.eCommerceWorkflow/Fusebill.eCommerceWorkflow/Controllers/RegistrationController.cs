@@ -17,46 +17,141 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
         public ActionResult Index()
         {
+            var desiredPlanIds = ConfigurationManager.AppSettings["DesiredPlanIds"];
 
-            var testPlanIds = ConfigurationManager.AppSettings["TestPlanIds"];
-            var testPlanArray = testPlanIds.Split(',');
-
-            //This variable contains a list of all available plans
-            var listOfPlans = ApiClient.GetPlans(new QueryOptions() { });
-
-
-            //dictionary object for key value pair for each plan's ID and code
-            var dictionaryOfIDsAndCodes = new Dictionary<long, string>();
+            //string array, each element is the ID of a desired plan
+            var desiredPlans = desiredPlanIds.Split(',');
 
             Step1_Plans_VM planList = new Step1_Plans_VM();
             planList.AvailablePlans = new List<Plan>();
 
-
-
-            //place the key-value pairs into the dictionary object
-            foreach (var plan in listOfPlans.Results)
+            
+            foreach (string element in desiredPlans)
             {
-                if (testPlanArray.Contains(plan.Id.ToString()))
-                {
-                    planList.AvailablePlans.Add(plan);
-                }
+                var plan = ApiClient.GetPlan(Convert.ToInt64(element));
+                planList.AvailablePlans.Add(plan);
             }
             return View(planList);
+        }
 
+
+
+
+
+
+
+
+
+
+
+        [HttpPost]
+        public ActionResult Step2_GetPlanProducts(Step1_Plans_VM step1_Plans_VM)
+        {           
+            
+            Step2_Products_VM step2_Products_VM = new Step2_Products_VM();
+            step2_Products_VM.SelectedPlanID = step1_Plans_VM.SelectedPlanID;
+            step2_Products_VM.SelectedPlanName = ApiClient.GetPlan(step2_Products_VM.SelectedPlanID).Name;
+            step2_Products_VM.AvailableProducts = ApiClient.GetPlanProductsByPlanId(step2_Products_VM.SelectedPlanID, new QueryOptions() { }).Results;
+
+
+            step2_Products_VM.QuantitiesofPlanProducts = new Dictionary<int, decimal>();
+
+            /*  foreach (var product in step2_Products_VM.AvailableProducts)
+              {
+                 //why does  step2_Products_VM.QuantitiesofPlanProducts.Add(product, product.Quantity); create two identical keys in the dictionary?
+
+              }
+              */
+
+            step2_Products_VM.QuantitiesofPlanProducts_string = new Dictionary<string, decimal>();
+
+            for (int i = 0; i < step2_Products_VM.AvailableProducts.Count; i++)
+            {
+                step2_Products_VM.QuantitiesofPlanProducts_string.Add(step2_Products_VM.AvailableProducts[i].ProductName, step2_Products_VM.AvailableProducts[i].Quantity);
+            }
+
+            step2_Products_VM.QuantitiesofPlanProducts[1234] = 23;
+            return View(step2_Products_VM);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        [HttpPost]
+        public ActionResult Step3_GetCustomerDetails(Step2_Products_VM step2_Products_VM)
+        {
+            Step3_Customer_VM step3_Customer_VM = new Step3_Customer_VM();
+
+            step3_Customer_VM.SelectedPlanID = step2_Products_VM.SelectedPlanID;
+
+
+
+            step3_Customer_VM.SelectedPlanName = step2_Products_VM.SelectedPlanName;
+            
+            return View(step3_Customer_VM);
         }
 
         [HttpPost]
-        public ActionResult GetPlanProducts()
-        {           
-            Step2_Products_VM products = new Step2_Products_VM();
-            products.SelectedPlanID = System.Convert.ToInt64(Request["planId"]);
-            products.AvailableProduct = ApiClient.GetPlanProductsByPlanId(products.SelectedPlanID, new QueryOptions() { }).Results;
-            return View(products);
+        public ActionResult Step4_GetPreviewInvoice(Step3_Customer_VM step3_Customer_VM)
+        {
+            Step4_PreviewInvoice_VM step4_PreviewInvoice_VM = new Step4_PreviewInvoice_VM();
+
+            step4_PreviewInvoice_VM.SelectedPlanID = step3_Customer_VM.SelectedPlanID;
+
+            step4_PreviewInvoice_VM.SelectedPlanName = step3_Customer_VM.SelectedPlanName;
+
+
+          //  step4_PreviewInvoice_VM.customer = step3_Customer_VM.customer;
+
+            #region GAHHHHH
+            step4_PreviewInvoice_VM.Address1 = step3_Customer_VM.Address1;
+
+            step4_PreviewInvoice_VM.Address2 = step3_Customer_VM.Address2;
+
+            step4_PreviewInvoice_VM.AvailableProduct = step3_Customer_VM.AvailableProduct;
+
+            step4_PreviewInvoice_VM.City = step3_Customer_VM.City;
+
+            step4_PreviewInvoice_VM.CompanyName = step3_Customer_VM.CompanyName;
+
+            step4_PreviewInvoice_VM.DefaultValue = step3_Customer_VM.DefaultValue;
+
+            step4_PreviewInvoice_VM.Email = step3_Customer_VM.Email;
+
+            step4_PreviewInvoice_VM.FirstName = step3_Customer_VM.FirstName;
+
+            step4_PreviewInvoice_VM.LastName = step3_Customer_VM.LastName;
+
+            step4_PreviewInvoice_VM.Mandatory = step3_Customer_VM.Mandatory;
+            step4_PreviewInvoice_VM.Phone = step3_Customer_VM.Phone;
+            step4_PreviewInvoice_VM.Usage = step3_Customer_VM.Usage;
+            step4_PreviewInvoice_VM.ZipCode = step3_Customer_VM.ZipCode;
+
+
+            #endregion
+
+            
+
+
+            return View(step4_PreviewInvoice_VM);
         }
 
-        public ActionResult GetCustomerDetails()
+        [HttpPost]
+        public ActionResult Step5_GetCustomerCheckout(Step4_PreviewInvoice_VM step4_PreviewInvoice_VM)
         {
+            Step5_CreatePayment_VM step5_CreatePayment = new Step5_CreatePayment_VM();
             return View();
+
         }
 
 

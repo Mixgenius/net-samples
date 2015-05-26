@@ -8,10 +8,12 @@ namespace Fusebill.eCommerceWorkflow.Controllers
     public class FusebillController : Controller
     {
         protected IClient ApiClient;
-
+       
 
         public FusebillController()
         {
+
+            
             IExecuteHttpRequest executeHttpRequest = new ExecuteHttpRequest(new NoLog(), "eCommerceWorkflow");
             IParseHttpResponse parseHttpResponse = new ParseHttpResponse(new JsonDeserializer());
             IRestUriBuilder restUriBuilder = new RestUriBuilder(ConfigurationManager.AppSettings["SecureUri"]);

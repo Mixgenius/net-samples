@@ -9,10 +9,11 @@
 <h2>Registration AHHHHHH!!!!</h2>
 
 <h3>Plans</h3>
-@using (Html.BeginForm("GetPlanProducts", "Registration", FormMethod.Post)) 
-{
-    foreach (var plan in Model.AvailablePlans)
+
+  @foreach (var plan in Model.AvailablePlans)
     {
+using (Html.BeginForm("Step2_GetPlanProducts", "Registration", FormMethod.Post))
+{
 
         <div style="float: left; width: 500px;">
             <h4>@plan.Name</h4>
@@ -24,7 +25,9 @@
                 <li>Limited Access</li>
                 <li>5MB of space</li>
                 <li>No support</li>
-                <hidden name="planId">@plan.Id</hidden>
+                <li>
+                    @Html.TextBoxFor(m => m.SelectedPlanID, new { @Value = @plan.Id })
+                </li>
             </ul>
             <input name="btnBuyPlan" type="submit" value="Buy" />
             <br />

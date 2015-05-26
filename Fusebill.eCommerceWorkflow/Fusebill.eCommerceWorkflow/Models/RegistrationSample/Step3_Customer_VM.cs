@@ -1,4 +1,5 @@
 ﻿using Fusebill.ApiWrapper.Dto.Get;
+using Fusebill.eCommerceWorkflow.Models.RegistrationSample;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,10 @@ namespace Fusebill.eCommerceWorkflow.Models
 {
     public class Step3_Customer_VM
     {
-        public int SelectedPlanID { get; set; }
-        public List<PlanProduct> AvailableProduct { get; set; }
 
+        public string SelectedPlanName { get; set; }
+        public long SelectedPlanID { get; set; }
+        public List<PlanProduct> AvailableProduct { get; set; }
 
         #region CONTACT INFO
 
@@ -31,6 +33,27 @@ namespace Fusebill.eCommerceWorkflow.Models
         public string DefaultValue { get; set; }
 
         #endregion
+
+        #region BillING INFO
+
+        public string Address1 { get; set; }
+
+        public string Address2 { get; set; }
+
+        public string City { get; set; }
+
+        public string ZipCode { get; set; }
+
+        #endregion
+
+
+
+        //============================================= QUESTION
+
+
+        public CustomerBillingInfo customer = new CustomerBillingInfo();
+
+
     }
 
 

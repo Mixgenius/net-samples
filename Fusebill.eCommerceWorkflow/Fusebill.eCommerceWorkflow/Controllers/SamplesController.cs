@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Fusebill.eCommerceWorkflow.Controllers
 {
-    public class SampleController : Controller
+    public class SamplesController : Controller
     {
         //
         // GET: /Sample/

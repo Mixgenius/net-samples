@@ -166,9 +166,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Common\NoLog.cs" />
     <Compile Include="Controllers\PlansController.cs" />
-    <Compile Include="Controllers\SampleController.cs" />
+    <Compile Include="Controllers\SamplesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="Controllers\WizardController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -176,7 +175,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
-    <Content Include="Content\Plan.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -292,8 +290,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Plans\Index.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
-    <Content Include="Views\Sample\Index.cshtml" />
     <Content Include="Views\Registration\index.cshtml" />
+    <Content Include="Views\Samples\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

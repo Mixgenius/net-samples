@@ -18,7 +18,7 @@ namespace Fusebill.ApiWrapper
         ResultList<Plan> GetActivePlans(QueryOptions queryOptions);
 
 
-        Customer PostCustomer(Common.Dto.Post.Customer customer);
+        Customer PostCustomer(Customer customer);
 
         ResultList<PlanProduct> GetPlanProductsByPlanId(long id, QueryOptions queryOptions);
 

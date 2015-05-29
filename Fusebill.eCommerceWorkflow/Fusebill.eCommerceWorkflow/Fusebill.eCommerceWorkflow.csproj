@@ -172,13 +172,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\RegistrationSample\CustomerCheckOutInfo.cs" />
-    <Compile Include="Models\RegistrationSample\MultipleButtonAttribute.cs" />
-    <Compile Include="Models\RegistrationSample\Step1PlansVM.cs" />
-    <Compile Include="Models\RegistrationSample\Step3CustomerVM.cs" />
-    <Compile Include="Models\RegistrationSample\Step4PreviewInvoiceVM.cs" />
-    <Compile Include="Models\RegistrationSample\Step5CreatePaymentVM.cs" />
-    <Compile Include="Models\RegistrationSample\Step2ProductsVM.cs" />
     <Compile Include="Models\Wizard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -310,6 +303,7 @@
     <Folder Include="Areas\Samples\Controllers\" />
     <Folder Include="Areas\Samples\Models\" />
     <Folder Include="Areas\Samples\Views\Shared\" />
+    <Folder Include="Models\RegistrationSample\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -1,4 +1,4 @@
-﻿@model Fusebill.eCommerceWorkflow.Models.Step1PlansVM
+﻿
 
 @{
 
@@ -12,7 +12,7 @@
 <h3>Plans</h3>
 @using (Html.BeginForm("GetPlanProducts", "Registration", FormMethod.Post)) 
 {
-    foreach (var plan in Model.AvailablePlans)
+   foreach (var plan in Model.AvailablePlans)
     {
 
 
@@ -31,10 +31,11 @@
                     <li>5MB of space</li>
                     <li>No support</li>
                     <li>
-                        @Html.TextBoxFor(m => m.SelectedPlanID, new { @Value = @plan.Id })
+
                     </li>
                 </ul>
             </div>
+        </div>
 
         <div style="float: left; width: 500px;">
             <h4>@plan.Name</h4>

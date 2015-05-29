@@ -1,5 +1,4 @@
-﻿using Fusebill.ApiWrapper.ValidationAttributes;
-using Fusebill.ApiWrapper.Dto.Get;
+﻿using Fusebill.ApiWrapper.Dto.Get;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -33,9 +32,10 @@ namespace Fusebill.ApiWrapper.Dto.Post
         [StringLength(50)]
         public string Suffix { get; set; }
 
+
         [JsonProperty(PropertyName = "primaryEmail")]
         [DisplayName("Primary email address (comma or semicolon separated)")]
-        [EmailMultiple(ErrorMessage = "Please enter valid email addresses")]
+     //   [EmailMultiple(ErrorMessage = "Please enter valid email addresses")]
         [StringLength(255)]
         public string PrimaryEmail { get; set; }
 
@@ -46,7 +46,7 @@ namespace Fusebill.ApiWrapper.Dto.Post
 
         [JsonProperty(PropertyName = "secondaryEmail")]
         [DisplayName("Alternate email address (comma or semicolon separated)")]
-        [EmailMultiple(ErrorMessage = "Please enter valid email addresses")]
+     //   [EmailMultiple(ErrorMessage = "Please enter valid email addresses")]
         [StringLength(255)]
         public string SecondaryEmail { get; set; }
 
@@ -57,7 +57,7 @@ namespace Fusebill.ApiWrapper.Dto.Post
 
         [JsonProperty(PropertyName = "title")]
         [DisplayName("Title")]
-        [TitleValidation]
+    //    [TitleValidation]
         public string Title { get; set; }
 
         [JsonProperty(PropertyName = "reference")]

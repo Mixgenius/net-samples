@@ -172,7 +172,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Wizard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -294,8 +293,6 @@
     <Content Include="Views\Plans\Index.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
     <Content Include="Views\Sample\Index.cshtml" />
-    <Content Include="Views\Wizard\Index.cshtml" />
-    <Content Include="Views\Wizard\Complete.cshtml" />
     <Content Include="Views\Registration\index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -303,7 +300,7 @@
     <Folder Include="Areas\Samples\Controllers\" />
     <Folder Include="Areas\Samples\Models\" />
     <Folder Include="Areas\Samples\Views\Shared\" />
-    <Folder Include="Models\RegistrationSample\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

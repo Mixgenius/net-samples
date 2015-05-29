@@ -106,11 +106,11 @@ namespace Fusebill.ApiWrapper
         }
 
 
-        public Customer PostCustomer(Fusebill.ApiWrapper.Dto.Post.Customer customer)
-        {
-            var url = RestUriBuilder.BuildUri("customers");
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Customer, Customer>(url, customer);
-        }
+        //public Customer PostCustomer(Fusebill.ApiWrapper.Dto.Post.Customer customer)
+        //{
+        //    var url = RestUriBuilder.BuildUri("customers");
+        //    return PostEntity<Fusebill.ApiWrapper.Dto.Post.Customer, Customer>(url, customer);
+        //}
 
         protected byte[] GetBytes(string url)
         {

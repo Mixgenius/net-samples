@@ -1,38 +1,45 @@
-﻿@model Fusebill.eCommerceWorkflow.Models.Step1_Plans_VM
+﻿@model Fusebill.eCommerceWorkflow.Models.Step1PlansVM
 
 @{
-    Layout = "";
+
     ViewBag.Title = "Registration Sample";
 }
 
+<link rel="stylesheet" href="~/Content/Plan.css" />
 
-<h2>Registration AHHHHHH!!!!</h2>
+<h1 style="margin-top: 200px; text-align:center">Step 1: Choose your plan</h1>
 
-<h3>Plans</h3>
+
 
   @foreach (var plan in Model.AvailablePlans)
     {
-using (Html.BeginForm("Step2_GetPlanProducts", "Registration", FormMethod.Post))
+using (Html.BeginForm("Step2GetPlanProducts", "Registration", FormMethod.Post))
 {
 
-        <div style="float: left; width: 500px;">
-            <h4>@plan.Name</h4>
-            <p>Description: @plan.Description</p>
+        <div class="plan_plan" >
+            <div class="plan_descriptionAndTitle">
+                <h2 class="plan_title">@plan.Name</h2>
+                <p class="plan_description">Description: @plan.Description</p>
 
-            <p>Long Description:  @plan.LongDescription</p>
-            <ul>
-                <li>1 user</li>
-                <li>Limited Access</li>
-                <li>5MB of space</li>
-                <li>No support</li>
-                <li>
-                    @Html.TextBoxFor(m => m.SelectedPlanID, new { @Value = @plan.Id })
-                </li>
-            </ul>
+                <p class="plan_longdescription">Long Description:  @plan.LongDescription</p>
+            </div>
+            <div class="plan_miscellaneous">
+                <ul>
+                    <li>PRICE, WE SHALL FIND OUT LATERRRRZ</li>
+                    <li>1 user</li>
+                    <li>Limited Access</li>
+                    <li>5MB of space</li>
+                    <li>No support</li>
+                    <li>
+                        @Html.TextBoxFor(m => m.SelectedPlanID, new { @Value = @plan.Id })
+                    </li>
+                </ul>
+            </div>
             <input name="btnBuyPlan" type="submit" value="Buy" />
-            <br />
-            <br />
+
         </div>
+      
+      <br /> <br />
     }
 
 }

@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebApplication10.Models;
 
 namespace Fusebill.eCommerceWorkflow.Controllers
 {
@@ -22,14 +23,14 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             //string array, each element is the ID of a desired plan
             var desiredPlans = desiredPlanIds.Split(',');
 
-            Step1_Plans_VM planList = new Step1_Plans_VM();
+            Step1PlansVM planList = new Step1PlansVM();
             planList.AvailablePlans = new List<Plan>();
 
             
             foreach (string element in desiredPlans)
             {
                 var plan = ApiClient.GetPlan(Convert.ToInt64(element));
-                planList.AvailablePlans.Add(plan);
+                 planList.AvailablePlans.Add(plan);
             }
             return View(planList);
         }
@@ -37,120 +38,205 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
 
 
-
-
-
-
-
-
-
-        [HttpPost]
-        public ActionResult Step2_GetPlanProducts(Step1_Plans_VM step1_Plans_VM)
+        
+        public ActionResult Step2GetPlanProducts(Step1PlansVM step1PlansVM)
         {           
-            
-            Step2_Products_VM step2_Products_VM = new Step2_Products_VM();
-            step2_Products_VM.SelectedPlanID = step1_Plans_VM.SelectedPlanID;
-            step2_Products_VM.SelectedPlanName = ApiClient.GetPlan(step2_Products_VM.SelectedPlanID).Name;
-            step2_Products_VM.AvailableProducts = ApiClient.GetPlanProductsByPlanId(step2_Products_VM.SelectedPlanID, new QueryOptions() { }).Results;
+            Step2ProductsVM step2ProductsVM = new Step2ProductsVM();
+            step2ProductsVM.SelectedPlanID = step1PlansVM.SelectedPlanID;
+            step2ProductsVM.SelectedPlanName = ApiClient.GetPlan(step2ProductsVM.SelectedPlanID).Name;
+            step2ProductsVM.AvailableProducts = ApiClient.GetPlanProductsByPlanId(step2ProductsVM.SelectedPlanID, new QueryOptions() { }).Results;
 
 
-            step2_Products_VM.QuantitiesofPlanProducts = new Dictionary<int, decimal>();
+            step2ProductsVM.QuantitiesofPlanProducts_string = new Dictionary<string, decimal>();
 
-            /*  foreach (var product in step2_Products_VM.AvailableProducts)
-              {
-                 //why does  step2_Products_VM.QuantitiesofPlanProducts.Add(product, product.Quantity); create two identical keys in the dictionary?
+            step2ProductsVM.EmploymentType = new List<Check>(); 
 
-              }
-              */
 
-            step2_Products_VM.QuantitiesofPlanProducts_string = new Dictionary<string, decimal>();
-
-            for (int i = 0; i < step2_Products_VM.AvailableProducts.Count; i++)
+            for (int i = 0; i < step2ProductsVM.AvailableProducts.Count; i++)
             {
-                step2_Products_VM.QuantitiesofPlanProducts_string.Add(step2_Products_VM.AvailableProducts[i].ProductName, step2_Products_VM.AvailableProducts[i].Quantity);
+                step2ProductsVM.QuantitiesofPlanProducts_string.Add(step2ProductsVM.AvailableProducts[i].ProductName, step2ProductsVM.AvailableProducts[i].Quantity);
+                  step2ProductsVM.EmploymentType.Add(new Check {Text = i.ToString() });
+
             }
 
-            step2_Products_VM.QuantitiesofPlanProducts[1234] = 23;
-            return View(step2_Products_VM);
+            return View(step2ProductsVM);
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+        //ALSO STEP2, USED WHEN BACK BUTTON IS PRESSED
         [HttpPost]
-        public ActionResult Step3_GetCustomerDetails(Step2_Products_VM step2_Products_VM)
+        [MultipleButton(Name = "action", Argument = "Step2GetPlanProducts")]
+        public ActionResult Step2GetPlanProducts(Step3CustomerVM step3CustomerVM)
         {
-            Step3_Customer_VM step3_Customer_VM = new Step3_Customer_VM();
 
-            step3_Customer_VM.SelectedPlanID = step2_Products_VM.SelectedPlanID;
-
-
-
-            step3_Customer_VM.SelectedPlanName = step2_Products_VM.SelectedPlanName;
-            
-            return View(step3_Customer_VM);
-        }
-
-        [HttpPost]
-        public ActionResult Step4_GetPreviewInvoice(Step3_Customer_VM step3_Customer_VM)
-        {
-            Step4_PreviewInvoice_VM step4_PreviewInvoice_VM = new Step4_PreviewInvoice_VM();
-
-            step4_PreviewInvoice_VM.SelectedPlanID = step3_Customer_VM.SelectedPlanID;
-
-            step4_PreviewInvoice_VM.SelectedPlanName = step3_Customer_VM.SelectedPlanName;
-
-
-          //  step4_PreviewInvoice_VM.customer = step3_Customer_VM.customer;
+            Step2ProductsVM step2ProductsVM = new Step2ProductsVM();
+            step2ProductsVM.SelectedPlanID = step3CustomerVM.SelectedPlanID;
+            step2ProductsVM.SelectedPlanName = ApiClient.GetPlan(step2ProductsVM.SelectedPlanID).Name;
+            step2ProductsVM.AvailableProducts = ApiClient.GetPlanProductsByPlanId(step2ProductsVM.SelectedPlanID, new QueryOptions() { }).Results;
 
             #region GAHHHHH
-            step4_PreviewInvoice_VM.Address1 = step3_Customer_VM.Address1;
+            step2ProductsVM.Address1 = step3CustomerVM.Address1;
 
-            step4_PreviewInvoice_VM.Address2 = step3_Customer_VM.Address2;
+            step2ProductsVM.Address2 = step3CustomerVM.Address2;
 
-            step4_PreviewInvoice_VM.AvailableProduct = step3_Customer_VM.AvailableProduct;
+            step2ProductsVM.City = step3CustomerVM.City;
 
-            step4_PreviewInvoice_VM.City = step3_Customer_VM.City;
+            step2ProductsVM.CompanyName = step3CustomerVM.CompanyName;
 
-            step4_PreviewInvoice_VM.CompanyName = step3_Customer_VM.CompanyName;
+            step2ProductsVM.DefaultValue = step3CustomerVM.DefaultValue;
 
-            step4_PreviewInvoice_VM.DefaultValue = step3_Customer_VM.DefaultValue;
+            step2ProductsVM.Email = step3CustomerVM.Email;
 
-            step4_PreviewInvoice_VM.Email = step3_Customer_VM.Email;
+            step2ProductsVM.FirstName = step3CustomerVM.FirstName;
 
-            step4_PreviewInvoice_VM.FirstName = step3_Customer_VM.FirstName;
+            step2ProductsVM.LastName = step3CustomerVM.LastName;
 
-            step4_PreviewInvoice_VM.LastName = step3_Customer_VM.LastName;
-
-            step4_PreviewInvoice_VM.Mandatory = step3_Customer_VM.Mandatory;
-            step4_PreviewInvoice_VM.Phone = step3_Customer_VM.Phone;
-            step4_PreviewInvoice_VM.Usage = step3_Customer_VM.Usage;
-            step4_PreviewInvoice_VM.ZipCode = step3_Customer_VM.ZipCode;
+            step2ProductsVM.Mandatory = step3CustomerVM.Mandatory;
+            step2ProductsVM.Phone = step3CustomerVM.Phone;
+            step2ProductsVM.Usage = step3CustomerVM.Usage;
+            step2ProductsVM.ZipCode = step3CustomerVM.ZipCode;
 
 
             #endregion
-
             
+            step2ProductsVM.QuantitiesofPlanProducts_string = new Dictionary<string, decimal>();
+
+            step2ProductsVM.EmploymentType = new List<Check>();
 
 
-            return View(step4_PreviewInvoice_VM);
+            for (int i = 0; i < step2ProductsVM.AvailableProducts.Count; i++)
+            {
+                step2ProductsVM.QuantitiesofPlanProducts_string.Add(step2ProductsVM.AvailableProducts[i].ProductName, step2ProductsVM.AvailableProducts[i].Quantity);
+                step2ProductsVM.EmploymentType.Add(new Check { Text = i.ToString() });
+
+            }
+
+            return View(step2ProductsVM);
+        }
+
+
+
+
+        public ActionResult Step3GetCustomerDetails(Step2ProductsVM step2ProductsVM)
+        {
+            Customer cus = new Customer();
+            
+            Step3CustomerVM step3CustomerVM = new Step3CustomerVM();
+
+            step3CustomerVM.EmploymentType = new List<Check>();
+
+            step3CustomerVM.EmploymentType = step2ProductsVM.EmploymentType;
+
+            step3CustomerVM.SelectedPlanID = step2ProductsVM.SelectedPlanID;
+
+
+
+            step3CustomerVM.SelectedPlanName = step2ProductsVM.SelectedPlanName;
+
+            return View(step3CustomerVM);
+        }
+
+
+        [HttpPost]
+        [MultipleButton(Name = "action", Argument = "Step3GetCustomerDetails")]
+        public ActionResult Step3GetCustomerDetails(Step4PreviewInvoiceVM step4PreviewInvoiceVM)
+        {
+
+            Step3CustomerVM step3CustomerVM = new Step3CustomerVM();
+
+            step3CustomerVM.EmploymentType = new List<Check>();
+
+            step3CustomerVM.EmploymentType = step4PreviewInvoiceVM.EmploymentType;
+
+            step3CustomerVM.SelectedPlanID = step4PreviewInvoiceVM.SelectedPlanID;
+
+            step3CustomerVM.SelectedPlanName = step4PreviewInvoiceVM.SelectedPlanName;
+
+            #region GAHHHHH
+            step4PreviewInvoiceVM.Address1 = step3CustomerVM.Address1;
+            step4PreviewInvoiceVM.Address2 = step3CustomerVM.Address2;
+            step4PreviewInvoiceVM.City = step3CustomerVM.City;
+            step4PreviewInvoiceVM.CompanyName = step3CustomerVM.CompanyName;
+            step4PreviewInvoiceVM.DefaultValue = step3CustomerVM.DefaultValue;
+            step4PreviewInvoiceVM.Email = step3CustomerVM.Email;
+            step4PreviewInvoiceVM.FirstName = step3CustomerVM.FirstName;
+            step4PreviewInvoiceVM.LastName = step3CustomerVM.LastName;
+            step4PreviewInvoiceVM.Mandatory = step3CustomerVM.Mandatory;
+            step4PreviewInvoiceVM.Phone = step3CustomerVM.Phone;
+            step4PreviewInvoiceVM.Usage = step3CustomerVM.Usage;
+            step4PreviewInvoiceVM.ZipCode = step3CustomerVM.ZipCode;
+            #endregion
+
+
+
+
+            return View(step3CustomerVM);
+        }
+
+  
+   
+
+
+        [HttpPost]
+        [MultipleButton(Name = "action", Argument = "Step4GetPreviewInvoice")]
+      
+        public ActionResult Step4GetPreviewInvoice(Step3CustomerVM step3CustomerVM)
+        {
+            Step4PreviewInvoiceVM step4PreviewInvoiceVM = new Step4PreviewInvoiceVM();
+
+            step4PreviewInvoiceVM.EmploymentType = new List<Check>();
+
+            step4PreviewInvoiceVM.EmploymentType = step3CustomerVM.EmploymentType;
+
+
+            step4PreviewInvoiceVM.SelectedPlanID = step3CustomerVM.SelectedPlanID;
+            step4PreviewInvoiceVM.SelectedPlanName = step3CustomerVM.SelectedPlanName;
+
+            step4PreviewInvoiceVM.AvailableProducts = ApiClient.GetPlanProductsByPlanId(step3CustomerVM.SelectedPlanID, new QueryOptions() { }).Results;
+
+
+          //  step4PreviewInvoiceVM.customer = step3CustomerVM.customer;
+
+            #region GAHHHHH
+            step4PreviewInvoiceVM.Address1 = step3CustomerVM.Address1;
+
+            step4PreviewInvoiceVM.Address2 = step3CustomerVM.Address2;
+
+            step4PreviewInvoiceVM.City = step3CustomerVM.City;
+
+            step4PreviewInvoiceVM.CompanyName = step3CustomerVM.CompanyName;
+
+            step4PreviewInvoiceVM.DefaultValue = step3CustomerVM.DefaultValue;
+
+            step4PreviewInvoiceVM.Email = step3CustomerVM.Email;
+
+            step4PreviewInvoiceVM.FirstName = step3CustomerVM.FirstName;
+
+            step4PreviewInvoiceVM.LastName = step3CustomerVM.LastName;
+
+            step4PreviewInvoiceVM.Mandatory = step3CustomerVM.Mandatory;
+            step4PreviewInvoiceVM.Phone = step3CustomerVM.Phone;
+            step4PreviewInvoiceVM.Usage = step3CustomerVM.Usage;
+            step4PreviewInvoiceVM.ZipCode = step3CustomerVM.ZipCode;
+
+
+            #endregion
+            return View(step4PreviewInvoiceVM);
         }
 
         [HttpPost]
-        public ActionResult Step5_GetCustomerCheckout(Step4_PreviewInvoice_VM step4_PreviewInvoice_VM)
+        [MultipleButton(Name = "action", Argument = "Step5GetCustomerCheckout")]
+        public ActionResult Step5GetCustomerCheckout(Step4PreviewInvoiceVM step4PreviewInvoiceVM)
         {
-            Step5_CreatePayment_VM step5_CreatePayment = new Step5_CreatePayment_VM();
-            return View();
+            Step5CreatePaymentVM step5CreatePayment = new Step5CreatePaymentVM();
+
+            if (step4PreviewInvoiceVM.IsSameAsBillingAddress)
+            {
+                step5CreatePayment.Address1 = step4PreviewInvoiceVM.Address1;
+            }
+
+
+            return View(step5CreatePayment);
 
         }
 

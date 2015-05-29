@@ -12,5 +12,7 @@ namespace Fusebill.eCommerceWorkflow.Models
         public List<Plan> AvailablePlans { get; set; }
 
         public long SelectedPlanID { get; set; }
+
+        //saoijfsoijfsodjfosdjf
     }
 }

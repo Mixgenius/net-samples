@@ -18,6 +18,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
         public ActionResult Index()
         {
+<<<<<<< HEAD
             var desiredPlanIds = ConfigurationManager.AppSettings["DesiredPlanIds"];
 
             //string array, each element is the ID of a desired plan
@@ -76,9 +77,18 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             #region GAHHHHH
             step2ProductsVM.Address1 = step3CustomerVM.Address1;
+=======
+
+            var testPlanIds = ConfigurationManager.AppSettings["TestPlanIds"];
+            var testPlanArray = testPlanIds.Split(',');
+
+            //This variable contains a list of all available plans
+            var listOfPlans = ApiClient.GetPlans(new QueryOptions() { });
+>>>>>>> parent of 46cfa4a... Changes to present
 
             step2ProductsVM.Address2 = step3CustomerVM.Address2;
 
+<<<<<<< HEAD
             step2ProductsVM.City = step3CustomerVM.City;
 
             step2ProductsVM.CompanyName = step3CustomerVM.CompanyName;
@@ -109,8 +119,27 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 step2ProductsVM.QuantitiesofPlanProducts_string.Add(step2ProductsVM.AvailableProducts[i].ProductName, step2ProductsVM.AvailableProducts[i].Quantity);
                 step2ProductsVM.EmploymentType.Add(new Check { Text = i.ToString() });
 
-            }
+=======
+            //dictionary object for key value pair for each plan's ID and code
+            var dictionaryOfIDsAndCodes = new Dictionary<long, string>();
 
+            Step1_Plans_VM planList = new Step1_Plans_VM();
+            planList.AvailablePlans = new List<Plan>();
+
+
+
+            //place the key-value pairs into the dictionary object
+            foreach (var plan in listOfPlans.Results)
+            {
+                if (testPlanArray.Contains(plan.Id.ToString()))
+                {
+                    planList.AvailablePlans.Add(plan);
+                }
+>>>>>>> parent of 46cfa4a... Changes to present
+            }
+            return View(planList);
+
+<<<<<<< HEAD
             return View(step2ProductsVM);
         }
 
@@ -171,6 +200,8 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
 
             return View(step3CustomerVM);
+=======
+>>>>>>> parent of 46cfa4a... Changes to present
         }
 
   
@@ -178,6 +209,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
 
         [HttpPost]
+<<<<<<< HEAD
         [MultipleButton(Name = "action", Argument = "Step4GetPreviewInvoice")]
       
         public ActionResult Step4GetPreviewInvoice(Step3CustomerVM step3CustomerVM)
@@ -238,6 +270,19 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             return View(step5CreatePayment);
 
+=======
+        public ActionResult GetPlanProducts()
+        {           
+            Step2_Products_VM products = new Step2_Products_VM();
+            products.SelectedPlanID = System.Convert.ToInt64(Request["planId"]);
+            products.AvailableProduct = ApiClient.GetPlanProductsByPlanId(products.SelectedPlanID, new QueryOptions() { }).Results;
+            return View(products);
+        }
+
+        public ActionResult GetCustomerDetails()
+        {
+            return View();
+>>>>>>> parent of 46cfa4a... Changes to present
         }
 
 

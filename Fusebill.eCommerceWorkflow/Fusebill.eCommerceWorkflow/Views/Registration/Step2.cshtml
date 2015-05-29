@@ -1,0 +1,80 @@
+﻿@model Fusebill.eCommerceWorkflow.Models.Step2_Products_VM
+
+@{
+    Layout = "";
+    ViewBag.Title = "Registration Sample";
+}
+
+
+<h2>Registration AHHHHHH!!!!</h2>
+
+<h3>Plans</h3>
+
+
+<h2 style="f[[[[[[[[]]]]]]]]">Products in PlanBronze</h2>
+
+<input id="btn_back" type="button" value="Back" />
+<input id="btn_continue" type="button" value="Continue" />
+
+<h2>Products in Plan Gold</h2>
+@foreach (var product in Model.AvailableProduct)
+{
+    <p>Included:</p>    <input id="Checkbox1" type="checkbox" />
+
+    <p>Quantity: @product.Quantity) </p> @Html.Editor("We will make this editorFor later")
+
+    <p> Description @product.ProductDescription <br /> @product.ProductName</p>
+
+    <p>Price WE WILL GET THE PRICE LATER</p>
+}
+
+<input id="btn_back" type="button" value="Back" />
+<input id="btn_continue" type="button" value="Continue" />
+
+@*@@using (Html.BeginForm())
+{
+    <h4>Contact Information</h4>
+    @Html.Label("First Name:") <br />
+    @Html.EditorFor(m => m.FirstName) <br /> <br />
+
+    @Html.Label("Last Name:") <br />
+    @Html.EditorFor(m => m.LastName) <br /> <br />
+
+    @Html.Label("Email address:") <br />
+    @Html.EditorFor(m => m.Email) <br /> <br />
+
+    @Html.Label("Phone:") <br />
+    @Html.EditorFor(m => m.Phone) <br /> <br />
+
+    @Html.Label("Company Name:") <br />
+    @Html.EditorFor(m => m.CompanyName) <br /> <br />
+
+    @Html.Label("Usage:") <br />
+    @Html.EditorFor(m => m.Usage) <br /> <br />
+
+    @Html.Label("Mandatory:") <br />
+    @Html.EditorFor(m => m.Mandatory) <br /> <br />
+
+    @Html.Label("Default Value:") <br />
+    @Html.EditorFor(m => m.DefaultValue) <br /> <br />
+
+   
+    <h4>Billing Address</h4>
+    @Html.Label("Address 1:") <br />
+    @Html.EditorFor(m => m.Address1) <br /> <br />
+
+    @Html.Label("Address 2:") <br />
+    @Html.EditorFor(m => m.Address2) <br /> <br />
+
+    @Html.Label("City:") <br />
+    @Html.EditorFor(m => m.City) <br /> <br />
+
+    @Html.Label("Zip Code:") <br />
+    @Html.EditorFor(m => m.ZipCode) <br /> <br />
+   
+    
+
+
+
+
+}*

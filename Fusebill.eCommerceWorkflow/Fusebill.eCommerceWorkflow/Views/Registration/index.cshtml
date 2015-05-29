@@ -10,12 +10,20 @@
 <h1 style="margin-top: 200px; text-align:center">Step 1: Choose your plan</h1>
 
 
+<<<<<<< HEAD
 
   @foreach (var plan in Model.AvailablePlans)
     {
 using (Html.BeginForm("Step2GetPlanProducts", "Registration", FormMethod.Post))
+=======
+<h3>Plans</h3>
+@using (Html.BeginForm("GetPlanProducts", "Registration", FormMethod.Post)) 
+>>>>>>> parent of 46cfa4a... Changes to present
 {
+    foreach (var plan in Model.AvailablePlans)
+    {
 
+<<<<<<< HEAD
         <div class="plan_plan" >
             <div class="plan_descriptionAndTitle">
                 <h2 class="plan_title">@plan.Name</h2>
@@ -35,6 +43,20 @@ using (Html.BeginForm("Step2GetPlanProducts", "Registration", FormMethod.Post))
                     </li>
                 </ul>
             </div>
+=======
+        <div style="float: left; width: 500px;">
+            <h4>@plan.Name</h4>
+            <p>Description: @plan.Description</p>
+
+            <p>Long Description:  @plan.LongDescription</p>
+            <ul>
+                <li>1 user</li>
+                <li>Limited Access</li>
+                <li>5MB of space</li>
+                <li>No support</li>
+                <hidden name="planId">@plan.Id</hidden>
+            </ul>
+>>>>>>> parent of 46cfa4a... Changes to present
             <input name="btnBuyPlan" type="submit" value="Buy" />
 
         </div>

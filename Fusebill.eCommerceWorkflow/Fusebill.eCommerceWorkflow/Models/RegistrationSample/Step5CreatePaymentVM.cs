@@ -1,5 +1,4 @@
 ﻿using Fusebill.ApiWrapper.Dto.Get;
-using Fusebill.eCommerceWorkflow.Models.RegistrationSample;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,7 @@ namespace Fusebill.eCommerceWorkflow.Models
 {
     public class Step5CreatePaymentVM
     {
+<<<<<<< HEAD:Fusebill.eCommerceWorkflow/Fusebill.eCommerceWorkflow/Models/RegistrationSample/Step5CreatePaymentVM.cs
         public List<Check> EmploymentType { get; set; }
 
         public List<PlanProduct> AvailableProducts { get; set; }
@@ -20,6 +20,11 @@ namespace Fusebill.eCommerceWorkflow.Models
         public long CustomerID { get; set; }
 
         public bool IsSameAsBillingAddress { get; set; }
+=======
+        public int SelectedPlanID { get; set; }
+        public List<PlanProduct> AvailableProduct { get; set; }
+>>>>>>> parent of 46cfa4a... Changes to present:Fusebill.eCommerceWorkflow/Fusebill.eCommerceWorkflow/Models/RegistrationSample/Step3_Customer_VM.cs
+
 
         #region CONTACT INFO
 
@@ -40,6 +45,7 @@ namespace Fusebill.eCommerceWorkflow.Models
         public string DefaultValue { get; set; }
 
         #endregion
+<<<<<<< HEAD:Fusebill.eCommerceWorkflow/Fusebill.eCommerceWorkflow/Models/RegistrationSample/Step5CreatePaymentVM.cs
 
         #region BillING INFO
 
@@ -55,5 +61,7 @@ namespace Fusebill.eCommerceWorkflow.Models
 
 
 
+=======
+>>>>>>> parent of 46cfa4a... Changes to present:Fusebill.eCommerceWorkflow/Fusebill.eCommerceWorkflow/Models/RegistrationSample/Step3_Customer_VM.cs
     }
 }

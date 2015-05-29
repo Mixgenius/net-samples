@@ -1,5 +1,4 @@
 ﻿using Fusebill.ApiWrapper.Dto.Get;
-using Fusebill.eCommerceWorkflow.Models.RegistrationSample;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +8,21 @@ namespace Fusebill.eCommerceWorkflow.Models
 {
     public class Step4PreviewInvoiceVM
     {
+<<<<<<< HEAD:Fusebill.eCommerceWorkflow/Fusebill.eCommerceWorkflow/Models/RegistrationSample/Step4PreviewInvoiceVM.cs
         public List<Check> EmploymentType { get; set; }
 
         public List<PlanProduct> AvailableProducts { get; set; }
+=======
+        public List<Plan> AvailablePlans { get; set; }
+>>>>>>> parent of 46cfa4a... Changes to present:Fusebill.eCommerceWorkflow/Fusebill.eCommerceWorkflow/Models/RegistrationSample/Step4_PreviewInvoice_VM.cs
 
-        public long SelectedPlanID { get; set; }
+        //to change later
+        public List<PlanProduct> AvailableProduct { get; set; }
 
-        public string SelectedPlanName { get; set; }
+        public long SelectedPlan { get; set; }
 
         public long CustomerID { get; set; }
+<<<<<<< HEAD:Fusebill.eCommerceWorkflow/Fusebill.eCommerceWorkflow/Models/RegistrationSample/Step4PreviewInvoiceVM.cs
 
         public bool IsSameAsBillingAddress { get; set; }
 
@@ -60,6 +65,8 @@ namespace Fusebill.eCommerceWorkflow.Models
 
 
 
+=======
+>>>>>>> parent of 46cfa4a... Changes to present:Fusebill.eCommerceWorkflow/Fusebill.eCommerceWorkflow/Models/RegistrationSample/Step4_PreviewInvoice_VM.cs
     }
 
 }

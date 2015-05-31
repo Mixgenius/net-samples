@@ -124,6 +124,20 @@ namespace Fusebill.ApiWrapper
             return PostEntity<Fusebill.ApiWrapper.Dto.Post.Subscription, Subscription>(url, subscription);
         }
 
+
+        public Customer PostCustomerActivation(Fusebill.ApiWrapper.Dto.Post.CustomerActivation customerActivation, bool preview, bool showZeroDollarCharges)
+        {
+            var url = RestUriBuilder.BuildUri("CustomerActivation") + "?preview=" + preview + "&showZeroDollarCharges=" + showZeroDollarCharges;
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.CustomerActivation, Customer>(url, customerActivation);
+        }
+
+
+        public Payment PostPayment(Fusebill.ApiWrapper.Dto.Post.Payment payment)
+        {
+            var url = RestUriBuilder.BuildUri("payments");
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Payment, Payment>(url, payment);
+        }
+
         protected TU PostEntity<T, TU>(string url, T entity, string acceptType = "application/json", int timeout = 60)
         {
             var response = ExecuteHttpRequest.ExecuteHttpPost(url, entity, acceptType, timeout);

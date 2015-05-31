@@ -19,7 +19,11 @@ namespace Fusebill.ApiWrapper
 
 
         Customer PostCustomer(Fusebill.ApiWrapper.Dto.Post.Customer customer);
+        Address PostAddress(Fusebill.ApiWrapper.Dto.Post.Address model);
+        Subscription PostSubscription(Fusebill.ApiWrapper.Dto.Post.Subscription subscription);
+        Customer PostCustomerActivation(Fusebill.ApiWrapper.Dto.Post.CustomerActivation customerActivation, bool preview, bool showZeroDollarCharges);
 
+        Payment PostPayment(Fusebill.ApiWrapper.Dto.Post.Payment payment);
 
         ResultList<PlanProduct> GetPlanProductsByPlanId(long id, QueryOptions queryOptions);
 

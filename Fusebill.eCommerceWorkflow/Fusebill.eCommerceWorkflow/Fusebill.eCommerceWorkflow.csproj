@@ -296,7 +296,7 @@
     <Content Include="Views\Samples\Index.cshtml" />
     <Content Include="Views\Registration\Step2GetPlanProducts.cshtml" />
     <Content Include="Views\Registration\Step3GetCustomerInformation.cshtml" />
-    <Content Include="Views\Registration\Step4GetSubscription.cshtml" />
+    <Content Include="Views\Registration\Step4GetInvoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

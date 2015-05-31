@@ -69,10 +69,12 @@
     <Compile Include="Dto\Get\DraftCharge.cs" />
     <Compile Include="Dto\Get\DraftChargeGroup.cs" />
     <Compile Include="Dto\Get\DraftDiscount.cs" />
+    <Compile Include="Dto\Get\InvoiceAllocation.cs" />
     <Compile Include="Dto\Get\InvoicePreview.cs" />
     <Compile Include="Dto\Get\IPagingHeaderData.cs" />
     <Compile Include="Dto\Get\OrderToCashCycle.cs" />
     <Compile Include="Dto\Get\PagingHeaderData.cs" />
+    <Compile Include="Dto\Get\Payment.cs" />
     <Compile Include="Dto\Get\Plan.cs" />
     <Compile Include="Dto\Get\PlanCustomField.cs" />
     <Compile Include="Dto\Get\PlanFrequency.cs" />
@@ -101,7 +103,10 @@
     <Compile Include="Dto\Post\Address.cs" />
     <Compile Include="Dto\Post\BaseDto.cs" />
     <Compile Include="Dto\Post\Customer.cs" />
+    <Compile Include="Dto\Post\CustomerActivation.cs" />
     <Compile Include="Dto\Post\IBaseDto.cs" />
+    <Compile Include="Dto\Post\Payment.cs" />
+    <Compile Include="Dto\Post\PaymentAllocation.cs" />
     <Compile Include="Dto\Post\Subscription.cs" />
     <Compile Include="Dto\Post\SubscriptionOverride.cs" />
     <Compile Include="Dto\Post\SubscriptionProductDiscount.cs" />

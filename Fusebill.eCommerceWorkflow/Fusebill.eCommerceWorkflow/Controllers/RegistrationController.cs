@@ -63,18 +63,22 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             RegistrationVM step3RegistrationVM = new RegistrationVM();
             step3RegistrationVM = registrationVM;
 
-            //step3RegistrationVM.customerInformation = new Customer();
-           
+       
+
             return View(step3RegistrationVM);
         }
 
-         [HttpPost]
-        [MultipleButton(Name = "action", Argument = "Step4GetSubscription")]
-        public ActionResult Step4GetSubscription(RegistrationVM registrationVM)
-        {
-            RegistrationVM step4RegistrationVM = new RegistrationVM();
-            step4RegistrationVM = registrationVM;
+        //IS customer ID c.ID?
+        //Is planFrequencyID in the PlanOrderToCashCycles section?
 
+         [HttpPost]
+        [MultipleButton(Name = "action", Argument = "Step4GetInvoice")]
+        public ActionResult Step4GetInvoice(RegistrationVM registrationVM)
+        {
+
+            RegistrationVM step4RegistrationVM = new RegistrationVM();
+
+            #region Creating a Customer
             Fusebill.ApiWrapper.Dto.Post.Customer postCustomer = new Fusebill.ApiWrapper.Dto.Post.Customer();
 
             postCustomer.FirstName = step4RegistrationVM.customerInformation.FirstName;
@@ -84,14 +88,69 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             postCustomer.PrimaryPhone = step4RegistrationVM.customerInformation.PrimaryPhone;
             postCustomer.CompanyName = step4RegistrationVM.customerInformation.CompanyName;
 
-            
-            var c = ApiClient.PostCustomer(postCustomer);
+   //TEST         var c = ApiClient.PostCustomer(postCustomer);
+            #endregion
 
-            
+            #region Creating an Address for billing
+
+            Fusebill.ApiWrapper.Dto.Post.Address postBillingAddress = new Fusebill.ApiWrapper.Dto.Post.Address();
+
+            postBillingAddress.CompanyName = step4RegistrationVM.billingAddress.CompanyName;
+            postBillingAddress.Line1 = step4RegistrationVM.billingAddress.Line1;
+            postBillingAddress.Line2 = step4RegistrationVM.billingAddress.Line2;
+            postBillingAddress.City = step4RegistrationVM.billingAddress.City;
+            postBillingAddress.PostalZip = step4RegistrationVM.billingAddress.PostalZip;
+            //MISSING: Country and state, where to get country ID, how to make dropdown
+
+     //TEST       var ba = ApiClient.PostAddress(postBillingAddress);
+
+            #endregion
+
+            #region Creating a Subscription
+            Fusebill.ApiWrapper.Dto.Post.Subscription postSubscription =                new ApiWrapper.Dto.Post.Subscription();
+    //TEST        postSubscription.CustomerId = c.Id;    //is the id of the returned PostCustomer object the customerId for the subscription object
+            postSubscription.PlanFrequencyId = step4RegistrationVM.planOrderToCashCycle.PlanFrequencyId;
+
+            //ooookkkkayyyyyy
+            var s = ApiClient.PostSubscription(postSubscription);
+            #endregion
+
+
+            Fusebill.ApiWrapper.Dto.Post.CustomerActivation postCustomerActivation = new ApiWrapper.Dto.Post.CustomerActivation();
+            postCustomerActivation.ActivateAllSubscriptions = true;
+            postCustomerActivation.ActivateAllDraftPurchases = true;
+      //TEST      postCustomerActivation.CustomerId = c.Id;
+
+            //TEST        var pca = ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
+     //TEST       step4RegistrationVM.subscriptionTotalCost = pca.InvoicePreview.Total;
+
+
             return View(step4RegistrationVM);
         }
 
+  
 
+        public ActionResult Step5GetPayment ()
+         {
+           
+             RegistrationVM step5RegistrationVM = new RegistrationVM();
+             return View();
+         }
+
+        public ActionResult Step6GetActivation()
+        {
+            /*TEST
+            Fusebill.ApiWrapper.Dto.Post.Payment postPayment = new Fusebill.ApiWrapper.Dto.Post.Payment();
+            postPayment.CustomerId = ;
+            postPayment.Amount = ;
+            postPayment.PaymentMethodType = ;
+            postPayment.Reference = ;
+            */
+
+      //      ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
+
+            return View();
+        }
     }
 }
 
@@ -99,6 +158,11 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
 
         
+
+
+
+
+
 //        public ActionResult Step2GetPlanProducts(Step1PlansVM step1PlansVM)
 //        {           
 //            Step2ProductsVM step2ProductsVM = new Step2ProductsVM();

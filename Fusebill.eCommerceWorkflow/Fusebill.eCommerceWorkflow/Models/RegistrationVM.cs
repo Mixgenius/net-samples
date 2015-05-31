@@ -10,7 +10,7 @@ namespace Fusebill.eCommerceWorkflow.Models
     {
         //A list of all plans shown on the start page, currently contains bronze and gold plan
         public List<Plan> AvailablePlans { get; set; }
-
+        
         //the ID of the plan that the user clicks on
         public long SelectedPlanID { get; set; }
 
@@ -26,7 +26,12 @@ namespace Fusebill.eCommerceWorkflow.Models
         //The Address objects contains properties pertaining to the billing address, such as City and PostalZip 
         public Address billingAddress { get; set; }
 
+        //This has the planFrequencyID?
+        public PlanOrderToCashCycle planOrderToCashCycle { get; set; }
+
         //The Subscription objects contains information needed for the customer to create a subscription
         public Subscription subscription { get; set; }
+
+        public decimal subscriptionTotalCost { get; set; }
     }
 }

@@ -46,6 +46,18 @@ namespace Fusebill.ApiWrapper
 
         }
 
+        public HttpResponseMessage ExecuteHttpPost<T>(string url, T entity, string acceptType = "application/json", int timeout = 60)
+        {
+            var httpClient = GetHttpClient(acceptType, timeout);
+            var stopwatch = Stopwatch.StartNew();
+            var result = httpClient.PostAsync(url, SetupJson(entity)).Result;
+            stopwatch.Stop();
+            LogStopwatch(stopwatch, url);
+
+            ValidateResponse(result);
+            return result;
+        }
+
         public HttpResponseMessage ExecuteHttpPost<T>(string url, T entity, string acceptType = "application/json")
         {
             var httpClient = GetHttpClient(acceptType);

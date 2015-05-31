@@ -94,8 +94,13 @@
     <Compile Include="Dto\Get\SubscriptionProductEarningTiming.cs" />
     <Compile Include="Dto\Get\SubscriptionProductOverride.cs" />
     <Compile Include="Dto\Get\SubscriptionProductPriceOverride.cs" />
+    <Compile Include="Dto\Get\Subscriptions.cs" />
     <Compile Include="Dto\Get\Tax.cs" />
+    <Compile Include="Dto\Post\Address.cs" />
+    <Compile Include="Dto\Post\BaseDto.cs" />
     <Compile Include="Dto\Post\Customer.cs" />
+    <Compile Include="Dto\Post\IBaseDto.cs" />
+    <Compile Include="Dto\Post\Subscription.cs" />
     <Compile Include="ExecuteHttpRequest.cs" />
     <Compile Include="ExtractDataFromHeader.cs" />
     <Compile Include="HttpResponseHelper.cs" />

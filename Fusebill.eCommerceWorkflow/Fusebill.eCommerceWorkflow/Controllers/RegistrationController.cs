@@ -87,10 +87,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             
             var c = ApiClient.PostCustomer(postCustomer);
 
-
-
-             
-       
+            
             return View(step4RegistrationVM);
         }
 

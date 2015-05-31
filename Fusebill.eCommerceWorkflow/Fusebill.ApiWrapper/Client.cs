@@ -112,6 +112,18 @@ namespace Fusebill.ApiWrapper
             return PostEntity<Fusebill.ApiWrapper.Dto.Post.Customer, Customer>(url, customer);
         }
 
+        public Address PostAddress(Fusebill.ApiWrapper.Dto.Post.Address address)
+        {
+            var url = RestUriBuilder.BuildUri("addresses");
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Address, Address>(url, address);
+        }
+
+        public Subscription PostSubscription(Fusebill.ApiWrapper.Dto.Post.Subscription subscription)
+        {
+            var url = RestUriBuilder.BuildUri("subscriptions");
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Subscription, Subscription>(url, subscription);
+        }
+
         protected TU PostEntity<T, TU>(string url, T entity, string acceptType = "application/json", int timeout = 60)
         {
             var response = ExecuteHttpRequest.ExecuteHttpPost(url, entity, acceptType, timeout);

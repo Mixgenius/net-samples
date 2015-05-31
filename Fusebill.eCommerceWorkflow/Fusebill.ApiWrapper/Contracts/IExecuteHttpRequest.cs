@@ -9,6 +9,8 @@ namespace Fusebill.ApiWrapper
         HttpResponseMessage ExecuteHttpGet(string url, string acceptType = "application/json", int timeout = 60);
         HttpResponseMessage ExecuteHttpPost<T>(string url, T entity, string acceptType = "application/json");
         HttpResponseMessage ExecuteHttpPost<T>(string url, List<T> entities, string acceptType = "application/json");
+        HttpResponseMessage ExecuteHttpPost<T>(string url, T entity, string acceptType = "application/json", int timeout = 60);
+
         HttpResponseMessage ExecuteHttpPut<T>(string url, T entity, string acceptType = "application/json");
         //HttpResponseMessage ExecuteHttpPatch<T>(string url, T entity, string acceptType = "application/json");
         HttpResponseMessage ExecuteHttpDelete(string url);

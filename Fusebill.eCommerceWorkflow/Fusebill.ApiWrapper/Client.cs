@@ -106,11 +106,18 @@ namespace Fusebill.ApiWrapper
         }
 
 
-        //public Customer PostCustomer(Fusebill.ApiWrapper.Dto.Post.Customer customer)
-        //{
-        //    var url = RestUriBuilder.BuildUri("customers");
-        //    return PostEntity<Fusebill.ApiWrapper.Dto.Post.Customer, Customer>(url, customer);
-        //}
+        public Customer PostCustomer(Fusebill.ApiWrapper.Dto.Post.Customer customer)
+        {
+            var url = RestUriBuilder.BuildUri("customers");
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Customer, Customer>(url, customer);
+        }
+
+        protected TU PostEntity<T, TU>(string url, T entity, string acceptType = "application/json", int timeout = 60)
+        {
+            var response = ExecuteHttpRequest.ExecuteHttpPost(url, entity, acceptType, timeout);
+
+            return ParseHttpResponse.GetEntity<TU>(response.Content.ReadAsStringAsync().Result);
+        }
 
         protected byte[] GetBytes(string url)
         {

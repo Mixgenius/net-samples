@@ -1,5 +1,60 @@
-﻿@{
+﻿@model Fusebill.eCommerceWorkflow.Models.RegistrationVM
+
+@{
     ViewBag.Title = "Step3GetCustomerInformation";
 }
 
 <h2>Step3GetCustomerInformation</h2>
+
+<form action="" method="post">
+
+    <h1>Customer information</h1>
+    @Html.Label("First Name:")
+      @Html.TextBoxFor(m => m.customerInformation.FirstName)
+   
+    @Html.Label("Last Name:")
+    @Html.TextBoxFor(m => m.customerInformation.LastName)
+
+    @Html.Label("Title:")
+    @Html.TextBoxFor(m => m.customerInformation.Title)
+
+    @Html.Label("Email Address:")
+    @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail)
+
+    @Html.Label("Phone:")
+    @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone)
+
+    @Html.Label("Company Name:")
+    @Html.TextBoxFor(m => m.customerInformation.CompanyName)
+
+    <h1>Billing information</h1>
+
+  
+
+    @Html.Label("Company Name:")
+    @Html.TextBoxFor(m => m.billingAddress.CompanyName)
+
+    @Html.Label("Primary Address:")
+    @Html.TextBoxFor(m => m.billingAddress.Line1)
+
+    @Html.Label("Secondary Address:")
+    @Html.TextBoxFor(m => m.billingAddress.Line2)
+
+    @Html.Label("City:")
+    @Html.TextBoxFor(m => m.billingAddress.City)
+
+    @Html.Label("Postal Code:")
+    @Html.TextBoxFor(m => m.billingAddress.PostalZip)
+
+
+    @Html.Label("Country:")
+    DROPDOWN
+
+    @Html.Label("State:")
+DROPDOWN
+
+    <input type="submit" value="Back" name="action:Step2GetPlanProducts" />
+
+          <input type="submit" value="To Subscription" name="action:Step4GetSubscription" />
+
+      </form>

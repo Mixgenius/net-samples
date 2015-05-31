@@ -20,5 +20,13 @@ namespace Fusebill.eCommerceWorkflow.Models
         //How many of each product the user decides to have
         public Dictionary<string, decimal> QuantityOfProducts { get; set; }
 
+        //The Customer object contains properties pertaining to the customer, such as FrstName, LastName
+        public Customer customerInformation { get; set; }
+
+        //The Address objects contains properties pertaining to the billing address, such as City and PostalZip 
+        public Address billingAddress { get; set; }
+
+        //The Subscription objects contains information needed for the customer to create a subscription
+        public Subscription subscription { get; set; }
     }
 }

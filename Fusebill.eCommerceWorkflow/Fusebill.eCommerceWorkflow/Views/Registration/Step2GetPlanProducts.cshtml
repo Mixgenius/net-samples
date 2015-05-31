@@ -7,8 +7,7 @@
 
 <h2>Step2GetPlanProducts</h2>
 
-<form action="~/Views/Registration/Step3GetCustomerInformation.cshtml" method="post">
-
+<form action="" method="post">
    @*Commented out to test
        @for (int i = 0; i < Model.AvailableProducts.Count; i ++)
      {
@@ -17,13 +16,9 @@
     @Html.TextBoxFor(m => m.QuantityOfProducts[Model.AvailableProducts[i].ProductName] ,new {@placeholder = @Model.AvailableProducts[i].Quantity} )
      <h1>WHAT's THE PRICE?</h1>
 
-*@ 
-    
-    <input id="Button1" type="button" value="Back" />
-        @Html.ActionLink("Index","Registration")
-    <input id="Submit1" type="submit" value="submit" />
+*@
 
-        
-    }
+    <input id="Button1" type="button" value="Back" onclick="@("window.location.href='" + @Url.Action("Index", "Registration") + "'");" />
 
+    <input type="submit" value="Buy" name="action:Step3GetCustomerInformation" />
 </form>

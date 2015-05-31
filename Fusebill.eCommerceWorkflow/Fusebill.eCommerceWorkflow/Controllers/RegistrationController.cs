@@ -36,7 +36,8 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             return View(step1RegistrationVM);
         }
 
-
+        [HttpPost]
+        [MultipleButton(Name = "action", Argument = "Step2GetPlanProducts")]
         public ActionResult Step2GetPlanProducts(RegistrationVM registrationVM)
         {
             RegistrationVM step2RegistrationVM = new RegistrationVM();
@@ -55,10 +56,44 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             return View(step2RegistrationVM);
         }
 
+        [HttpPost]
+        [MultipleButton(Name = "action", Argument = "Step3GetCustomerInformation")]
         public ActionResult Step3GetCustomerInformation(RegistrationVM registrationVM)
         {
-            return View();
+            RegistrationVM step3RegistrationVM = new RegistrationVM();
+            step3RegistrationVM = registrationVM;
+
+            //step3RegistrationVM.customerInformation = new Customer();
+           
+            return View(step3RegistrationVM);
         }
+
+         [HttpPost]
+        [MultipleButton(Name = "action", Argument = "Step4GetSubscription")]
+        public ActionResult Step4GetSubscription(RegistrationVM registrationVM)
+        {
+            RegistrationVM step4RegistrationVM = new RegistrationVM();
+            step4RegistrationVM = registrationVM;
+
+            Fusebill.ApiWrapper.Dto.Post.Customer postCustomer = new Fusebill.ApiWrapper.Dto.Post.Customer();
+
+            postCustomer.FirstName = step4RegistrationVM.customerInformation.FirstName;
+            postCustomer.LastName = step4RegistrationVM.customerInformation.LastName;
+            postCustomer.Title = step4RegistrationVM.customerInformation.Title;
+            postCustomer.PrimaryEmail = step4RegistrationVM.customerInformation.PrimaryEmail;
+            postCustomer.PrimaryPhone = step4RegistrationVM.customerInformation.PrimaryPhone;
+            postCustomer.CompanyName = step4RegistrationVM.customerInformation.CompanyName;
+
+            
+            var c = ApiClient.PostCustomer(postCustomer);
+
+
+
+             
+       
+            return View(step4RegistrationVM);
+        }
+
 
     }
 }

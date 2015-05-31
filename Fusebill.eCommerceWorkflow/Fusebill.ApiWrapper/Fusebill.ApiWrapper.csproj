@@ -57,6 +57,7 @@
     <Compile Include="Contracts\IParseHttpResponse.cs" />
     <Compile Include="Contracts\IRestUriBuilder.cs" />
     <Compile Include="Dto\ApiError.cs" />
+    <Compile Include="Dto\Get\Address.cs" />
     <Compile Include="Dto\Get\BaseDto.cs" />
     <Compile Include="Dto\Get\ChargeModel.cs" />
     <Compile Include="Dto\Get\Customer.cs" />
@@ -83,6 +84,16 @@
     <Compile Include="Dto\Get\QuantityRange.cs" />
     <Compile Include="Dto\Get\State.cs" />
     <Compile Include="Dto\Get\Country.cs" />
+    <Compile Include="Dto\Get\Subscription.cs" />
+    <Compile Include="Dto\Get\SubscriptionCoupon.cs" />
+    <Compile Include="Dto\Get\SubscriptionCustomField.cs" />
+    <Compile Include="Dto\Get\SubscriptionOverride.cs" />
+    <Compile Include="Dto\Get\SubscriptionProduct.cs" />
+    <Compile Include="Dto\Get\SubscriptionProductCustomField.cs" />
+    <Compile Include="Dto\Get\SubscriptionProductDiscount.cs" />
+    <Compile Include="Dto\Get\SubscriptionProductEarningTiming.cs" />
+    <Compile Include="Dto\Get\SubscriptionProductOverride.cs" />
+    <Compile Include="Dto\Get\SubscriptionProductPriceOverride.cs" />
     <Compile Include="Dto\Get\Tax.cs" />
     <Compile Include="Dto\Post\Customer.cs" />
     <Compile Include="ExecuteHttpRequest.cs" />

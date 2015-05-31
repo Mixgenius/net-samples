@@ -1,4 +1,4 @@
-﻿
+﻿@model Fusebill.eCommerceWorkflow.Models.RegistrationVM
 
 @{
 
@@ -10,52 +10,35 @@
 <h1 style="margin-top: 200px; text-align:center">Step 1: Choose your plan</h1>
 
 <h3>Plans</h3>
-@using (Html.BeginForm("GetPlanProducts", "Registration", FormMethod.Post)) 
+
+@*@foreach (var plan in Model.AvailablePlans)
+*@
+@for (int i = 0; i < 3; i ++ )
 {
-   foreach (var plan in Model.AvailablePlans)
+
+    using (Html.BeginForm("Step2GetPlanProducts", "Registration", FormMethod.Post))
     {
+    <div class="plan_plan">
+        <div class="plan_descriptionAndTitle">
+            <h2 class="plan_title">Title</h2> @*@plan.Name*@
+            <p class="plan_description">Description: Description</p> @*@plan.Description*@
 
-
-        <div class="plan_plan" >
-            <div class="plan_descriptionAndTitle">
-                <h2 class="plan_title">@plan.Name</h2>
-                <p class="plan_description">Description: @plan.Description</p>
-
-                <p class="plan_longdescription">Long Description:  @plan.LongDescription</p>
-            </div>
-            <div class="plan_miscellaneous">
-                <ul>
-                    <li>PRICE, WE SHALL FIND OUT LATERRRRZ</li>
-                    <li>1 user</li>
-                    <li>Limited Access</li>
-                    <li>5MB of space</li>
-                    <li>No support</li>
-                    <li>
-
-                    </li>
-                </ul>
-            </div>
+            <p class="plan_longdescription">Long Description:  LongDescription</p> @*@plan.LongDescription*@
         </div>
-
-        <div style="float: left; width: 500px;">
-            <h4>@plan.Name</h4>
-            <p>Description: @plan.Description</p>
-
-            <p>Long Description:  @plan.LongDescription</p>
+        <div class="plan_miscellaneous">
             <ul>
+                <li>PRICE, WE SHALL FIND OUT LATERRRRZ</li>
                 <li>1 user</li>
                 <li>Limited Access</li>
                 <li>5MB of space</li>
                 <li>No support</li>
-                <hidden name="planId">@plan.Id</hidden>
             </ul>
-
-            <input name="btnBuyPlan" type="submit" value="Buy" />
-
         </div>
-      
-      <br /> <br />
+    </div>
+
+    @Html.TextBoxFor(m => m.SelectedPlanID, new { @Value = "123" })
+    
+    <input name="btnBuyPlan" type="submit" value="Buy" />
+    <br /> <br />
     }
-
 }
-

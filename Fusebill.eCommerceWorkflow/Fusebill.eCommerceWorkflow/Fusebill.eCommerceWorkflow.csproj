@@ -171,6 +171,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\RegistrationVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -292,13 +293,14 @@
     <Content Include="Views\Customers\Index.cshtml" />
     <Content Include="Views\Registration\index.cshtml" />
     <Content Include="Views\Samples\Index.cshtml" />
+    <Content Include="Views\Registration\Step2GetPlanProducts.cshtml" />
+    <Content Include="Views\Registration\Step3GetCustomerInformation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Samples\Controllers\" />
     <Folder Include="Areas\Samples\Models\" />
     <Folder Include="Areas\Samples\Views\Shared\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

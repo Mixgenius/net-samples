@@ -1,5 +1,6 @@
 ﻿using Fusebill.ApiWrapper;
 using Fusebill.ApiWrapper.Dto.Get;
+using Fusebill.eCommerceWorkflow.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,10 +19,12 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         {
             var desiredPlanIds = ConfigurationManager.AppSettings["DesiredPlanIds"];
 
+            RegistrationVM step1RegistrationVM = new RegistrationVM();
+
             ////string array, each element is the ID of a desired plan
             //var desiredPlans = desiredPlanIds.Split(',');
 
-            //Step1PlansVM planList = new Step1PlansVM();
+            //RegistrationVM planList = new RegistrationVM();
             //planList.AvailablePlans = new List<Plan>();
 
 
@@ -30,8 +33,33 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             //    var plan = ApiClient.GetPlan(Convert.ToInt64(element));
             //     planList.AvailablePlans.Add(plan);
             //}
+            return View(step1RegistrationVM);
+        }
+
+
+        public ActionResult Step2GetPlanProducts(RegistrationVM registrationVM)
+        {
+            RegistrationVM step2RegistrationVM = new RegistrationVM();
+            step2RegistrationVM = registrationVM;
+
+            step2RegistrationVM.AvailableProducts = new List<PlanProduct>();
+       //TEST     step2RegistrationVM.AvailableProducts = ApiClient.GetPlanProductsByPlanId(registrationVM.SelectedPlanID, new QueryOptions { }).Results;
+
+            /* TEST
+            for (int i = 0; i < step2RegistrationVM.AvailableProducts.Count; i++)
+             {
+                 step2RegistrationVM.QuantityOfProducts.Add(step2RegistrationVM.AvailableProducts[i].ProductName, step2RegistrationVM.AvailableProducts[i].Quantity);
+             }
+             * */
+
+            return View(step2RegistrationVM);
+        }
+
+        public ActionResult Step3GetCustomerInformation(RegistrationVM registrationVM)
+        {
             return View();
         }
+
     }
 }
 

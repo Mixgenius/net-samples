@@ -1,0 +1,29 @@
+﻿@model Fusebill.eCommerceWorkflow.Models.RegistrationVM
+    
+
+@{
+    ViewBag.Title = "Step2GetPlanProducts";
+}
+
+<h2>Step2GetPlanProducts</h2>
+
+<form action="~/Views/Registration/Step3GetCustomerInformation.cshtml" method="post">
+
+   @*Commented out to test
+       @for (int i = 0; i < Model.AvailableProducts.Count; i ++)
+     {
+         <h1>@Model.AvailableProducts[i].ProductName</h1>
+     <h1>@Model.AvailableProducts[i].ProductDescription</h1>
+    @Html.TextBoxFor(m => m.QuantityOfProducts[Model.AvailableProducts[i].ProductName] ,new {@placeholder = @Model.AvailableProducts[i].Quantity} )
+     <h1>WHAT's THE PRICE?</h1>
+
+*@ 
+    
+    <input id="Button1" type="button" value="Back" />
+        @Html.ActionLink("Index","Registration")
+    <input id="Submit1" type="submit" value="submit" />
+
+        
+    }
+
+</form>

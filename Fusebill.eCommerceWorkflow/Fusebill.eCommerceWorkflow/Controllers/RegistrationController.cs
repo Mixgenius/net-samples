@@ -7,6 +7,15 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+
+/*
+ * Step3, in state dropdown: select your state for non-Canadian vs select your province for Canada
+ * Step3, validation
+ *  postBillingAddress.CustomerAddressPreferenceId, and how to find it
+ * 
+ * */
+
 
 namespace Fusebill.eCommerceWorkflow.Controllers
 {
@@ -105,6 +114,8 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 });
             }
 
+            
+
             return View(step3RegistrationVM);
         }
 
@@ -120,12 +131,12 @@ namespace Fusebill.eCommerceWorkflow.Controllers
              step4RegistrationVM = registrationVM;
 
 
-            step4RegistrationVM.customerInformation = new Customer();
-            step4RegistrationVM.billingAddress = new Address();
             step4RegistrationVM.subscription = new Subscription();
              step4RegistrationVM.planOrderToCashCycle = new PlanOrderToCashCycle();
 
-            #region Creating a Customer
+
+
+            #region                         Creating a Customer
             Fusebill.ApiWrapper.Dto.Post.Customer postCustomer = new Fusebill.ApiWrapper.Dto.Post.Customer();
 
             postCustomer.FirstName = step4RegistrationVM.customerInformation.FirstName;
@@ -136,12 +147,17 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             postCustomer.CompanyName = step4RegistrationVM.customerInformation.CompanyName;
 
              var c = ApiClient.PostCustomer(postCustomer);
+
+             Fusebill.ApiWrapper.Dto.Post.CustomerActivation postCustomerActivation = new ApiWrapper.Dto.Post.CustomerActivation();
+             postCustomerActivation.ActivateAllSubscriptions = true;
+             postCustomerActivation.ActivateAllDraftPurchases = true;
+             postCustomerActivation.CustomerId = c.Id;
             #endregion
 
 
 
 
-          #region                       Creating an Address for billing
+          #region                         Creating an Address for billing
 
             Fusebill.ApiWrapper.Dto.Post.Address postBillingAddress = new Fusebill.ApiWrapper.Dto.Post.Address();
 
@@ -151,12 +167,14 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             postBillingAddress.City = step4RegistrationVM.billingAddress.City;
             postBillingAddress.PostalZip = step4RegistrationVM.billingAddress.PostalZip;
             postBillingAddress.CountryId = step4RegistrationVM.billingAddress.CountryId;
-           
+            postBillingAddress.StateId = step4RegistrationVM.billingAddress.StateId;
+            postBillingAddress.CustomerAddressPreferenceId = 23;
+            postBillingAddress.AddressType = "Billing";
              //MISSING: Country and state, where to get country ID, how to make dropdown
 
              var ba = ApiClient.PostAddress(postBillingAddress);
-
             #endregion
+
 
 
 
@@ -167,23 +185,19 @@ namespace Fusebill.eCommerceWorkflow.Controllers
            
              postSubscription.PlanFrequencyId = step4RegistrationVM.planOrderToCashCycle.PlanFrequencyId;
 
-            //ooookkkkayyyyyy
             var s = ApiClient.PostSubscription(postSubscription);
+
+            Fusebill.ApiWrapper.Dto.Post.SubscriptionActivation subscriptionActivation = new ApiWrapper.Dto.Post.SubscriptionActivation();
+            subscriptionActivation.Id = s.Id;
              
             #endregion
 
 
-            Fusebill.ApiWrapper.Dto.Post.CustomerActivation postCustomerActivation = new ApiWrapper.Dto.Post.CustomerActivation();
-            postCustomerActivation.ActivateAllSubscriptions = true;
-            postCustomerActivation.ActivateAllDraftPurchases = true;
-            postCustomerActivation.CustomerId = c.Id;
-
           var pca = ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
          step4RegistrationVM.subscriptionTotalCost = pca.InvoicePreview.Total;
+
           Session[new RegistrationStronglyTypedSessionState().customerInformation] = registrationVM.customerInformation;
           Session[new RegistrationStronglyTypedSessionState().billingAddress] = step4RegistrationVM.billingAddress;
-
-            var k = Session[new RegistrationStronglyTypedSessionState().customerInformation];
             return View(step4RegistrationVM);
         }
 
@@ -205,13 +219,16 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
         public ActionResult Step6GetActivation()
         {
-            /*TEST
+          
+            /*
             Fusebill.ApiWrapper.Dto.Post.Payment postPayment = new Fusebill.ApiWrapper.Dto.Post.Payment();
             postPayment.CustomerId = ;
             postPayment.Amount = ;
             postPayment.PaymentMethodType = ;
             postPayment.Reference = ;
-            */
+            postPayment.          
+             * 
+             * */;
 
       //      ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
 

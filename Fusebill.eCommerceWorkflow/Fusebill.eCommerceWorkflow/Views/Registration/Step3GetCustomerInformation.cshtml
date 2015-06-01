@@ -1,11 +1,16 @@
-﻿@model Fusebill.eCommerceWorkflow.Models.RegistrationVM
+﻿@using Fusebill.ApiWrapper
+
+@model Fusebill.eCommerceWorkflow.Models.RegistrationVM
 
 @{
     ViewBag.Title = "Step3GetCustomerInformation";
 }
 
 <script src="~/Scripts/jquery-1.8.2.min.js"></script>
-<script src="~/Scripts/knockout-2.2.0.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
 <h2>Step3GetCustomerInformation</h2>
 
 <form action="" method="post">
@@ -55,7 +60,10 @@
 
 
     @Html.Label("State:")
-   <select id="state" ></select>
+    @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
+
+
+
 
   <p id="testPara">sdofijsdo</p>
     <p id="wer">sdf</p>
@@ -70,22 +78,43 @@
 
 <script>
     $(document).ready(function () {
-        $("#state").prop("disabled", true);
-        $(".country").change(            
+
+        var model = @Html.HtmlConvertToJson(Model);
+
+        $(".state").prop("disabled", true);
+        $(".country").change(
         function () {
             alert("Hold");
-            $("#state").prop("disabled", false);
+            $(".state").prop("disabled", false);
 
-            for (var i= 0; i < @Model.listOfCountriesCountry[2].States.Count; i++)
+            //the value of the selcted country
+            var selectedCountryValue = $(".country").val();
+            var selectedCountryCountry;
+
+            //we find the selected country's position in the countries list in order to access its states
+            for (var i = 0; i < model.listOfCountriesCountry.length; i++)
             {
-                $("#state").append($('<option>', {
-                    value: ' ',
-                    text: 'Some Textsd'
-            
-                }));
+                $('#testPara').css('background-color', 'blue');
+
+                if (selectedCountryValue == model.listOfCountriesCountry[i].id)
+                {
+                    var selectedCountryCountry= model.listOfCountriesCountry[i];
+                }
             }
-            $('#testPara').css('background-color', 'blue');
-            $('#wer').css('color', 'blue');
+             
+            $('#wer').text(selectedCountryCountry.name);
+            
+            $(".state").empty();
+
+            for (var i = 0; i < selectedCountryCountry.states.length; i++) {
+                $(".state").append($('<option>', {
+                    value: selectedCountryCountry.states[i].id,
+                  text: selectedCountryCountry.states[i].name
+
+                }));
+            };
+
+
 
         });
 

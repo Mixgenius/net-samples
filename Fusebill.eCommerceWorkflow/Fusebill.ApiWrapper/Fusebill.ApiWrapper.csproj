@@ -39,7 +39,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -108,11 +111,13 @@
     <Compile Include="Dto\Post\Payment.cs" />
     <Compile Include="Dto\Post\PaymentAllocation.cs" />
     <Compile Include="Dto\Post\Subscription.cs" />
+    <Compile Include="Dto\Post\SubscriptionActivation.cs" />
     <Compile Include="Dto\Post\SubscriptionOverride.cs" />
     <Compile Include="Dto\Post\SubscriptionProductDiscount.cs" />
     <Compile Include="Dto\Post\SubscriptionProductOverride.cs" />
     <Compile Include="ExecuteHttpRequest.cs" />
     <Compile Include="ExtractDataFromHeader.cs" />
+    <Compile Include="HtmlExtensions.cs" />
     <Compile Include="HttpResponseHelper.cs" />
     <Compile Include="JsonDeserializer.cs" />
     <Compile Include="ParseHttpResponse.cs" />

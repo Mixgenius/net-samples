@@ -12,11 +12,14 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 {
     public class RegistrationController : FusebillController
     {
+
         //
         // GET: /Registration/
 
         public ActionResult Index()
         {
+            
+       
             var desiredPlanIds = ConfigurationManager.AppSettings["DesiredPlanIds"];
 
             RegistrationVM step1RegistrationVM = new RegistrationVM();
@@ -63,7 +66,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             RegistrationVM step3RegistrationVM = new RegistrationVM();
             step3RegistrationVM = registrationVM;
 
-       
+            
 
             return View(step3RegistrationVM);
         }
@@ -77,6 +80,10 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         {
 
             RegistrationVM step4RegistrationVM = new RegistrationVM();
+            step4RegistrationVM.customerInformation = new Customer();
+            step4RegistrationVM.billingAddress = new Address();
+            step4RegistrationVM.subscription = new Subscription();
+             step4RegistrationVM.planOrderToCashCycle = new PlanOrderToCashCycle();
 
             #region Creating a Customer
             Fusebill.ApiWrapper.Dto.Post.Customer postCustomer = new Fusebill.ApiWrapper.Dto.Post.Customer();
@@ -107,12 +114,12 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             #endregion
 
             #region Creating a Subscription
-            Fusebill.ApiWrapper.Dto.Post.Subscription postSubscription =                new ApiWrapper.Dto.Post.Subscription();
+            Fusebill.ApiWrapper.Dto.Post.Subscription postSubscription = new ApiWrapper.Dto.Post.Subscription();
     //TEST        postSubscription.CustomerId = c.Id;    //is the id of the returned PostCustomer object the customerId for the subscription object
             postSubscription.PlanFrequencyId = step4RegistrationVM.planOrderToCashCycle.PlanFrequencyId;
 
             //ooookkkkayyyyyy
-            var s = ApiClient.PostSubscription(postSubscription);
+         //TEST   var s = ApiClient.PostSubscription(postSubscription);
             #endregion
 
 
@@ -124,12 +131,13 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             //TEST        var pca = ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
      //TEST       step4RegistrationVM.subscriptionTotalCost = pca.InvoicePreview.Total;
 
-
+           
             return View(step4RegistrationVM);
         }
 
-  
 
+         [HttpPost]
+         [MultipleButton(Name = "action", Argument = "Step5GetPayment")]
         public ActionResult Step5GetPayment ()
          {
            

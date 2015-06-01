@@ -172,6 +172,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\MultipleButtonAttribute.cs" />
+    <Compile Include="Models\RegistrationStronglyTypedSessionState.cs" />
     <Compile Include="Models\RegistrationVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -297,6 +298,7 @@
     <Content Include="Views\Registration\Step2GetPlanProducts.cshtml" />
     <Content Include="Views\Registration\Step3GetCustomerInformation.cshtml" />
     <Content Include="Views\Registration\Step4GetInvoice.cshtml" />
+    <Content Include="Views\Registration\Step5GetPayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

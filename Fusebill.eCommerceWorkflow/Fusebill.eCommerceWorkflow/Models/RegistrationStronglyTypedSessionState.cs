@@ -14,15 +14,16 @@ namespace Fusebill.eCommerceWorkflow.Models
         //keeps track of the plan ID to access the plan products page
         public string selectedPlanId;
         ///keeps track of the number of each plan product, key value can be string as well
-        public Dictionary<PlanProduct, int> PlanProductQuantities;
-        public Dictionary<PlanProduct, bool> PlanProductIncludes;      
+        public string planProductQuantities;
+        public string planProductIncludes;      
 
 
         public RegistrationStronglyTypedSessionState()
         {
             customerInformation = "customerInformation";
             billingAddress = "billingAddress";
-            PlanProductQuantities = new Dictionary<PlanProduct, int>();
+            planProductQuantities = "planProductQuantities";
+            planProductIncludes = "planProductIncludes";
             selectedPlanId = "selectedPlanId";
 
         }

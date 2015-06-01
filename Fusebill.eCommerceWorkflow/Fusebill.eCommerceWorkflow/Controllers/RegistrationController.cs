@@ -37,7 +37,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             step1RegistrationVM.AvailablePlans = new List<Plan>();
 
-
             foreach (string element in desiredPlans)
             {
                 var plan = ApiClient.GetPlan(Convert.ToInt64(element));
@@ -54,17 +53,20 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             RegistrationVM step2RegistrationVM = new RegistrationVM();
             step2RegistrationVM.AvailableProducts = new List<PlanProduct>();
 
-
             //If selectedPlanId is 0, then its value is stored in the session. If it is not 0, its value is not yet stored so let's store it.
             if (registrationVM.SelectedPlanId != 0)
             {
                 Session[new RegistrationStronglyTypedSessionState().selectedPlanId] = registrationVM.SelectedPlanId;
-
             }
-          
+            
+
+            //using sessionState to do display the number of products
+     
+
+
+
             step2RegistrationVM.AvailableProducts = ApiClient.GetPlanProductsByPlanId(((long)Session[new RegistrationStronglyTypedSessionState().selectedPlanId]), new QueryOptions { }).Results;
           
-
             //the QuantityOfProducts instance will hold the number of each product the user chooses to obtain
           step2RegistrationVM.QuantityOfProducts = new Dictionary<string, decimal>();
       
@@ -72,6 +74,8 @@ namespace Fusebill.eCommerceWorkflow.Controllers
              {
                  step2RegistrationVM.QuantityOfProducts.Add(step2RegistrationVM.AvailableProducts[i].ProductName, step2RegistrationVM.AvailableProducts[i].Quantity);
              }
+
+            Session[new RegistrationStronglyTypedSessionState().planProductQuantities] = step2RegistrationVM.QuantityOfProducts;
 
             return View(step2RegistrationVM);
         }
@@ -131,7 +135,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
              step4RegistrationVM = registrationVM;
 
 
-            step4RegistrationVM.subscription = new Subscription();
+  /*          step4RegistrationVM.subscription = new Subscription();
              step4RegistrationVM.planOrderToCashCycle = new PlanOrderToCashCycle();
 
 
@@ -195,10 +199,11 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
           var pca = ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
          step4RegistrationVM.subscriptionTotalCost = pca.InvoicePreview.Total;
-
-          Session[new RegistrationStronglyTypedSessionState().customerInformation] = registrationVM.customerInformation;
+*/
+             Session[new RegistrationStronglyTypedSessionState().customerInformation] = registrationVM.customerInformation;
           Session[new RegistrationStronglyTypedSessionState().billingAddress] = step4RegistrationVM.billingAddress;
-            return View(step4RegistrationVM);
+         
+    return View(step4RegistrationVM);
         }
 
 

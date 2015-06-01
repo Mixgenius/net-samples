@@ -9,7 +9,6 @@
 
 <h1 style="margin-top: 200px; text-align:center">Step 1: Choose your plan</h1>
 
-<h3>Plans</h3>
 
 @foreach (var plan in Model.AvailablePlans)
 
@@ -18,10 +17,10 @@
     <form action="" method="post">
         <div class="plan_plan">
             <div class="plan_descriptionAndTitle">
-                <h2 class="plan_title">Title</h2> @plan.Name
-                <p class="plan_description">Description: Description</p> @plan.Description
+                <h2 class="plan_title">Name: @plan.Name</h2> 
+                <p class="plan_description">Description: @plan.Description/p> 
 
-                <p class="plan_longdescription">Long Description:  LongDescription</p> @plan.LongDescription
+                <p class="plan_longdescription">Long Description: @plan.LongDescription</p> 
             </div>
             <div class="plan_miscellaneous">
                 <ul>

@@ -1,0 +1,31 @@
+﻿
+.plan_plan {
+    margin: auto;
+}
+
+.plan_descriptionAndTitle {
+    background-color: lightgreen;
+    text-align: center;
+}
+
+.plan_title {
+    color: orange;
+    font-size: 35px;
+}
+
+.plan_description {
+    font-size: 20px;
+}
+
+.plan_longdescription {
+    font-size: 15px;
+}
+
+.plan_miscellaneous {
+    text-align:center;
+    background-color: lightcyan;
+}
+
+.plan_miscellaneous ul li {
+    list-style: none;
+}

@@ -4,3 +4,86 @@
 }
 
 <h2>Step5GetPayment</h2>
+<head>
+    <title>AJAX Transparent Redirect</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+            function AJAXTransparentRedirect(){
+                $('#response').html("<p>into function</p>");
+                var dataString =     'CustomerId='+ $('input#CustomerId').val() +
+                                    '&PublicApiKey=' + $('input#PublicApiKey').val() +
+                                    '&CardNumber='+$('input#CardNumber').val() +
+                                    '&FirstName='+$('input#FirstName').val() +
+                                    '&LastName='+$('input#LastName').val() +
+                                    '&ExpirationMonth='+$('input#ExpirationMonth').val() +
+                                    '&ExpirationYear='+$('input#ExpirationYear').val() +
+                                    '&Cvv='+$('input#Cvv').val();
+                $('#response').append("<br><p>Dat: "+$( "#allfields" ).serialize()+"</p>");
+                //Set up the request
+                var request = $.ajax({
+                    type: "POST",
+
+                    url: "https://payments.subscriptionplatform.com/api/payments/",
+                    data: $( "#allfields" ).serialize()
+                });
+
+                //Set up the callback functions
+                request.done(function(msg)
+                {
+                    $('#response').append("<br><p>success</p>");
+                });
+
+                request.fail(function(jqXHR)
+                {
+                    $('#response').append("<br><p>failure</p>");
+                });
+            }
+    </script>
+</head>
+<body>
+    <form id="allfields">
+        <fieldset>
+            <div>
+                <label for="CustomerId">Customer Id</label>
+                <input autofocus="autofocus" id="CustomerId" name="CustomerId" type="text" placeholder="Your customer id here" />
+            </div>
+
+            <div>
+                <label for="PublicApiKey">Public Api Key</label>
+                <input id="PublicApiKey" name="PublicApiKey" type="text" placeholder="Your key here" />
+            </div>
+
+            <div>
+                <label for="CardNumber">Card number</label>
+                <input id="CardNumber" name="CardNumber" type="text" placeholder="Your card number" />
+            </div>
+
+            <div>
+                <label for="FirstName">First name</label>
+                <input id="FirstName" name="FirstName" type="text" placeholder="First name" />
+            </div>
+
+            <div>
+                <label for="LastName">Last name</label>
+                <input id="LastName" name="LastName" type="text" value="Last Name" />
+            </div>
+
+            <div>
+                <label for="ExpirationMonth">Expiry month</label>
+                <input id="ExpirationMonth" name="ExpirationMonth" type="text" value="XX" />
+            </div>
+
+            <div>
+                <label for="ExpirationYear">Expiry year</label>
+                <input id="ExpirationYear" name="ExpirationYear" type="text" value="XX" />
+            </div>
+
+            <div>
+                <label for="Cvv">CVV</label>
+                <input id="Cvv" name="Cvv" type="text" value="XXX" />
+            </div>
+        </fieldset>
+    </form>
+    <input type="button" onclick="AJAXTransparentRedirect();" value="Submit Card">
+    <div id="response"></div>
+</body>

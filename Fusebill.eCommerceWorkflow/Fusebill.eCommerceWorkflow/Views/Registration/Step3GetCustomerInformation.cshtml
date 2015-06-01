@@ -4,28 +4,30 @@
     ViewBag.Title = "Step3GetCustomerInformation";
 }
 
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/knockout-2.2.0.js"></script>
 <h2>Step3GetCustomerInformation</h2>
 
 <form action="" method="post">
 
     <h1>Customer information</h1>
     @Html.Label("First Name:")
-      @Html.TextBoxFor(m => m.customerInformation.FirstName)
+    @Html.TextBoxFor(m => m.customerInformation.FirstName, new { @Value = Model.customerInformation.FirstName, @placeholder = "First name" }) 
    
     @Html.Label("Last Name:")
-    @Html.TextBoxFor(m => m.customerInformation.LastName)
+    @Html.TextBoxFor(m => m.customerInformation.LastName, new { @Value = Model.customerInformation.LastName, @placeholder = "Last name" }) 
 
     @Html.Label("Title:")
-    @Html.TextBoxFor(m => m.customerInformation.Title)
+    @Html.TextBoxFor(m => m.customerInformation.Title, new { @Value = Model.customerInformation.Title, @placeholder = "Title (eg, Mrs.)" }) 
 
     @Html.Label("Email Address:")
-    @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail)
+    @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail, new { @Value = Model.customerInformation.PrimaryEmail, @placeholder = "example@email.com" }) 
 
     @Html.Label("Phone:")
-    @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone)
+    @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone, new { @Value = Model.customerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX" }) 
 
     @Html.Label("Company Name:")
-    @Html.TextBoxFor(m => m.customerInformation.CompanyName)
+    @Html.TextBoxFor(m => m.customerInformation.CompanyName, new { @Value = Model.customerInformation.CompanyName, @placeholder = "Company Name" }) 
 
     <h1>Billing information</h1>
 
@@ -48,13 +50,44 @@
 
 
     @Html.Label("Country:")
-    DROPDOWN
+    @Html.DropDownListFor(m => m.billingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
+
+
 
     @Html.Label("State:")
-DROPDOWN
+   <select id="state" ></select>
+
+  <p id="testPara">sdofijsdo</p>
+    <p id="wer">sdf</p>
+
+
 
     <input type="submit" value="Back" name="action:Step2GetPlanProducts" />
 
           <input type="submit" value="To Subscription" name="action:Step4GetInvoice" />
 
       </form>
+
+<script>
+    $(document).ready(function () {
+        $("#state").prop("disabled", true);
+        $(".country").change(            
+        function () {
+            alert("Hold");
+            $("#state").prop("disabled", false);
+
+            for (var i= 0; i < @Model.listOfCountriesCountry[2].States.Count; i++)
+            {
+                $("#state").append($('<option>', {
+                    value: ' ',
+                    text: 'Some Textsd'
+            
+                }));
+            }
+            $('#testPara').css('background-color', 'blue');
+            $('#wer').css('color', 'blue');
+
+        });
+
+    });
+</script>

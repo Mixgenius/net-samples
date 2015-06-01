@@ -4,19 +4,18 @@
 @{
     ViewBag.Title = "Step2GetPlanProducts";
 }
-
 <h2>Step2GetPlanProducts</h2>
 
 <form action="" method="post">
-   @*Commented out to test
-       @for (int i = 0; i < Model.AvailableProducts.Count; i ++)
+  
+    @foreach (var product in Model.AvailableProducts)
      {
-         <h1>@Model.AvailableProducts[i].ProductName</h1>
-     <h1>@Model.AvailableProducts[i].ProductDescription</h1>
-    @Html.TextBoxFor(m => m.QuantityOfProducts[Model.AvailableProducts[i].ProductName] ,new {@placeholder = @Model.AvailableProducts[i].Quantity} )
+         <h1>@product.ProductName</h1>
+     <h1>@product.ProductDescription</h1>
+           
+    @Html.TextBoxFor(m => m.QuantityOfProducts[product.ProductName], new {@Value = product.Quantity})
      <h1>WHAT's THE PRICE?</h1>
-
-*@
+       }
 
     <input id="Button1" type="button" value="Back" onclick="@("window.location.href='" + @Url.Action("Index", "Registration") + "'");" />
 

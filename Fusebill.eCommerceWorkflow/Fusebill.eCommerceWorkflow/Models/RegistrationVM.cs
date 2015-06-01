@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Fusebill.eCommerceWorkflow.Models
 {
@@ -12,7 +13,7 @@ namespace Fusebill.eCommerceWorkflow.Models
         public List<Plan> AvailablePlans { get; set; }
         
         //the ID of the plan that the user clicks on
-        public long SelectedPlanID { get; set; }
+        public long SelectedPlanId { get; set; }
 
         //A list of the available products in each plan, used in Step2
         public List<PlanProduct> AvailableProducts { get; set; }
@@ -26,12 +27,20 @@ namespace Fusebill.eCommerceWorkflow.Models
         //The Address objects contains properties pertaining to the billing address, such as City and PostalZip 
         public Address billingAddress { get; set; }
 
+        public List<SelectListItem> listOfCountriesSLI {get;set;}
+
+        public List<Country> listOfCountriesCountry { get; set; }
+
         //This has the planFrequencyID?
         public PlanOrderToCashCycle planOrderToCashCycle { get; set; }
 
         //The Subscription objects contains information needed for the customer to create a subscription
         public Subscription subscription { get; set; }
 
+        //total cost of subscription
         public decimal subscriptionTotalCost { get; set; }
+
+        //contains strongly typed keys for the session states
+        public RegistrationStronglyTypedSessionState registrationStronglyTypedSessionState { get; set; }
     }
 }

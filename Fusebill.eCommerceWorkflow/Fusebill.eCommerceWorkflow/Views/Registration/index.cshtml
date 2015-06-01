@@ -11,18 +11,17 @@
 
 <h3>Plans</h3>
 
-@*@foreach (var plan in Model.AvailablePlans)
-*@
-@for (int i = 0; i < 3; i++)
+@foreach (var plan in Model.AvailablePlans)
+
 {
 
     <form action="" method="post">
         <div class="plan_plan">
             <div class="plan_descriptionAndTitle">
-                <h2 class="plan_title">Title</h2> @*@plan.Name*@
-                <p class="plan_description">Description: Description</p> @*@plan.Description*@
+                <h2 class="plan_title">Title</h2> @plan.Name
+                <p class="plan_description">Description: Description</p> @plan.Description
 
-                <p class="plan_longdescription">Long Description:  LongDescription</p> @*@plan.LongDescription*@
+                <p class="plan_longdescription">Long Description:  LongDescription</p> @plan.LongDescription
             </div>
             <div class="plan_miscellaneous">
                 <ul>
@@ -35,7 +34,7 @@
             </div>
         </div>
 
-        @Html.TextBoxFor(m => m.SelectedPlanID, new { @Value = "123" })
+        @Html.TextBoxFor(m => m.SelectedPlanId, new { @Value = plan.Id })
 
         <input type="submit" value="Buy" name="action:Step2GetPlanProducts" />
         <br /> <br />

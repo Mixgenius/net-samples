@@ -31,7 +31,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             var desiredPlanIds = ConfigurationManager.AppSettings["DesiredPlanIds"];
 
-           
+         
             //string array, each element is the ID of a desired plan
             var desiredPlans = desiredPlanIds.Split(',');
 
@@ -42,6 +42,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 var plan = ApiClient.GetPlan(Convert.ToInt64(element));
                 step1RegistrationVM.AvailablePlans.Add(plan);
             }
+          
             return View(step1RegistrationVM);
         }
 
@@ -50,6 +51,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         [MultipleButton(Name = "action", Argument = "Step2GetPlanProducts")]
         public ActionResult Step2GetPlanProducts(RegistrationVM registrationVM)
         {
+         
             RegistrationVM step2RegistrationVM = new RegistrationVM();
             step2RegistrationVM.AvailableProducts = new List<PlanProduct>();
 
@@ -77,14 +79,19 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             Session[new RegistrationStronglyTypedSessionState().planProductQuantities] = step2RegistrationVM.QuantityOfProducts;
 
-            return View(step2RegistrationVM);
+           
+         
+            return View(step2RegistrationVM );
         }
 
         [HttpPost]
-        [MultipleButton(Name = "action", Argument = "Step3GetCustomerInformation")]
+       [MultipleButton(Name = "action", Argument = "Step3GetCustomerInformation")]
         public ActionResult Step3GetCustomerInformation(RegistrationVM registrationVM)    
         {
             RegistrationVM step3RegistrationVM = new RegistrationVM();
+
+           
+          
            //initiaize customerInformation to use it later
             step3RegistrationVM.customerInformation = new Customer();
 
@@ -117,8 +124,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                     Value = step3RegistrationVM.listOfCountriesCountry[i].Id.ToString(),                   
                 });
             }
-
-            
 
             return View(step3RegistrationVM);
         }
@@ -210,8 +215,8 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
 
 
-         [HttpPost]
-         [MultipleButton(Name = "action", Argument = "Step5GetPayment")]
+         [HttpGet]
+        // [MultipleButton(Name = "action", Argument = "Step5GetPayment")]
         public ActionResult Step5GetPayment ()
          {
              RegistrationVM step5RegistrationVM = new RegistrationVM();

@@ -1,9 +1,20 @@
 ﻿
+
+
+/*==============Index=============*/
+
 .plan_plan {
-    margin: auto;
+    margin-top: 10px;
+    background-color: orange;
+    margin-left: 100px; 
+    margin-right: 100px;
 }
 
 .plan_descriptionAndTitle {
+    margin-top: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 50px;
     background-color: lightgreen;
     text-align: center;
 }
@@ -22,10 +33,115 @@
 }
 
 .plan_miscellaneous {
+    margin-top: 50px;
+    margin-left:50px;
+    margin-right:50px;
+    margin-bottom: 20px;
     text-align:center;
     background-color: lightcyan;
 }
 
 .plan_miscellaneous ul li {
     list-style: none;
+    font-size: 20px;
 }
+
+/*===========Step2GetPlanProducts===========*/
+.products_table {
+  width: 70%;
+  margin-left:15%;
+  margin-right: 15%;
+  border: 1px solid black;
+  
+}
+
+.products_tableHead {
+    background-color: orange;
+}
+
+.products_tableHead tr td {
+    text-align:center;
+    padding-top:20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    font-size: 20px;
+    font-weight:700;
+    color:darkslategrey;
+}
+
+.products_table tbody tr td
+{
+   padding-top:10px;
+   padding-bottom:10px;
+   text-align:center;
+   border-bottom: 1px solid lightgrey;
+   
+}
+
+.products_table .productsFirstColumn {
+   width: 10%
+
+}
+
+.products_table .productsSecondColumn {
+   width:20%;
+
+}
+
+.products_table .productsThirdColumn {
+  width: 50%;
+}
+.products_table .productsFourthColumn {
+    width:20%;
+}
+
+.products_table input {
+    width:80%;
+    margin-left: 20px;
+}
+
+/*=============CUSTOMER INFORMATION=============*/
+
+.customerTable {
+    margin-left: 10%;
+    margin-right: 10%
+}
+
+.customerBetweenColumnSpace {
+    width: 10%;
+}
+
+.customerCustomerInfo {
+    margin-top: 20px;
+    margin-left:20px;
+    width: 100%;
+    border: 1px solid lightgrey;
+    padding-left: 20px;
+    vertical-align:top;
+}
+
+.customerBillingInfo {
+     margin-top: 20px;
+    margin-left:20px;
+       width: 100%;
+       vertical-align:top;
+      padding-left: 20px;
+      border: 1px solid lightgrey;
+
+}
+
+/*================Step5GetPayment=================*/
+
+
+.paymentTable {
+  width:70%;
+  margin-left: 15%;
+  margin-right: 15%;
+ 
+}
+
+.paymentTable tr td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+

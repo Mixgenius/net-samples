@@ -4,20 +4,46 @@
 @{
     ViewBag.Title = "Step2GetPlanProducts";
 }
-<h2>Step2GetPlanProducts</h2>
 
+<link href="~/Content/Plan.css" rel="stylesheet" />
+
+<h1 style="margin-top: 200px; text-align:center">Step 2: Choose your plan products</h1>
+
+<br /> 
 <form action="" method="post">
-  
-    @foreach (var product in Model.AvailableProducts)
-     {
-         <h1>@product.ProductName</h1>
-     <h1>@product.ProductDescription</h1>
-           
-    @Html.TextBoxFor(m => m.QuantityOfProducts[product.ProductName], new {@Value = product.Quantity})
-     <h1>WHAT's THE PRICE?</h1>
-       }
+    <div style="align-content:center; text-align:center">
+        <table class="products_table">
+            <thead class="products_tableHead">
+                <tr>
+                    <td class="productsFirstColumn">Include</td>
+                    <td class="productsSecondColumn">Quantity</td>
+                    <td class="productsThirdColumn">Product</td>
+                    <td class="productsFourthColumn">Price</td>
+                </tr>
+            </thead>
+            <tbody>
+                @*   @foreach (var product in Model.AvailableProducts)*@
+                @for (int i = 0; i < 5; i++)
+                {
+                    <tr>
+                        <td  class="productsFirstColumn">@Html.CheckBox("hi") @*@product.ProductName*@</td>
+                        <td class="productsSecondColumn">@Html.TextBoxFor(m => m.SelectedPlanId)</td>
+                        <td  class="productsThirdColumn">Description @*@product.ProductDescription*@</td>
+                        @*     @Html.TextBoxFor(m => m.QuantityOfProducts[product.ProductName], new { @Value = product.Quantity}) *@
+                        <td  class="productsFourthColumn">WHAT's THE PRICE?</td>
+                       
+                    </tr>
+    
+                }
+            </tbody>
+        </table>
+        <input id="Button1" type="button" value="Back" onclick="@("window.location.href='" + @Url.Action("Index", "Registration") + "'");" />
 
-    <input id="Button1" type="button" value="Back" onclick="@("window.location.href='" + @Url.Action("Index", "Registration") + "'");" />
+        <input type="submit" value="Buy" name="action:Step3GetCustomerInformation" />
 
-    <input type="submit" value="Buy" name="action:Step3GetCustomerInformation" />
+    </div>
+
+
+
 </form>
+

@@ -3,7 +3,10 @@
     ViewBag.Title = "Step5GetPayment";
 }
 
-<h2>Step5GetPayment</h2>
+<link href="~/Content/Plan.css" rel="stylesheet" />
+<h1 style="margin-top: 200px; text-align:center">Step 5: Enter payment information</h1>
+
+
 <head>
     <title>AJAX Transparent Redirect</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -41,49 +44,64 @@
     </script>
 </head>
 <body>
-    <form id="allfields">
-        <fieldset>
-            <div>
-                <label for="CustomerId">Customer Id</label>
-                <input autofocus="autofocus" id="CustomerId" name="CustomerId" type="text" placeholder="Your customer id here" />
-            </div>
+  
+        <table class="paymentTable">
 
-            <div>
-                <label for="PublicApiKey">Public Api Key</label>
-                <input id="PublicApiKey" name="PublicApiKey" type="text" placeholder="Your key here" />
-            </div>
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="CustomerId">Customer Id</label>
+                        <input autofocus="autofocus" id="CustomerId" name="CustomerId" type="text" placeholder="Your customer id here" />
+                    </td>
+                    <td class="paymentBetweenColumnSpace"></td>
+                    <td>
+                        <label for="PublicApiKey">Public Api Key</label>
+                        <input id="PublicApiKey" name="PublicApiKey" type="text" placeholder="Your key here" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="CardNumber">Card number</label>
+                        <input id="CardNumber" name="CardNumber" type="text" placeholder="Your card number" />
+                    </td>
+                    <td class="paymentBetweenColumnSpace"></td>
 
-            <div>
-                <label for="CardNumber">Card number</label>
-                <input id="CardNumber" name="CardNumber" type="text" placeholder="Your card number" />
-            </div>
+                    <td>
+                        <label for="FirstName">First name</label>
+                        <input id="FirstName" name="FirstName" type="text" placeholder="First name" />
+                    </td>
+                </tr>
 
-            <div>
-                <label for="FirstName">First name</label>
-                <input id="FirstName" name="FirstName" type="text" placeholder="First name" />
-            </div>
+                <tr>
+                    <td>
+                        <label for="LastName">Last name</label>
+                        <input id="LastName" name="LastName" type="text" placeholder="Last Name" />
+                    </td>
+                </tr>
 
-            <div>
-                <label for="LastName">Last name</label>
-                <input id="LastName" name="LastName" type="text" value="Last Name" />
-            </div>
+                <tr>
+                    <td>
+                        <label for="ExpirationMonth">Expiry month</label>
+                        <input id="ExpirationMonth" name="ExpirationMonth" type="text" placeholder="XX" />
+                    </td>
+                </tr>
 
-            <div>
-                <label for="ExpirationMonth">Expiry month</label>
-                <input id="ExpirationMonth" name="ExpirationMonth" type="text" value="XX" />
-            </div>
+                <tr>
+                    <td>
+                        <label for="ExpirationYear">Expiry year</label>
+                        <input id="ExpirationYear" name="ExpirationYear" type="text" placeholder="XX" />
+                    </td>
+                </tr>
 
-            <div>
-                <label for="ExpirationYear">Expiry year</label>
-                <input id="ExpirationYear" name="ExpirationYear" type="text" value="XX" />
-            </div>
-
-            <div>
-                <label for="Cvv">CVV</label>
-                <input id="Cvv" name="Cvv" type="text" value="XXX" />
-            </div>
-        </fieldset>
-    </form>
+                <tr>
+                    <td>
+                        <label for="Cvv">CVV</label>
+                        <input id="Cvv" name="Cvv" type="text" placeholder="XXX" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+  
     <input type="button" onclick="AJAXTransparentRedirect();" value="Submit Card">
     <div id="response"></div>
 </body>

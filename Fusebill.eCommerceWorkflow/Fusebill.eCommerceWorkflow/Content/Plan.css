@@ -103,8 +103,9 @@
 /*=============CUSTOMER INFORMATION=============*/
 
 .customerTable {
-    margin-left: 10%;
-    margin-right: 10%
+   width: 70%;
+   
+   
 }
 
 .customerBetweenColumnSpace {

@@ -115,6 +115,15 @@
     <Compile Include="Dto\Post\SubscriptionOverride.cs" />
     <Compile Include="Dto\Post\SubscriptionProductDiscount.cs" />
     <Compile Include="Dto\Post\SubscriptionProductOverride.cs" />
+    <Compile Include="Dto\Put\BaseDto.cs" />
+    <Compile Include="Dto\Put\IBaseDto.cs" />
+    <Compile Include="Dto\Put\Subscription.cs" />
+    <Compile Include="Dto\Put\SubscriptionOverride.cs" />
+    <Compile Include="Dto\Put\SubscriptionProduct.cs" />
+    <Compile Include="Dto\Put\SubscriptionProductDiscount.cs" />
+    <Compile Include="Dto\Put\SubscriptionProductEarningTiming.cs" />
+    <Compile Include="Dto\Put\SubscriptionProductOverride.cs" />
+    <Compile Include="Dto\Put\SubscriptionProductPriceOverride.cs" />
     <Compile Include="ExecuteHttpRequest.cs" />
     <Compile Include="ExtractDataFromHeader.cs" />
     <Compile Include="HtmlExtensions.cs" />
@@ -128,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dto\Patch\" />
-    <Folder Include="Dto\Put\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

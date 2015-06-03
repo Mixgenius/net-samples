@@ -3,24 +3,33 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-// using Common.Dto.Interfaces;
 using Fusebill.ApiWrapper.Dto.Interfaces;
+//using Fusebill.ApiWrapper.ValidationAttributes;
 using Newtonsoft.Json;
 
-namespace Fusebill.ApiWrapper.Dto.Post
+namespace Fusebill.ApiWrapper.Dto.Put
 {
     public class Subscription : BaseDto, ISubscriptionBillingPeriodDefinition, IValidatableObject
     {
-        [JsonProperty(PropertyName = "customerId")]
-        [Range(1, long.MaxValue, ErrorMessage="Please specify a value for customerId")]
-        public long CustomerId { get; set; }
-
-        [JsonProperty(PropertyName = "planFrequencyId")]
-        [Range(1, long.MaxValue, ErrorMessage = "Please specify a value for planFrequencyId")]
-        public long PlanFrequencyId { get; set; }
+        public Subscription()
+        {
+            ChargeDiscounts = new List<SubscriptionProductDiscount>();
+            SetupFeeDiscounts = new List<SubscriptionProductDiscount>();
+        }
 
         [JsonProperty(PropertyName = "subscriptionOverride")]
         public SubscriptionOverride SubscriptionOverride { get; set; }
+
+     //   [SubscriptionStatusValidation]
+        [JsonProperty(PropertyName = "status")]
+        public string Status { get; set; }
+
+        [JsonProperty(PropertyName = "reference")]
+        [StringLength(255, ErrorMessage = "Reference must be less than 255 characters")]
+        public string Reference { get; set; }
+
+        [JsonProperty(PropertyName = "subscriptionProducts")]
+        public List<SubscriptionProduct> SubscriptionProducts { get; set; }
 
         [JsonProperty(PropertyName = "scheduledActivationTimestamp")]
         [DisplayName("Scheduled")]
@@ -30,10 +39,8 @@ namespace Fusebill.ApiWrapper.Dto.Post
         [DisplayName("Remaining intervals")]
         public int? RemainingInterval { get; set; }
 
-        [JsonProperty(PropertyName = "reference")]
-        [StringLength(255, ErrorMessage = "Reference must be less than 255 characters")]
-        public string Reference { get; set; }
-
+        [JsonProperty(PropertyName = "openSubscriptionPeriodEndDate")]
+        public DateTime? OpenSubscriptionPeriodEndDate { get; set; }
 
         [JsonProperty(PropertyName = "chargeDiscount")]
         public SubscriptionProductDiscount ChargeDiscount { get; set; }
@@ -50,14 +57,6 @@ namespace Fusebill.ApiWrapper.Dto.Post
         [JsonProperty(PropertyName = "autoApplyCatalogChanges")]
         public bool? AutoApplyCatalogChanges { get; set; }
 
-        [JsonProperty(PropertyName = "contractStartTimestamp")]
-        [DisplayName("Contract Start Date")]
-        public DateTime? ContractStartTimestamp { get; set; }
-
-        [JsonProperty(PropertyName = "contractEndTimestamp")]
-        [DisplayName("Contract End Date")]
-        public DateTime? ContractEndTimestamp { get; set; }
-
         [JsonProperty(PropertyName = "billingPeriodId")]
         public long? BillingPeriodId { get; set; }
 
@@ -66,6 +65,14 @@ namespace Fusebill.ApiWrapper.Dto.Post
 
         [JsonProperty(PropertyName = "invoiceMonth")]
         public int? InvoiceMonth { get; set; }
+
+        [JsonProperty(PropertyName = "contractStartTimestamp")]
+        [DisplayName("Contract Start Date")]
+        public DateTime? ContractStartTimestamp { get; set; }
+
+        [JsonProperty(PropertyName = "contractEndTimestamp")]
+        [DisplayName("Contract End Date")]
+        public DateTime? ContractEndTimestamp { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

@@ -7,35 +7,39 @@
 
 <link rel="stylesheet" href="~/Content/Plan.css" />
 
-<h1 style="margin-top: 200px; text-align:center">Step 1: Choose your plan</h1>
+<h1 style="margin-top: 200px; text-align:center">Step 1/5: Choose your plan</h1>
 
 
-@foreach (var plan in Model.AvailablePlans)
+   @foreach (var plan in Model.AvailablePlans)
 
 {
-    <form action="" method="post">
-        <div class="plan_plan">
-            <div class="plan_descriptionAndTitle">
-                <h2 class="plan_title">Name: @plan.Name</h2>
-                <p class="plan_description">Description: @plan.Description/p>
+        <form action="" method="post">
 
-                <p class="plan_longdescription">Long Description: @plan.LongDescription</p>
+            <div class="plan_plan">
+                <div class="plan_descriptionAndTitle">
+                    <h2 class="plan_title">Name: @plan.Name</h2>
+                    <p class="plan_description">Description: @plan.Description/p>
+
+                    <p class="plan_longdescription">Long Description: @plan.LongDescription</p>
+                </div>
+                <div class="plan_miscellaneous">
+                    <ul>
+                        <li>PRICE, WE SHALL FIND OUT LATERRRRZ</li>
+                        <li>1 user</li>
+                        <li>Limited Access</li>
+                        <li>5MB of space</li>
+                        <li>No support</li>
+                    </ul>
+                </div>
+
+
+                @Html.TextBoxFor(m => m.SelectedPlanId, new { @Value = plan.Id })
+                @Html.TextBoxFor(m => m.SelectedPlanFrequencyID, new { @Value = plan.PlanFrequencies[0].Id })
+
+
+                <input type="submit" value="Buy" name="action:Step2GetPlanProducts" />
+                <br /> <br />
             </div>
-            <div class="plan_miscellaneous">
-                <ul>
-                    <li>PRICE, WE SHALL FIND OUT LATERRRRZ</li>
-                    <li>1 user</li>
-                    <li>Limited Access</li>
-                    <li>5MB of space</li>
-                    <li>No support</li>
-                </ul>
-            </div>
-
-
-            @Html.TextBoxFor(m => m.SelectedPlanId, new { @Value = plan.Id })
-
-            <input type="submit" value="Buy" name="action:Step2GetPlanProducts" />
-            <br /> <br />
-        </div>
     </form>
+      
 }

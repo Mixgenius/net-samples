@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+//using Common.ValidationAttributes;
 namespace Fusebill.ApiWrapper.Dto.Get
 {
     public class PlanFrequency : BaseDto
@@ -30,7 +30,7 @@ namespace Fusebill.ApiWrapper.Dto.Get
         public bool IsProrated { get; set; }
 
         [JsonProperty(PropertyName = "prorationGranularity")]
-
+       // [ProrateGranularityValidation]
         public string ProrationGranularity { get; set; }
 
         [JsonProperty(PropertyName = "planFrequencyUniqueId")]

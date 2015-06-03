@@ -3,6 +3,7 @@
     ViewBag.Title = "Step5GetPayment";
 }
 
+<h2>Step 5/5: Enter payment information</h2>
 <link href="~/Content/Plan.css" rel="stylesheet" />
 <h1 style="margin-top: 200px; text-align:center">Step 5: Enter payment information</h1>
 
@@ -34,6 +35,7 @@
                 request.done(function(msg)
                 {
                     $('#response').append("<br><p>success</p>");
+
                 });
 
                 request.fail(function(jqXHR)

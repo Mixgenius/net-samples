@@ -106,6 +106,19 @@ namespace Fusebill.ApiWrapper
         }
 
 
+        public Subscription PutSubscription(Fusebill.ApiWrapper.Dto.Put.Subscription subscription)
+        {
+            var url = RestUriBuilder.BuildUri("subscriptions");
+            return PutEntity<Fusebill.ApiWrapper.Dto.Put.Subscription, Subscription>(url, subscription);
+        }
+
+        protected TU PutEntity<T, TU>(string url, T entity)
+        {
+            var response = ExecuteHttpRequest.ExecuteHttpPut(url, entity);
+            return ParseHttpResponse.GetEntity<TU>(response.Content.ReadAsStringAsync().Result);
+        }
+
+
         public Customer PostCustomer(Fusebill.ApiWrapper.Dto.Post.Customer customer)
         {
             var url = RestUriBuilder.BuildUri("customers");

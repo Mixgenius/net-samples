@@ -8,40 +8,41 @@
 
 <script src="~/Scripts/jquery-1.8.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
 <link href="~/Content/Plan.css" rel="stylesheet" />
 
-<h1 style="margin-top: 200px; text-align:center">Step 3: Enter customer information</h1>
+<h1 style="margin-top: 200px; text-align:center">Step 3/5: Enter customer information</h1>
 
-<form action="" method="post">
+<form action="" method="post" id="customerForm">
     <table class="customerTable">
         <tr>
             <td>
                 <h1>Customer information</h1>
                 <div class="customerCustomerInfo">
                     @Html.Label("First Name:")
-                    @Html.TextBox("hi")
-                    @*    @Html.TextBoxFor(m => m.customerInformation.FirstName, new { @Value = Model.customerInformation.FirstName, @placeholder = "First name" }) *@
-                    @Html.Label("Last Name:")
-                    @Html.TextBox("hi")
-                    @Html.Label("Filler Name:")
-                    @Html.TextBox("hi")
-                    @*   @Html.TextBoxFor(m => m.customerInformation.LastName, new { @Value = Model.customerInformation.LastName, @placeholder = "Last name" }) *@
-                    @*
-            @Html.Label("Title:")
-            @Html.TextBoxFor(m => m.customerInformation.Title, new { @Value = Model.customerInformation.Title, @placeholder = "Title (eg, Mrs.)" })
+                    @Html.TextBoxFor(m => m.customerInformation.FirstName,  new {@Value = Model.customerInformation.FirstName, @placeholder = "First name"})
+                    @Html.ValidationMessageFor(m => m.customerInformation.FirstName)
+                      
+                     @Html.Label("Last Name:")
+                   @Html.TextBoxFor(m => m.customerInformation.LastName,  new { @Value = Model.customerInformation.LastName, @placeholder = "Last name" }) 
+       @Html.ValidationMessageFor( m => m.customerInformation.LastName)
+          
+                      @Html.Label("Email Address:")
+            @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail,  new { @Value = Model.customerInformation.PrimaryEmail, @placeholder = "example@email.com"  })
+                    @Html.ValidationMessageFor(m => m.customerInformation.PrimaryEmail)
 
-            @Html.Label("Email Address:")
-            @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail, new { @Value = Model.customerInformation.PrimaryEmail, @placeholder = "example@email.com" })
 
             @Html.Label("Phone:")
-            @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone, new { @Value = Model.customerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX" })
+            @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone,  new { @Value = Model.customerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX"  })
+                    @Html.ValidationMessageFor(m => m.customerInformation.PrimaryPhone)
 
-            @Html.Label("Company Name:")
-            @Html.TextBoxFor(m => m.customerInformation.CompanyName, new { @Value = Model.customerInformation.CompanyName, @placeholder = "Company Name" })
-                    *@
+
+
+                              
                 </div>
             </td>
             <td class="customerBetweenColumnSpace"></td>
@@ -49,47 +50,67 @@
                     <h1>Billing information</h1>
                 <div class="customerBillingInfo">
                     @Html.Label("Company Name:")
-                    @Html.TextBox("hi")
-                    @*   @Html.TextBoxFor(m => m.billingAddress.CompanyName)  *@
+                    @Html.TextBoxFor(m => m.billingAddress.CompanyName, null, new { @placeholder = "Company name"  })  
+                   
                     @Html.Label("Primary Address:")
-                    @Html.TextBox("hi")
-                    @*    @Html.TextBoxFor(m => m.billingAddress.Line1)*@
-                    @Html.DropDownList("hi", Enumerable.Empty<SelectListItem>())
-                    @*
-            @Html.Label("Secondary Address:")
-            @Html.TextBoxFor(m => m.billingAddress.Line2)
+                    @Html.TextBoxFor(m => m.billingAddress.Line1, null, new { @placeholder = "Primary address"  })
 
-            @Html.Label("City:")
-            @Html.TextBoxFor(m => m.billingAddress.City)
+                    @Html.Label("Secondary Address:")
+                    @Html.TextBoxFor(m => m.billingAddress.Line2, null, new { @placeholder = "Secondary address"  })
 
-            @Html.Label("Postal Code:")
-            @Html.TextBoxFor(m => m.billingAddress.PostalZip)
+                    @Html.Label("City:")
+                   @Html.TextBoxFor(m => m.billingAddress.City, null, new { @placeholder = "City"  })  
 
+                    @Html.Label("Postal Code:")
+                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new { @placeholder = "Postal zip"  })
 
-            @Html.Label("Country:")
-            @Html.DropDownListFor(m => m.billingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
+                    @Html.Label("Same as billing: ")
+                    @Html.CheckBoxFor(m => m.sameAsBilling)
 
+                    @Html.Label("Country:")
+                    @Html.DropDownListFor(m => m.billingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
 
-
-            @Html.Label("State:")
-            @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
-
-
-                    *@
+                    @Html.Label("State:")
+                    @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
                 </div>
             </td>
         </tr>
     </table>
-   
-     
-    <input type="submit" value="Back" name="action:Step2GetPlanProducts" />
 
+          <input type="submit" value="Back" name="action:Step2GetPlanProducts" />
           <input type="submit" value="To Subscription" name="action:Step4GetInvoice" />
-
       </form>
 
-<script>
+
+    <script>
     $(document).ready(function () {
+        @*
+            $("#customerForm").validate({
+                rules: {
+                    firstName : "required",
+                    lastName: "required",
+                    primaryEmail: "required",
+                    primaryPhone: "required",
+                    billingCompanyName: "required",
+                    billingPrimaryAddress: "required",
+                    billingSecondaryAddress: "required",
+                    billingCity: "required",
+                    billingPostalZip: "required"
+                },
+                messages: {
+                    firstName : "What's your first name?",
+                    lastName: "Tell us your last name!",
+                    primaryEmail: "Please enter your email",
+                    primaryPhone: "Please enter your phone number",
+                    billingCompanyName: "Please enter company name",
+                    billingPrimaryAddress: "Please enter primary address",
+                    billingSecondaryAddress: "Please enter secondary address",
+                    billingCity: "Please enter city",
+                    billingPostalZip: "Please enter postal zip"
+                }
+            });
+            *@
+
 
         var model = @Html.HtmlConvertToJson(Model);
 
@@ -105,27 +126,22 @@
             //we find the selected country's position in the countries list in order to access its states
             for (var i = 0; i < model.listOfCountriesCountry.length; i++)
             {
-                $('#testPara').css('background-color', 'blue');
-
                 if (selectedCountryValue == model.listOfCountriesCountry[i].id)
                 {
                     var selectedCountryCountry= model.listOfCountriesCountry[i];
                 }
             }
-             
+
             $(".state").empty();
 
             for (var i = 0; i < selectedCountryCountry.states.length; i++) {
                 $(".state").append($('<option>', {
                     value: selectedCountryCountry.states[i].id,
-                  text: selectedCountryCountry.states[i].name
+                    text: selectedCountryCountry.states[i].name
 
                 }));
             };
-
-
-
         });
 
     });
-</script>
+    </script>

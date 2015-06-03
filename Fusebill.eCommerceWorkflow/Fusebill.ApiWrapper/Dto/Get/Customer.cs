@@ -1,19 +1,27 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Fusebill.ApiWrapper.Dto.Get
 {
     public class Customer : BaseDto
     {
+
+
+        [Required(ErrorMessage="Please enter your first name")]
+        [StringLength(50)]
         [JsonProperty(PropertyName = "firstName")]
         [DisplayName("First name")]
+        
         public string FirstName { get; set; }
 
         [JsonProperty(PropertyName = "middleName")]
         [DisplayName("Middle name")]
         public string MiddleName { get; set; }
 
+        [Required(ErrorMessage="Tell us your last name!")]
+        [StringLength(50)]
         [JsonProperty(PropertyName = "lastName")]
         [DisplayName("Last name")]
         public string LastName { get; set; }
@@ -26,10 +34,16 @@ namespace Fusebill.ApiWrapper.Dto.Get
         [DisplayName("Suffix")]
         public string Suffix { get; set; }
 
-        [JsonProperty(PropertyName = "primaryEmail")]
-        [DisplayName("Primary email address")]
+
+        
+        [Required(ErrorMessage="What's your email address?")]
+        [StringLength(255)]
+     //   [JsonProperty(PropertyName = "primaryEmail")]
+      //  [DisplayName("Primary email address")]
         public string PrimaryEmail { get; set; }
 
+        [Required(ErrorMessage="Let us know your phone number")]
+         [StringLength(50)]
         [JsonProperty(PropertyName = "primaryPhone")]
         [DisplayName("Primary phone number")]
         public string PrimaryPhone { get; set; }

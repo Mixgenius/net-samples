@@ -17,6 +17,7 @@ namespace Fusebill.ApiWrapper
         ResultList<Plan> GetPlans(QueryOptions queryOptions);
         ResultList<Plan> GetActivePlans(QueryOptions queryOptions);
 
+        Subscription PutSubscription(Fusebill.ApiWrapper.Dto.Put.Subscription model);
 
         Customer PostCustomer(Fusebill.ApiWrapper.Dto.Post.Customer customer);
         Address PostAddress(Fusebill.ApiWrapper.Dto.Post.Address model);

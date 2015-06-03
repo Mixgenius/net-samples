@@ -7,11 +7,36 @@
 
 
 
-<h2>Step4GetSubscription</h2>
+<h2>Step 4/5 Invoice Preview</h2>
 
-Somehow get subscription? Where do we get normal products for subscription? 
+
+INVOICE PREVIEW 
 
 <form action="" method="post">
+ 
+    @Html.Label("First Name")
+    @Html.Label(Model.postedCustomer.FirstName)
+
+    @Html.Label("Last Name")
+    @Html.Label(Model.postedCustomer.LastName)
+
+    @Html.Label("Primary Email")
+    @Html.Label(Model.postedCustomer.PrimaryEmail)
+
+    @Html.Label("Primary Phone")
+    @Html.Label(Model.postedCustomer.PrimaryPhone)
+
+
+      @Html.Label("Subtotal")
+      @Html.Label(Model.postedCustomer.InvoicePreview.Subtotal.ToString())
+
+      @Html.Label("Total taxes")
+      @Html.Label(Model.postedCustomer.InvoicePreview.TotalTaxes.ToString())
+
+      @Html.Label("Total")
+    @Html.Label(Model.postedCustomer.InvoicePreview.Total.ToString())
+  
+
     <input  type="submit" value="Back" name="action:Step3GetCustomerInformation" />
 
 <input type="submit" value="Buy" name="action:Step5GetPayment" />

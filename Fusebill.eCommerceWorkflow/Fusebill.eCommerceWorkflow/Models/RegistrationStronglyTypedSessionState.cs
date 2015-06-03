@@ -13,9 +13,15 @@ namespace Fusebill.eCommerceWorkflow.Models
 
         //keeps track of the plan ID to access the plan products page
         public string selectedPlanId;
+        public string selectedPlanFrequencyID;
         ///keeps track of the number of each plan product, key value can be string as well
         public string planProductQuantities;
-        public string planProductIncludes;      
+        public string planProductIncludes;
+        public string sameAsBilling;
+
+        //keeps track of the postCustomer object because we're using it twice
+        public string postCustomerActivation;
+
 
 
         public RegistrationStronglyTypedSessionState()
@@ -25,7 +31,9 @@ namespace Fusebill.eCommerceWorkflow.Models
             planProductQuantities = "planProductQuantities";
             planProductIncludes = "planProductIncludes";
             selectedPlanId = "selectedPlanId";
-
+            sameAsBilling = "sameAsBilling";
+            selectedPlanFrequencyID = "selectedPlanFrequencyID";
+            postCustomerActivation = "postCustomerActivation";
         }
     }
 }

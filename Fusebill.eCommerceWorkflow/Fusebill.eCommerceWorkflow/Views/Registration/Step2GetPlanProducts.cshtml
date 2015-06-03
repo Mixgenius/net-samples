@@ -7,7 +7,7 @@
 
 <link href="~/Content/Plan.css" rel="stylesheet" />
 
-<h1 style="margin-top: 200px; text-align:center">Step 2: Choose your plan products</h1>
+<h1 style="margin-top: 200px; text-align:center">Step 2/5: Choose your plan products</h1>
 
 <br /> 
 <form action="" method="post">
@@ -22,18 +22,16 @@
                 </tr>
             </thead>
             <tbody>
-                @*   @foreach (var product in Model.AvailableProducts)*@
-                @for (int i = 0; i < 5; i++)
-                {
+
+            @foreach (var product in Model.AvailableProducts)
+              
+                       {
                     <tr>
-                        <td  class="productsFirstColumn">@Html.CheckBox("hi") @*@product.ProductName*@</td>
-                        <td class="productsSecondColumn">@Html.TextBoxFor(m => m.SelectedPlanId)</td>
-                        <td  class="productsThirdColumn">Description @*@product.ProductDescription*@</td>
-                        @*     @Html.TextBoxFor(m => m.QuantityOfProducts[product.ProductName], new { @Value = product.Quantity}) *@
-                        <td  class="productsFourthColumn">WHAT's THE PRICE?</td>
-                       
+                        <td  class="productsFirstColumn">@Html.CheckBoxFor(m => m.planProductIncludes[@product.ProductName])</td>
+                        <td class="productsSecondColumn">@Html.TextBoxFor(m => m.QuantityOfProducts[product.ProductName], new { @Value = Model.QuantityOfProducts[@product.ProductName]})</td>
+                        <td  class="productsThirdColumn">Description: @product.ProductDescription </td>
+                        <td  class="productsFourthColumn">WHAT's THE PRICE?</td>   
                     </tr>
-    
                 }
             </tbody>
         </table>
@@ -46,4 +44,3 @@
 
 
 </form>
-

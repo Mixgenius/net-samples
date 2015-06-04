@@ -9,11 +9,13 @@ namespace Fusebill.eCommerceWorkflow.Models
     public class RegistrationStronglyTypedSessionState
     {
         public string customerInformation;
-        public string billingAddress;
+        public string shippingAddress;
 
         //keeps track of the plan ID to access the plan products page
         public string selectedPlanId;
         public string selectedPlanFrequencyID;
+        public string selectedCountryName;
+        public string selectedStateName;
         public string selectedCountryID;
         public string selectedStateID;
 
@@ -21,7 +23,7 @@ namespace Fusebill.eCommerceWorkflow.Models
         public string planProductQuantities;
         public string planProductIncludes;
         public string planProducts;
-        public string sameAsShipping;
+        public string sameAsBilling;
 
         //keeps track of the postCustomer object because we're using it twice
         public string postCustomerActivation;
@@ -31,16 +33,18 @@ namespace Fusebill.eCommerceWorkflow.Models
         public RegistrationStronglyTypedSessionState()
         {
             customerInformation = "customerInformation";
-            billingAddress = "billingAddress";
+            shippingAddress = "shippingAddress";
             planProductQuantities = "planProductQuantities";
             planProductIncludes = "planProductIncludes";
             selectedPlanId = "selectedPlanId";
-            sameAsShipping = "sameAsShipping";
+            sameAsBilling = "sameAsBilling";
             selectedPlanFrequencyID = "selectedPlanFrequencyID";
             postCustomerActivation = "postCustomerActivation";
             planProducts = "planProducts";
             selectedCountryID = "selectedCountry";
             selectedStateID = "selectedState";
+            selectedCountryName = "selectedCountryName";
+            selectedStateName = "selectedStateName";
         }
     }
 }

@@ -6,192 +6,112 @@
     ViewBag.Title = "Step5GetPayment";
 }
 
-<h2>Step 5/5: Enter payment information</h2>
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
 <link href="~/Content/Plan.css" rel="stylesheet" />
-<h1 style="margin-top: 200px; text-align:center">Step 5: Enter payment information</h1>
+<h1 style="margin-top: 200px; text-align:center">Step 5/5: Enter billing information</h1>
 
 
-<head>
-    <title>AJAX Transparent Redirect</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script>
+<body>
+    <form action="" method="post">
+
+        <label>Card Number</label>
+        @Html.DropDownListFor( m => m.creditCardNumber,  Model.listOfCreditCards, "Select your card")
+
+        <label>CVV</label>
+        @Html.TextBoxFor(m => m.cvv, new { @placeholder = "XXX" })
+
+
+        @if (Model.sameAsBilling)
+        {
+            <label>First Name: @Model.customerInformation.FirstName</label>
+            <label>Last Name: @Model.customerInformation.LastName</label>
+            <label>Primary Address: @Model.shippingAddress.Line1</label>
+            <label>Secondary Address: @Model.shippingAddress.Line2</label>
+            <label>Postal Code: @Model.shippingAddress.PostalZip</label>
+
+            <label>Country: @Model.shippingAddress.Country</label>
+            <label>State: @Model.shippingAddress.State</label>
+            <label>City: @Model.shippingAddress.City</label>
+        }
+
+        @if (!Model.sameAsBilling)
+        {
+            <label>First Name</label>
+            @Html.ValidationMessageFor(m => m.customerInformation.FirstName)
+            @Html.TextBoxFor(m => m.customerInformation.FirstName, new { @placeholder = "First name" })
+
+            <label>Last Name</label>
+            @Html.ValidationMessageFor(m => m.customerInformation.LastName)
+            @Html.TextBoxFor(m => m.customerInformation.LastName, new { @placeholder = "Last name" })
+
+            <label>Primary Address</label>
+            @Html.ValidationMessageFor(m => m.shippingAddress.Line1)
+            @Html.TextBoxFor(m => m.shippingAddress.Line1, new { @placeholder = "Primary Address" })
+
+            <label>Secondary Address</label>
+            @Html.ValidationMessageFor(m => m.shippingAddress.Line2)
+            @Html.TextBoxFor(m => m.shippingAddress.Line2, new { @placeholder = "Secondary Address" })
+
+            <label>Zip</label>
+            @Html.ValidationMessageFor(m => m.shippingAddress.PostalZip)
+            @Html.TextBoxFor(m => m.shippingAddress.PostalZip, new { @placeholder = "Zip Code" })
+
+            @Html.Label("Country:")
+            @Html.ValidationMessageFor(m => m.shippingAddress.CountryId)
+            <br />
+            @Html.DropDownListFor(m => m.shippingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
+
+            @Html.Label("State:")
+            @Html.ValidationMessageFor(m => m.shippingAddress.StateId)
+            @Html.DropDownListFor(m => m.shippingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
+
+            <label>City</label>
+            @Html.ValidationMessageFor(m => m.shippingAddress.City)
+            @Html.TextBoxFor(m => m.shippingAddress.City, new { @placeholder = "City" })
+        }
 
 
 
+        <input type="submit" value="Back" name="action:Step4GetInvoice">
+        <input type="submit" value="Submit Card" name="action:Step6GetActivation">
+    </form>
+</body>
 
-        $(document).ready(function () {
+<script>
+    $(document).ready(function () {
 
-            var model = @Html.HtmlConvertToJson(Model);
+        var model = @Html.HtmlConvertToJson(Model);
 
-            $(".state").prop("disabled", true);
-            $(".country").change(
-            function () {
-                $(".state").prop("disabled", false);
+        $(".state").prop("disabled", true);
+        $(".country").change(
+        function () {
+            $(".state").prop("disabled", false);
 
-                //the value of the selcted country
-                var selectedCountryValue = $(".country").val();
-                var selectedCountryCountry;
+            //the value of the selcted country
+            var selectedCountryValue = $(".country").val();
 
-                //we find the selected country's position in the countries list in order to access its states
-                for (var i = 0; i < model.listOfCountriesCountry.length; i++)
+            //we find the selected country's position in the countries list in order to access its states
+            for (var i = 0; i < model.listOfCountriesCountry.length; i++)
+            {
+                if (selectedCountryValue == model.listOfCountriesCountry[i].id)
                 {
-                    if (selectedCountryValue == model.listOfCountriesCountry[i].id)
-                    {
-                        var selectedCountryCountry= model.listOfCountriesCountry[i];
-                    }
+                    var selectedCountryCountry = model.listOfCountriesCountry[i];
+                    $(".countryName").text(selectedCountryCountry);
                 }
+            }
 
-                $(".state").empty();
+            $(".state").empty();
 
-                for (var i = 0; i < selectedCountryCountry.states.length; i++) {
-                    $(".state").append($('<option>', {
-                        value: selectedCountryCountry.states[i].id,
-                        text: selectedCountryCountry.states[i].name
+            for (var i = 0; i < selectedCountryCountry.states.length; i++) {
+                $(".state").append($('<option>', {
+                    value: selectedCountryCountry.states[i].id,
+                    text: selectedCountryCountry.states[i].name
 
-                    }));
-                };
-            });
-
+                }));
+            };
         });
 
 
 
-
-
-        function AJAXTransparentRedirect(){
-            $('#response').html("<p>into function</p>");
-            var dataString =     'CustomerId='+ $('input#CustomerId').val() +
-                                '&PublicApiKey=' + $('input#PublicApiKey').val() +
-                                '&CardNumber='+$('input#CardNumber').val() +
-                                '&FirstName='+$('input#FirstName').val() +
-                                '&LastName='+$('input#LastName').val() +
-                                '&ExpirationMonth='+$('input#ExpirationMonth').val() +
-                                '&ExpirationYear='+$('input#ExpirationYear').val() +
-                                '&Cvv='+$('input#Cvv').val();
-            $('#response').append("<br><p>Dat: "+$( "#allfields" ).serialize()+"</p>");
-            //Set up the request
-            var request = $.ajax({
-                type: "POST",
-
-                url: "https://payments.subscriptionplatform.com/api/payments/",
-                data: $( "#allfields" ).serialize()
-            });
-
-            //Set up the callback functions
-            request.done(function(msg)
-            {
-                $('#response').append("<br><p>success</p>");
-
-            });
-
-            request.fail(function(jqXHR)
-            {
-                $('#response').append("<br><p>failure</p>");
-            });
-        }
-    </script>
-</head>
-<body>
-
-    <table class="paymentTable">
-
-        <tbody>
-            <tr>
-                <td>
-                    <label for="CustomerId">Customer Id</label>
-                    <input autofocus="autofocus" id="CustomerId" name="CustomerId" type="text" placeholder="Your customer id here" />
-                </td>
-                <td class="paymentBetweenColumnSpace"></td>
-                <td>
-                    <label for="PublicApiKey">Public Api Key</label>
-                    <input id="PublicApiKey" name="PublicApiKey" type="text" placeholder="Your key here" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="CardNumber">Card number</label>
-                    <input id="CardNumber" name="CardNumber" type="text" placeholder="Your card number" />
-                </td>
-                <td class="paymentBetweenColumnSpace"></td>
-
-                <td>
-                    <label for="FirstName">First name</label>
-                    <input id="FirstName" name="FirstName" type="text" placeholder="First name" />
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label for="LastName">Last name</label>
-                    <input id="LastName" name="LastName" type="text" placeholder="Last Name" />
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label for="ExpirationMonth">Expiry month</label>
-                    <input id="ExpirationMonth" name="ExpirationMonth" type="text" placeholder="XX" />
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label for="ExpirationYear">Expiry year</label>
-                    <input id="ExpirationYear" name="ExpirationYear" type="text" placeholder="XX" />
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label for="Cvv">CVV</label>
-                    <input id="Cvv" name="Cvv" type="text" placeholder="XXX" />
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label>Primary Address</label>
-                    @Html.TextBoxFor(m => m.billingAddress.Line1, new { @Value = Model.billingAddress.Line1, @placeholder = "Primary Address" })
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label>Secondary Address</label>
-                    @Html.TextBoxFor(m => m.billingAddress.Line2, new { @Value = Model.billingAddress.Line2, @placeholder = "Secondary Address" })
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <label>City</label>
-                    @Html.TextBoxFor(m => m.billingAddress.City, new { @Value = Model.billingAddress.City, @placeholder = "City" })
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>Zip</label>
-                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, new { @Value = Model.billingAddress.PostalZip, @placeholder = "Zip Code" })
-                </td>
-            </tr>
-           <tr>
-                <td>
-                    @Html.Label("Country:")
-                    @Html.ValidationMessageFor(m => m.billingAddress.CountryId)
-                    <br />
-                    @Html.DropDownListFor(m => m.billingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    @Html.Label("State:")
-                    @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <input type="button" onclick="AJAXTransparentRedirect();" value="Submit Card">
-    <div id="response"></div>
-</body>
+    });
+</script>

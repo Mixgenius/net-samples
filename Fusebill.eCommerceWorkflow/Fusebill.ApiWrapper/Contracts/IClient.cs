@@ -16,6 +16,7 @@ namespace Fusebill.ApiWrapper
 
         ResultList<Plan> GetPlans(QueryOptions queryOptions);
         ResultList<Plan> GetActivePlans(QueryOptions queryOptions);
+        CreditCard PostCreditCard(Fusebill.ApiWrapper.Dto.Post.CreditCard paymentMethod);
 
         Subscription PutSubscription(Fusebill.ApiWrapper.Dto.Put.Subscription model);
 

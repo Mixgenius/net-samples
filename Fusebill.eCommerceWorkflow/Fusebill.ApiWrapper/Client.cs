@@ -151,6 +151,12 @@ namespace Fusebill.ApiWrapper
             return PostEntity<Fusebill.ApiWrapper.Dto.Post.Payment, Payment>(url, payment);
         }
 
+        public CreditCard PostCreditCard(Fusebill.ApiWrapper.Dto.Post.CreditCard paymentMethod)
+        {
+            var url = RestUriBuilder.BuildUri("paymentmethods");
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.CreditCard, CreditCard>(url, paymentMethod);
+        }
+      
         protected TU PostEntity<T, TU>(string url, T entity, string acceptType = "application/json", int timeout = 60)
         {
             var response = ExecuteHttpRequest.ExecuteHttpPost(url, entity, acceptType, timeout);

@@ -19,6 +19,10 @@ namespace Fusebill.ApiWrapper.Dto.Get
         [DisplayName("Total")]
         public decimal Total { get; set; }
 
+        public string TotalString { 
+            get { return Total.ToString("#"); } 
+        }
+
         [JsonProperty(PropertyName = "draftTaxes")]
         [DisplayName("Draft Taxes")]
         public List<Tax> DraftTaxes { get; set; }

@@ -76,6 +76,7 @@
     <Compile Include="Dto\Get\Address.cs" />
     <Compile Include="Dto\Get\BaseDto.cs" />
     <Compile Include="Dto\Get\ChargeModel.cs" />
+    <Compile Include="Dto\Get\CreditCard.cs" />
     <Compile Include="Dto\Get\Customer.cs" />
     <Compile Include="Dto\Get\CustomerAcquisition.cs" />
     <Compile Include="Dto\Get\CustomerReference.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Dto\Get\OrderToCashCycle.cs" />
     <Compile Include="Dto\Get\PagingHeaderData.cs" />
     <Compile Include="Dto\Get\Payment.cs" />
+    <Compile Include="Dto\Get\PaymentMethod.cs" />
     <Compile Include="Dto\Get\Plan.cs" />
     <Compile Include="Dto\Get\PlanCustomField.cs" />
     <Compile Include="Dto\Get\PlanFrequency.cs" />
@@ -115,15 +117,19 @@
     <Compile Include="Dto\Get\Subscriptions.cs" />
     <Compile Include="Dto\Get\Tax.cs" />
     <Compile Include="Dto\Interfaces\EarningTiming.cs" />
+    <Compile Include="Dto\Interfaces\ICreditCard.cs" />
+    <Compile Include="Dto\Interfaces\IPaymentMethod.cs" />
     <Compile Include="Dto\Interfaces\ISubscriptionBillingPeriodDefinition.cs" />
     <Compile Include="Dto\Interfaces\ISubscriptionProductDiscount.cs" />
     <Compile Include="Dto\Post\Address.cs" />
     <Compile Include="Dto\Post\BaseDto.cs" />
+    <Compile Include="Dto\Post\CreditCard.cs" />
     <Compile Include="Dto\Post\Customer.cs" />
     <Compile Include="Dto\Post\CustomerActivation.cs" />
     <Compile Include="Dto\Post\IBaseDto.cs" />
     <Compile Include="Dto\Post\Payment.cs" />
     <Compile Include="Dto\Post\PaymentAllocation.cs" />
+    <Compile Include="Dto\Post\PaymentMethod.cs" />
     <Compile Include="Dto\Post\Subscription.cs" />
     <Compile Include="Dto\Post\SubscriptionActivation.cs" />
     <Compile Include="Dto\Post\SubscriptionOverride.cs" />

@@ -1,4 +1,5 @@
 ﻿using Fusebill.ApiWrapper.Dto.Get;
+using Fusebill.eCommerceWorkflow.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,6 +24,9 @@ namespace Fusebill.eCommerceWorkflow.Models
 
         public long SelectedPlanFrequencyID { get; set; }
 
+        //total invoice
+        public decimal invoiceTotal { get; set; }
+
         //How many of each product the user decides to have
         public Dictionary<string, decimal> QuantityOfProducts { get; set; }
 
@@ -33,11 +37,13 @@ namespace Fusebill.eCommerceWorkflow.Models
         public Customer customerInformation { get; set; }
 
         //The Address objects contains properties pertaining to the billing address, such as City and PostalZip 
-        public Address billingAddress { get; set; }
+        public Address shippingAddress { get; set; }
 
-        public bool sameAsShipping { get; set; }
+        public bool sameAsBilling { get; set; }
 
         public List<SelectListItem> listOfCountriesSLI {get;set;}
+
+        public List<SelectListItem> listOfCreditCards { get; set; }
 
         public List<Country> listOfCountriesCountry { get; set; }
 
@@ -52,12 +58,15 @@ namespace Fusebill.eCommerceWorkflow.Models
         //total cost of subscription
         public decimal subscriptionTotalCost { get; set; }
 
+        public CreditCard creditCard { get; set; }
+
+        public string cvv { get; set;  }
+
+        public string creditCardNumber { get; set; }
+
         //contains strongly typed keys for the session states
         public RegistrationStronglyTypedSessionState registrationStronglyTypedSessionState { get; set; }
 
-        [Required(ErrorMessage="hi")]
-        public string TestValidat { get; set; }
 
-        public A asdf { get; set; }
     }
 }

@@ -5,6 +5,7 @@
     ViewBag.Title = "Step2GetPlanProducts";
 }
 
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
 <link href="~/Content/Plan.css" rel="stylesheet" />
 
 <h1 style="margin-top: 200px; text-align:center">Step 2/5: Choose your plan products</h1>
@@ -16,31 +17,37 @@
             <thead class="products_tableHead">
                 <tr>
                     <td class="productsFirstColumn">Include</td>
-                    <td class="productsSecondColumn">Quantity</td>
                     <td class="productsThirdColumn">Product</td>
-                    <td class="productsFourthColumn">Price</td>
+                    <td class="productsSecondColumn">Quantity</td>
                 </tr>
             </thead>
             <tbody>
 
             @foreach (var product in Model.AvailableProducts)
-              
                        {
                     <tr>
-                        <td  class="productsFirstColumn">@Html.CheckBoxFor(m => m.planProductIncludes[@product.ProductName])</td>
+                        <td class="productsFirstColumn">@Html.CheckBoxFor(m => m.planProductIncludes[@product.ProductName], new { @class = "productCheckbox" })</td>
+                        <td class="productsThirdColumn">Description: @product.ProductDescription </td>
                         <td class="productsSecondColumn">@Html.TextBoxFor(m => m.QuantityOfProducts[product.ProductName], new { @Value = Model.QuantityOfProducts[@product.ProductName]})</td>
-                        <td  class="productsThirdColumn">Description: @product.ProductDescription </td>
-                        <td  class="productsFourthColumn">WHAT's THE PRICE?</td>   
                     </tr>
                 }
             </tbody>
         </table>
+        <br />
         <input id="Button1" type="button" value="Back" onclick="@("window.location.href='" + @Url.Action("Index", "Registration") + "'");" />
 
-        <input type="submit" value="Buy" name="action:Step3GetCustomerInformation" />
-
+        <input type="submit" value="Next" name="action:Step3GetCustomerInformation" />
+        <p class="hey"> hi </p>
     </div>
-
-
-
 </form>
+
+<script>
+    $(document).ready(function () {
+
+        alert("Hold");
+        $(".productCheckbox").change(function () {
+            $("p").css('background-color', 'orange');
+        });
+
+    });
+</script>

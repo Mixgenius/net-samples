@@ -7,37 +7,51 @@
 
 
 
-<h2>Step 4/5 Invoice Preview</h2>
+<h1 style="margin-top: 200px; text-align:center">Step 4/5: Invoice Preview</h1>
+<link href="~/Content/Plan.css" rel="stylesheet" />
 
-
-INVOICE PREVIEW 
 
 <form action="" method="post">
- 
-    @Html.Label("First Name")
-    @Html.Label(Model.postedCustomer.FirstName)
-
-    @Html.Label("Last Name")
-    @Html.Label(Model.postedCustomer.LastName)
-
-    @Html.Label("Primary Email")
-    @Html.Label(Model.postedCustomer.PrimaryEmail)
-
-    @Html.Label("Primary Phone")
-    @Html.Label(Model.postedCustomer.PrimaryPhone)
+    <p>&nbsp;</p>
+        <table class="invoiceTable">
+            <tr>
+                <td>@Html.Label("First Name:")</td>
+                <td>@Html.Label(Model.postedCustomer.FirstName)</td>
+            </tr>
 
 
-      @Html.Label("Subtotal")
-      @Html.Label(Model.postedCustomer.InvoicePreview.Subtotal.ToString())
+            <tr>
+                <td>@Html.Label("Last Name:")</td>
+                <td>@Html.Label(Model.postedCustomer.LastName)</td>
+            </tr>
 
-      @Html.Label("Total taxes")
-      @Html.Label(Model.postedCustomer.InvoicePreview.TotalTaxes.ToString())
+            <tr>
+                <td>@Html.Label("Primary Email:")</td>
+                <td>@Html.Label(Model.postedCustomer.PrimaryEmail)</td>
+            </tr>
 
-      @Html.Label("Total")
-    @Html.Label(Model.postedCustomer.InvoicePreview.Total.ToString())
-  
+            <tr>
+                <td>@Html.Label("Primary Phone:")</td>
+                <td>@Html.Label(Model.postedCustomer.PrimaryPhone)</td>
+            </tr>
 
-    <input  type="submit" value="Back" name="action:Step3GetCustomerInformation" />
+            <tr>
+                <td>@Html.Label("Subtotal:") </td>
+                <td>@Html.Label(Model.postedCustomer.InvoicePreview.Subtotal.ToString())</td>
+            </tr>
 
-<input type="submit" value="Buy" name="action:Step5GetPayment" />
+            <tr>
+                <td> @Html.Label("Total taxes:")  </td>
+                <td>@Html.Label(Model.postedCustomer.InvoicePreview.TotalTaxes.ToString())</td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Total:") </td>
+                <td>@Html.Label(Model.postedCustomer.InvoicePreview.Total.ToString())</td>
+            </tr>
+        </table>
+
+    <br />
+
+    <input type="submit" value="Back" name="action:Step3GetCustomerInformation" style="margin-left: 45%;"/>
+    <input type="submit" value="Checkout" name="action:Step5GetPayment" />
 </form>

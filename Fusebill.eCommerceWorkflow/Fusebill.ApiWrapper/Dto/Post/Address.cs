@@ -48,6 +48,9 @@ namespace Fusebill.ApiWrapper.Dto.Post
         [Required]
         public string PostalZip { get; set; }
 
+        /// <summary>
+        /// Billing and Shipping are allowed values. Shipping means that the billing address is also the shipping address
+        /// </summary>
         [JsonProperty(PropertyName = "addressType")]
         [DisplayName("Address type")]
     //    [AddressTypeValidation]

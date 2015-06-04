@@ -16,15 +16,17 @@
         <form action="" method="post">
 
             <div class="plan_plan">
+                <p>&nbsp;</p>
                 <div class="plan_descriptionAndTitle">
                     <h2 class="plan_title">Name: @plan.Name</h2>
-                    <p class="plan_description">Description: @plan.Description/p>
+                    <p class="plan_description">Description: @plan.Description </p>
 
                     <p class="plan_longdescription">Long Description: @plan.LongDescription</p>
                 </div>
+
                 <div class="plan_miscellaneous">
                     <ul>
-                        <li>PRICE, WE SHALL FIND OUT LATERRRRZ</li>
+
                         <li>1 user</li>
                         <li>Limited Access</li>
                         <li>5MB of space</li>
@@ -32,12 +34,13 @@
                     </ul>
                 </div>
 
-
-                @Html.TextBoxFor(m => m.SelectedPlanId, new { @Value = plan.Id })
-                @Html.TextBoxFor(m => m.SelectedPlanFrequencyID, new { @Value = plan.PlanFrequencies[0].Id })
-
-
-                <input type="submit" value="Buy" name="action:Step2GetPlanProducts" />
+                <div style="display:none">
+                    @Html.TextBoxFor(m => m.SelectedPlanId, new { @Value = plan.Id })
+                    @Html.TextBoxFor(m => m.SelectedPlanFrequencyID, new { @Value = plan.PlanFrequencies[0].Id })
+                </div>
+                <div style="left:50%; position:relative; width: 10%;">
+                    <input type="submit" value="Buy" name="action:Step2GetPlanProducts" />
+                </div>
                 <br /> <br />
             </div>
     </form>

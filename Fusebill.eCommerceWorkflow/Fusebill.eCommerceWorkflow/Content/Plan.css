@@ -1,22 +1,28 @@
 ﻿
-
+body {
+    height: 900px;
+}
 
 /*==============Index=============*/
 
 .plan_plan {
+    width: 80%;
     margin-top: 10px;
     background-color: orange;
-    margin-left: 100px; 
-    margin-right: 100px;
+    border-radius: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 80px;
 }
 
 .plan_descriptionAndTitle {
-    margin-top: 20px;
+
     margin-left: 50px;
     margin-right: 50px;
     margin-bottom: 50px;
     background-color: lightgreen;
     text-align: center;
+    border-radius: 10px;
 }
 
 .plan_title {
@@ -33,6 +39,7 @@
 }
 
 .plan_miscellaneous {
+    border-radius: 10px;
     margin-top: 50px;
     margin-left:50px;
     margin-right:50px;
@@ -42,6 +49,9 @@
 }
 
 .plan_miscellaneous ul li {
+    padding-top:10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid lightgrey;
     list-style: none;
     font-size: 20px;
 }
@@ -103,9 +113,8 @@
 /*=============CUSTOMER INFORMATION=============*/
 
 .customerTable {
-   width: 70%;
-   
-   
+    margin:auto;
+  min-width: 300px;
 }
 
 .customerBetweenColumnSpace {
@@ -113,22 +122,28 @@
 }
 
 .customerCustomerInfo {
-    margin-top: 20px;
+    margin-top:20px;
     margin-left:20px;
     width: 100%;
     border: 1px solid lightgrey;
     padding-left: 20px;
-    vertical-align:top;
+    vertical-align: top;
 }
 
 .customerBillingInfo {
-     margin-top: 20px;
+       margin-top: 20px;
     margin-left:20px;
-       width: 100%;
-       vertical-align:top;
-      padding-left: 20px;
-      border: 1px solid lightgrey;
+    width: 100%;
+    border: 1px solid lightgrey;
+    padding-left: 20px;
 
+}
+
+/*===============Step4GetInvoice====================*/
+
+.invoiceTable {
+    margin-top: 100px;
+     margin:auto;
 }
 
 /*================Step5GetPayment=================*/

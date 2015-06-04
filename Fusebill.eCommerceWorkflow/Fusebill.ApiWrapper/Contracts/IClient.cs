@@ -33,5 +33,6 @@ namespace Fusebill.ApiWrapper
         List<Country> GetCountries();
         ResultList<CustomerSummary> GetCustomers(QueryOptions queryOptions);
         Customer GetCustomer(long id);
+
     }
 }

@@ -21,54 +21,65 @@
     <table class="customerTable">
         <tr>
             <td>
-                <h1>Customer information</h1>
+                <h1 style="margin-top: -175px;" >Customer information</h1>
                 <div class="customerCustomerInfo">
                     @Html.Label("First Name:")
+                    @Html.ValidationMessageFor(m => m.customerInformation.FirstName) <br />
                     @Html.TextBoxFor(m => m.customerInformation.FirstName,  new {@Value = Model.customerInformation.FirstName, @placeholder = "First name"})
-                    @Html.ValidationMessageFor(m => m.customerInformation.FirstName)
                       
                      @Html.Label("Last Name:")
+                    @Html.ValidationMessageFor(m => m.customerInformation.LastName) <br />
                    @Html.TextBoxFor(m => m.customerInformation.LastName,  new { @Value = Model.customerInformation.LastName, @placeholder = "Last name" }) 
-       @Html.ValidationMessageFor( m => m.customerInformation.LastName)
           
                       @Html.Label("Email Address:")
-            @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail,  new { @Value = Model.customerInformation.PrimaryEmail, @placeholder = "example@email.com"  })
-                    @Html.ValidationMessageFor(m => m.customerInformation.PrimaryEmail)
+                    @Html.ValidationMessageFor(m => m.customerInformation.PrimaryEmail) <br />
+              @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail,  new { @Value = Model.customerInformation.PrimaryEmail, @placeholder = "example@email.com"  })
 
 
             @Html.Label("Phone:")
+            @Html.ValidationMessageFor(m => m.customerInformation.PrimaryPhone) <br />
             @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone,  new { @Value = Model.customerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX"  })
-                    @Html.ValidationMessageFor(m => m.customerInformation.PrimaryPhone)
-
-
-
-                              
+           
                 </div>
             </td>
+
             <td class="customerBetweenColumnSpace"></td>
             <td style="vertical-align:top;">
                     <h1>Billing information</h1>
                 <div class="customerBillingInfo">
                     @Html.Label("Company Name:")
-                    @Html.TextBoxFor(m => m.billingAddress.CompanyName, null, new { @placeholder = "Company name"  })  
+                    @Html.ValidationMessageFor(m => m.billingAddress.CompanyName)   <br />
+                    @Html.TextBoxFor(m => m.billingAddress.CompanyName, new {@Value = Model.billingAddress.CompanyName,  @placeholder = "Company name" })  
+
+  
                    
                     @Html.Label("Primary Address:")
-                    @Html.TextBoxFor(m => m.billingAddress.Line1, null, new { @placeholder = "Primary address"  })
+                    @Html.ValidationMessageFor(m => m.billingAddress.Line1) <br />
+                    @Html.TextBoxFor(m => m.billingAddress.Line1, new {@Value = Model.billingAddress.Line1, @placeholder = "Primary address" })
+
+
 
                     @Html.Label("Secondary Address:")
-                    @Html.TextBoxFor(m => m.billingAddress.Line2, null, new { @placeholder = "Secondary address"  })
+                    @Html.ValidationMessageFor(m => m.billingAddress.Line2)     <br />
+                    @Html.TextBoxFor(m => m.billingAddress.Line2, null, new { @placeholder = "Secondary address" })
+
 
                     @Html.Label("City:")
-                   @Html.TextBoxFor(m => m.billingAddress.City, null, new { @placeholder = "City"  })  
+                    @Html.ValidationMessageFor(m => m.billingAddress.City)      <br />
+                   @Html.TextBoxFor(m => m.billingAddress.City, null, new { @placeholder = "City" })  
+
 
                     @Html.Label("Postal Code:")
-                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new { @placeholder = "Postal zip"  })
+                    @Html.ValidationMessageFor(m => m.billingAddress.PostalZip)     <br />
+                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new { @placeholder = "Postal zip" })
 
                     @Html.Label("Same as billing: ")
-                    @Html.CheckBoxFor(m => m.sameAsBilling)
+                    @Html.CheckBoxFor(m => m.sameAsShipping)
 
                     @Html.Label("Country:")
+                    @Html.ValidationMessageFor(m => m.billingAddress.CountryId)     <br />
                     @Html.DropDownListFor(m => m.billingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
+
 
                     @Html.Label("State:")
                     @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
@@ -84,34 +95,7 @@
 
     <script>
     $(document).ready(function () {
-        @*
-            $("#customerForm").validate({
-                rules: {
-                    firstName : "required",
-                    lastName: "required",
-                    primaryEmail: "required",
-                    primaryPhone: "required",
-                    billingCompanyName: "required",
-                    billingPrimaryAddress: "required",
-                    billingSecondaryAddress: "required",
-                    billingCity: "required",
-                    billingPostalZip: "required"
-                },
-                messages: {
-                    firstName : "What's your first name?",
-                    lastName: "Tell us your last name!",
-                    primaryEmail: "Please enter your email",
-                    primaryPhone: "Please enter your phone number",
-                    billingCompanyName: "Please enter company name",
-                    billingPrimaryAddress: "Please enter primary address",
-                    billingSecondaryAddress: "Please enter secondary address",
-                    billingCity: "Please enter city",
-                    billingPostalZip: "Please enter postal zip"
-                }
-            });
-            *@
-
-
+      
         var model = @Html.HtmlConvertToJson(Model);
 
         $(".state").prop("disabled", true);

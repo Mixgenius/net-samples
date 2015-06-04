@@ -1,4 +1,7 @@
-﻿
+﻿@using Fusebill.ApiWrapper
+
+@model Fusebill.eCommerceWorkflow.Models.RegistrationVM
+
 @{
     ViewBag.Title = "Step5GetPayment";
 }
@@ -12,98 +15,183 @@
     <title>AJAX Transparent Redirect</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>
-            function AJAXTransparentRedirect(){
-                $('#response').html("<p>into function</p>");
-                var dataString =     'CustomerId='+ $('input#CustomerId').val() +
-                                    '&PublicApiKey=' + $('input#PublicApiKey').val() +
-                                    '&CardNumber='+$('input#CardNumber').val() +
-                                    '&FirstName='+$('input#FirstName').val() +
-                                    '&LastName='+$('input#LastName').val() +
-                                    '&ExpirationMonth='+$('input#ExpirationMonth').val() +
-                                    '&ExpirationYear='+$('input#ExpirationYear').val() +
-                                    '&Cvv='+$('input#Cvv').val();
-                $('#response').append("<br><p>Dat: "+$( "#allfields" ).serialize()+"</p>");
-                //Set up the request
-                var request = $.ajax({
-                    type: "POST",
 
-                    url: "https://payments.subscriptionplatform.com/api/payments/",
-                    data: $( "#allfields" ).serialize()
-                });
 
-                //Set up the callback functions
-                request.done(function(msg)
+
+
+        $(document).ready(function () {
+
+            var model = @Html.HtmlConvertToJson(Model);
+
+            $(".state").prop("disabled", true);
+            $(".country").change(
+            function () {
+                $(".state").prop("disabled", false);
+
+                //the value of the selcted country
+                var selectedCountryValue = $(".country").val();
+                var selectedCountryCountry;
+
+                //we find the selected country's position in the countries list in order to access its states
+                for (var i = 0; i < model.listOfCountriesCountry.length; i++)
                 {
-                    $('#response').append("<br><p>success</p>");
+                    if (selectedCountryValue == model.listOfCountriesCountry[i].id)
+                    {
+                        var selectedCountryCountry= model.listOfCountriesCountry[i];
+                    }
+                }
 
-                });
+                $(".state").empty();
 
-                request.fail(function(jqXHR)
-                {
-                    $('#response').append("<br><p>failure</p>");
-                });
-            }
+                for (var i = 0; i < selectedCountryCountry.states.length; i++) {
+                    $(".state").append($('<option>', {
+                        value: selectedCountryCountry.states[i].id,
+                        text: selectedCountryCountry.states[i].name
+
+                    }));
+                };
+            });
+
+        });
+
+
+
+
+
+        function AJAXTransparentRedirect(){
+            $('#response').html("<p>into function</p>");
+            var dataString =     'CustomerId='+ $('input#CustomerId').val() +
+                                '&PublicApiKey=' + $('input#PublicApiKey').val() +
+                                '&CardNumber='+$('input#CardNumber').val() +
+                                '&FirstName='+$('input#FirstName').val() +
+                                '&LastName='+$('input#LastName').val() +
+                                '&ExpirationMonth='+$('input#ExpirationMonth').val() +
+                                '&ExpirationYear='+$('input#ExpirationYear').val() +
+                                '&Cvv='+$('input#Cvv').val();
+            $('#response').append("<br><p>Dat: "+$( "#allfields" ).serialize()+"</p>");
+            //Set up the request
+            var request = $.ajax({
+                type: "POST",
+
+                url: "https://payments.subscriptionplatform.com/api/payments/",
+                data: $( "#allfields" ).serialize()
+            });
+
+            //Set up the callback functions
+            request.done(function(msg)
+            {
+                $('#response').append("<br><p>success</p>");
+
+            });
+
+            request.fail(function(jqXHR)
+            {
+                $('#response').append("<br><p>failure</p>");
+            });
+        }
     </script>
 </head>
 <body>
-  
-        <table class="paymentTable">
 
-            <tbody>
-                <tr>
-                    <td>
-                        <label for="CustomerId">Customer Id</label>
-                        <input autofocus="autofocus" id="CustomerId" name="CustomerId" type="text" placeholder="Your customer id here" />
-                    </td>
-                    <td class="paymentBetweenColumnSpace"></td>
-                    <td>
-                        <label for="PublicApiKey">Public Api Key</label>
-                        <input id="PublicApiKey" name="PublicApiKey" type="text" placeholder="Your key here" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="CardNumber">Card number</label>
-                        <input id="CardNumber" name="CardNumber" type="text" placeholder="Your card number" />
-                    </td>
-                    <td class="paymentBetweenColumnSpace"></td>
+    <table class="paymentTable">
 
-                    <td>
-                        <label for="FirstName">First name</label>
-                        <input id="FirstName" name="FirstName" type="text" placeholder="First name" />
-                    </td>
-                </tr>
+        <tbody>
+            <tr>
+                <td>
+                    <label for="CustomerId">Customer Id</label>
+                    <input autofocus="autofocus" id="CustomerId" name="CustomerId" type="text" placeholder="Your customer id here" />
+                </td>
+                <td class="paymentBetweenColumnSpace"></td>
+                <td>
+                    <label for="PublicApiKey">Public Api Key</label>
+                    <input id="PublicApiKey" name="PublicApiKey" type="text" placeholder="Your key here" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="CardNumber">Card number</label>
+                    <input id="CardNumber" name="CardNumber" type="text" placeholder="Your card number" />
+                </td>
+                <td class="paymentBetweenColumnSpace"></td>
 
-                <tr>
-                    <td>
-                        <label for="LastName">Last name</label>
-                        <input id="LastName" name="LastName" type="text" placeholder="Last Name" />
-                    </td>
-                </tr>
+                <td>
+                    <label for="FirstName">First name</label>
+                    <input id="FirstName" name="FirstName" type="text" placeholder="First name" />
+                </td>
+            </tr>
 
-                <tr>
-                    <td>
-                        <label for="ExpirationMonth">Expiry month</label>
-                        <input id="ExpirationMonth" name="ExpirationMonth" type="text" placeholder="XX" />
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    <label for="LastName">Last name</label>
+                    <input id="LastName" name="LastName" type="text" placeholder="Last Name" />
+                </td>
+            </tr>
 
-                <tr>
-                    <td>
-                        <label for="ExpirationYear">Expiry year</label>
-                        <input id="ExpirationYear" name="ExpirationYear" type="text" placeholder="XX" />
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    <label for="ExpirationMonth">Expiry month</label>
+                    <input id="ExpirationMonth" name="ExpirationMonth" type="text" placeholder="XX" />
+                </td>
+            </tr>
 
-                <tr>
-                    <td>
-                        <label for="Cvv">CVV</label>
-                        <input id="Cvv" name="Cvv" type="text" placeholder="XXX" />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-  
+            <tr>
+                <td>
+                    <label for="ExpirationYear">Expiry year</label>
+                    <input id="ExpirationYear" name="ExpirationYear" type="text" placeholder="XX" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="Cvv">CVV</label>
+                    <input id="Cvv" name="Cvv" type="text" placeholder="XXX" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>Primary Address</label>
+                    @Html.TextBoxFor(m => m.billingAddress.Line1, new { @Value = Model.billingAddress.Line1, @placeholder = "Primary Address" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>Secondary Address</label>
+                    @Html.TextBoxFor(m => m.billingAddress.Line2, new { @Value = Model.billingAddress.Line2, @placeholder = "Secondary Address" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>City</label>
+                    @Html.TextBoxFor(m => m.billingAddress.City, new { @Value = Model.billingAddress.City, @placeholder = "City" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Zip</label>
+                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, new { @Value = Model.billingAddress.PostalZip, @placeholder = "Zip Code" })
+                </td>
+            </tr>
+           <tr>
+                <td>
+                    @Html.Label("Country:")
+                    @Html.ValidationMessageFor(m => m.billingAddress.CountryId)
+                    <br />
+                    @Html.DropDownListFor(m => m.billingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("State:")
+                    @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
     <input type="button" onclick="AJAXTransparentRedirect();" value="Submit Card">
     <div id="response"></div>
 </body>

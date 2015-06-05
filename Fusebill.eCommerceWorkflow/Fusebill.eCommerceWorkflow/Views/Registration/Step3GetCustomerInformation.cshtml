@@ -83,12 +83,20 @@
                     @Html.Label("State:")
                     @Html.DropDownListFor(m => m.shippingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
 
-                    @Html.TextBoxFor(m => m.shippingAddress.Country, new { @class = "countryName" })
-                    @Html.TextBoxFor(m => m.shippingAddress.State, new { @class = "stateName" })
+                    <div style="display:none">
+                        @Html.TextBoxFor(m => m.shippingAddress.Country, new { @class = "countryName" })
+                        @Html.TextBoxFor(m => m.shippingAddress.State, new { @class = "stateName" })
+                    </div>
+
+
                 </div>
             </td>
         </tr>
     </table>
+    <br />
+    <div style="text-align:center">
+        @Html.ValidationSummary("Please enter your information. We will save the information should you wish to return to this page.", new { @class = "validation-summary-errors" })
+    </div>
 
           <input type="submit" value="Back" name="action:Step2GetPlanProducts" />
           <input type="submit" value="To Subscription" name="action:Step4GetInvoice" />

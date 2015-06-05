@@ -110,7 +110,7 @@ body {
     margin-left: 20px;
 }
 
-/*=============CUSTOMER INFORMATION=============*/
+/*=============STEP3 : CUSTOMER INFORMATION=============*/
 
 .customerTable {
     margin:auto;
@@ -131,12 +131,17 @@ body {
 }
 
 .customerBillingInfo {
-       margin-top: 20px;
+    margin-top: 20px;
     margin-left:20px;
     width: 100%;
     border: 1px solid lightgrey;
     padding-left: 20px;
 
+}
+
+.validation-summary-errors ul li {
+   color: green;
+   display:none;
 }
 
 /*===============Step4GetInvoice====================*/
@@ -151,13 +156,7 @@ body {
 
 .paymentTable {
   width:70%;
-  margin-left: 15%;
-  margin-right: 15%;
- 
+  margin-left: 35%;
 }
 
-.paymentTable tr td {
-    padding-left: 10px;
-    padding-right: 10px;
-}
 

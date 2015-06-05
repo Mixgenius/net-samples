@@ -316,20 +316,26 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             #endregion
 
             ApiClient.PutSubscription(putSubscription);
+
+            
+
             var postedCustomerActivation = ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
+
+           
+            if (Session[new RegistrationStronglyTypedSessionState().postCustomerActivation] == null)
+            {
+            Session[new RegistrationStronglyTypedSessionState().postCustomerActivation] = postedCustomerActivation;        
+            }
 
             //we make an instance of the returned customer to provide its values to the field
             step4RegistrationVM.postedCustomer = new Customer();
-            step4RegistrationVM.postedCustomer = postedCustomerActivation;
-            step4RegistrationVM.invoiceTotal = postedCustomerActivation.InvoicePreview.Total;
-
-            Session[new RegistrationStronglyTypedSessionState().postCustomerActivation] = postCustomerActivation;
+            step4RegistrationVM.postedCustomer = (Customer)Session[new RegistrationStronglyTypedSessionState().postCustomerActivation];
 
             return View(step4RegistrationVM);
         }
 
-        [HttpGet]
         [HttpPost]
+
         [MultipleButton(Name = "action", Argument = "Step5GetPayment")]
         public ActionResult Step5GetPayment()
         {
@@ -351,11 +357,11 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 step5RegistrationVM.shippingAddress.PostalZip = shipping.PostalZip;
                 step5RegistrationVM.shippingAddress.City = shipping.City;
                 step5RegistrationVM.shippingAddress.Country = (string)Session[new RegistrationStronglyTypedSessionState().selectedCountryName];
-                step5RegistrationVM.shippingAddress.State = (string) Session[new RegistrationStronglyTypedSessionState().selectedStateName];
+                step5RegistrationVM.shippingAddress.State = (string)Session[new RegistrationStronglyTypedSessionState().selectedStateName];
                 var customer = (Customer)Session[new RegistrationStronglyTypedSessionState().customerInformation];
                 step5RegistrationVM.customerInformation.FirstName = customer.FirstName;
                 step5RegistrationVM.customerInformation.LastName = customer.LastName;
-            } 
+            }
 
             step5RegistrationVM.listOfCountriesSLI = new List<SelectListItem>();
             step5RegistrationVM.listOfCountriesCountry = new List<Country>();
@@ -372,17 +378,23 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 });
             }
 
+
+
+
+
             step5RegistrationVM.listOfCreditCards = new List<SelectListItem>();
 
 
             step5RegistrationVM.listOfCreditCards.Add(new SelectListItem
             {
                 Text = "4242424242424242",
-                Value = "4242424242424242" });
+                Value = "4242424242424242"
+            });
             step5RegistrationVM.listOfCreditCards.Add(new SelectListItem
             {
                 Text = "4111111111111111",
-                Value = "4111111111111111" });
+                Value = "4111111111111111"
+            });
 
             return View(step5RegistrationVM);
         }
@@ -400,7 +412,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             Fusebill.ApiWrapper.Dto.Post.CreditCard postCreditCard = new ApiWrapper.Dto.Post.CreditCard();
 
-            if ( (bool) Session[new RegistrationStronglyTypedSessionState().sameAsBilling])
+            if ((bool)Session[new RegistrationStronglyTypedSessionState().sameAsBilling])
             {
                 postCreditCard.CardNumber = step6RegistrationVM.creditCardNumber;
                 postCreditCard.Cvv = step6RegistrationVM.cvv;
@@ -435,16 +447,65 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             try
             {
                 ApiClient.PostCreditCard(postCreditCard);
-                
+
                 //display success message
                 //Activate customer
                 ApiClient.PostCustomerActivation((Fusebill.ApiWrapper.Dto.Post.CustomerActivation)Session[new RegistrationStronglyTypedSessionState().postCustomerActivation], false, true);
             }
             catch
             {
-                //return to view
-            }
+                step6RegistrationVM.shippingAddress = new Address();
+                step6RegistrationVM.shippingAddress.AddressType = "Shipping";
 
+                step6RegistrationVM.customerInformation = new Customer();
+
+
+                if ((bool)Session[new RegistrationStronglyTypedSessionState().sameAsBilling])
+                {
+                    var shipping = (Address)Session[new RegistrationStronglyTypedSessionState().shippingAddress];
+                    step6RegistrationVM.shippingAddress.Line1 = shipping.Line1;
+                    step6RegistrationVM.shippingAddress.Line2 = shipping.Line2;
+                    step6RegistrationVM.shippingAddress.PostalZip = shipping.PostalZip;
+                    step6RegistrationVM.shippingAddress.City = shipping.City;
+                    step6RegistrationVM.shippingAddress.Country = (string)Session[new RegistrationStronglyTypedSessionState().selectedCountryName];
+                    step6RegistrationVM.shippingAddress.State = (string)Session[new RegistrationStronglyTypedSessionState().selectedStateName];
+                    var customer = (Customer)Session[new RegistrationStronglyTypedSessionState().customerInformation];
+                    step6RegistrationVM.customerInformation.FirstName = customer.FirstName;
+                    step6RegistrationVM.customerInformation.LastName = customer.LastName;
+                }
+
+                step6RegistrationVM.listOfCountriesSLI = new List<SelectListItem>();
+                step6RegistrationVM.listOfCountriesCountry = new List<Country>();
+                step6RegistrationVM.listOfCountriesCountry = ApiClient.GetCountries();
+
+                for (int i = 0; i < step6RegistrationVM.listOfCountriesCountry.Count; i++)
+                {
+                    step6RegistrationVM.listOfCountriesSLI.Add(new SelectListItem
+                    {
+
+                        Text = step6RegistrationVM.listOfCountriesCountry[i].Name,
+                        Value = step6RegistrationVM.listOfCountriesCountry[i].Id.ToString(),
+                        Selected = false
+                    });
+                }
+
+
+                step6RegistrationVM.listOfCreditCards = new List<SelectListItem>();
+
+
+                step6RegistrationVM.listOfCreditCards.Add(new SelectListItem
+                {
+                    Text = "4242424242424242",
+                    Value = "4242424242424242"
+                });
+                step6RegistrationVM.listOfCreditCards.Add(new SelectListItem
+                {
+                    Text = "4111111111111111",
+                    Value = "4111111111111111"
+                });
+
+                return View("Step5GetPayment");
+            }
             return View();
         }
     }

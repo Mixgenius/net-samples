@@ -306,6 +306,7 @@
     <Content Include="Views\Registration\Step3GetCustomerInformation.cshtml" />
     <Content Include="Views\Registration\Step4GetInvoice.cshtml" />
     <Content Include="Views\Registration\Step5GetPayment.cshtml" />
+    <Content Include="Views\Registration\Step6GetActivation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

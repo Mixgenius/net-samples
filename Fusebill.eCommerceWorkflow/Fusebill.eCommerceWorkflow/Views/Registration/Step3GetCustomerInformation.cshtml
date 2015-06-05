@@ -100,8 +100,7 @@
       
         var model = @Html.HtmlConvertToJson(Model);
 
-        $(".state").prop("disabled", true);
-        $(".country").change(
+        $(".country").click(
         function () {
             $(".state").prop("disabled", false);
 

@@ -1,5 +1,5 @@
 ﻿@model Fusebill.eCommerceWorkflow.Models.RegistrationVM
-    
+
 
 @{
     ViewBag.Title = "Step2GetPlanProducts";
@@ -10,7 +10,7 @@
 
 <h1 style="margin-top: 200px; text-align:center">Step 2/5: Choose your plan products</h1>
 
-<br /> 
+<br />
 <form action="" method="post">
     <div style="align-content:center; text-align:center">
         <table class="products_table">
@@ -23,31 +23,32 @@
             </thead>
             <tbody>
 
-            @foreach (var product in Model.AvailableProducts)
+                @foreach (var product in Model.AvailableProducts)
                        {
                     <tr>
-                        <td class="productsFirstColumn">@Html.CheckBoxFor(m => m.planProductIncludes[@product.ProductName], new { @class = "productCheckbox" })</td>
-                        <td class="productsThirdColumn">Description: @product.ProductDescription </td>
-                        <td class="productsSecondColumn">@Html.TextBoxFor(m => m.QuantityOfProducts[product.ProductName], new { @Value = Model.QuantityOfProducts[@product.ProductName]})</td>
-                    </tr>
+                        @if (product.IsOptional == false)
+                        {
+                            <td class="productsFirstColumn">Included</td>
+                            <td style="display:none">@Html.CheckBoxFor(m => m.planProductIncludes[@product.ProductName])</td>
+                                                        }
+                        @if (product.IsOptional == true)
+                        {
+                            <td class="productsFirstColumn">@Html.CheckBoxFor(m => m.planProductIncludes[@product.ProductName] )</td>
+                        }
+                            <td class="productsThirdColumn">
+                                <strong>Name: @product.ProductName</strong> <br />
+                                Description: @product.ProductDescription </td>
+                            <td class="productsSecondColumn">@Html.TextBoxFor(m => m.QuantityOfProducts[product.ProductName], new { @Value = Model.QuantityOfProducts[@product.ProductName]})</td>
+                        </tr>
+               
                 }
-            </tbody>
-        </table>
-        <br />
-        <input id="Button1" type="button" value="Back" onclick="@("window.location.href='" + @Url.Action("Index", "Registration") + "'");" />
+                    </tbody>
+                </table>
+                    <br />
+                    <input id="Button1" type="button" value="Back" onclick="@("window.location.href='" + @Url.Action("Index", "Registration") + "'");" />
 
-        <input type="submit" value="Next" name="action:Step3GetCustomerInformation" />
-        <p class="hey"> hi </p>
-    </div>
-</form>
+                    <input type="submit" value="Next" name="action:Step3GetCustomerInformation" />
+                    <p class="hey"> hi </p>
+                </div>
+            </form>
 
-<script>
-    $(document).ready(function () {
-
-        alert("Hold");
-        $(".productCheckbox").change(function () {
-            $("p").css('background-color', 'orange');
-        });
-
-    });
-</script>

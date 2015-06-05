@@ -59,6 +59,19 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             RegistrationVM step2RegistrationVM = new RegistrationVM();
             step2RegistrationVM.AvailableProducts = new List<PlanProduct>();
 
+            if (registrationVM.customerInformation != null)
+            {
+                Session[new RegistrationStronglyTypedSessionState().customerInformation] = registrationVM.customerInformation;
+            }
+            if (registrationVM.shippingAddress != null)
+            {
+                Session[new RegistrationStronglyTypedSessionState().shippingAddress] = registrationVM.shippingAddress;
+            }
+            if (registrationVM.sameAsBilling != null)
+            {
+                Session[new RegistrationStronglyTypedSessionState().sameAsBilling] = registrationVM.sameAsBilling;
+            }
+
             //If selectedPlanId is 0, then its value is stored in the session. If it is not 0, its value is not yet stored so let's store it.
             if (registrationVM.SelectedPlanId != 0)
             {
@@ -120,11 +133,17 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             RegistrationVM step3RegistrationVM = new RegistrationVM();
             step3RegistrationVM = registrationVM;
 
+            if (step3RegistrationVM.QuantityOfProducts != null)
+            {
+                //store previous number of products and included values into session 
+                Session[new RegistrationStronglyTypedSessionState().planProductQuantities] = step3RegistrationVM.QuantityOfProducts;
+            }
+            if (step3RegistrationVM.planProductIncludes != null)
+            {
 
-            //store previous number of products and included values into session 
-            Session[new RegistrationStronglyTypedSessionState().planProductQuantities] = step3RegistrationVM.QuantityOfProducts;
-            //store previous value of checked checkboxes into session
-            Session[new RegistrationStronglyTypedSessionState().planProductIncludes] = step3RegistrationVM.planProductIncludes;
+                //store previous value of checked checkboxes into session
+                Session[new RegistrationStronglyTypedSessionState().planProductIncludes] = step3RegistrationVM.planProductIncludes;
+            }
 
             step3RegistrationVM.customerInformation = new Customer();
             step3RegistrationVM.shippingAddress = new Address();
@@ -182,7 +201,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                     Value = step3RegistrationVM.listOfCountriesCountry[i].Id.ToString(),
                 });
             }
-
             return View(step3RegistrationVM);
         }
 
@@ -258,8 +276,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                     }
                 }
             }
-
-
             //A customer address preference ID must be included to post the address. Here, we arbitrarily set it to the value of 23.
             //postBillingAddress.CustomerAddressPreferenceId = 36;
             postBillingAddress.AddressType = "Shipping";
@@ -296,11 +312,8 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
 
             Automapping.SetupSubscriptionGetToPutMapping();
-
-
             var putSubscription = Mapper.Map<Subscription, Fusebill.ApiWrapper.Dto.Put.Subscription>(subResult);
             #endregion
-
 
             ApiClient.PutSubscription(putSubscription);
             var postedCustomerActivation = ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
@@ -315,7 +328,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             return View(step4RegistrationVM);
         }
 
-
+        [HttpGet]
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "Step5GetPayment")]
         public ActionResult Step5GetPayment()

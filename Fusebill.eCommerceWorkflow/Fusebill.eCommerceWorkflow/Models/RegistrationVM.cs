@@ -37,9 +37,9 @@ namespace Fusebill.eCommerceWorkflow.Models
         public Customer customerInformation { get; set; }
 
         //The Address objects contains properties pertaining to the billing address, such as City and PostalZip 
-        public Address shippingAddress { get; set; }
+        public Address billingAddress { get; set; }
 
-        public bool sameAsBilling { get; set; }
+        public bool shippingSameAsBilling { get; set; }
 
         public List<SelectListItem> listOfCountriesSLI {get;set;}
 
@@ -48,6 +48,10 @@ namespace Fusebill.eCommerceWorkflow.Models
         public List<Country> listOfCountriesCountry { get; set; }
 
         public Customer postedCustomer { get; set; }
+
+        public string selectedCountryName { get; set; }
+
+        public string selectedStateyName { get; set; }
 
         //This has the planFrequencyID?
         public PlanOrderToCashCycle planOrderToCashCycle { get; set; }
@@ -63,10 +67,5 @@ namespace Fusebill.eCommerceWorkflow.Models
         public string cvv { get; set;  }
 
         public string creditCardNumber { get; set; }
-
-        //contains strongly typed keys for the session states
-        public RegistrationStronglyTypedSessionState registrationStronglyTypedSessionState { get; set; }
-
-
     }
 }

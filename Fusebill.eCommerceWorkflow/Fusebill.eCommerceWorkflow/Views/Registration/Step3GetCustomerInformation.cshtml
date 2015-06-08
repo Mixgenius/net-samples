@@ -48,44 +48,44 @@
                     <h1>Shipping information</h1>
                 <div class="customerBillingInfo">
                     @Html.Label("Company Name:")
-                    @Html.ValidationMessageFor(m => m.shippingAddress.CompanyName)   <br />
-                    @Html.TextBoxFor(m => m.shippingAddress.CompanyName, new { @Value = Model.shippingAddress.CompanyName, @placeholder = "Company name" })  
+                    @Html.ValidationMessageFor(m => m.billingAddress.CompanyName)   <br />
+                    @Html.TextBoxFor(m => m.billingAddress.CompanyName, new { @Value = Model.billingAddress.CompanyName, @placeholder = "Company name" })  
 
   
                    
                     @Html.Label("Primary Address:")
-                    @Html.ValidationMessageFor(m => m.shippingAddress.Line1) <br />
-                    @Html.TextBoxFor(m => m.shippingAddress.Line1, new { @Value = Model.shippingAddress.Line1, @placeholder = "Primary address" })
+                    @Html.ValidationMessageFor(m => m.billingAddress.Line1) <br />
+                    @Html.TextBoxFor(m => m.billingAddress.Line1, new { @Value = Model.billingAddress.Line1, @placeholder = "Primary address" })
 
 
 
                     @Html.Label("Secondary Address:")
-                    @Html.ValidationMessageFor(m => m.shippingAddress.Line2)     <br />
-                    @Html.TextBoxFor(m => m.shippingAddress.Line2, null, new { @placeholder = "Secondary address" })
+                    @Html.ValidationMessageFor(m => m.billingAddress.Line2)     <br />
+                    @Html.TextBoxFor(m => m.billingAddress.Line2, null, new { @placeholder = "Secondary address" })
 
 
                     @Html.Label("City:")
-                    @Html.ValidationMessageFor(m => m.shippingAddress.City)      <br />
-                   @Html.TextBoxFor(m => m.shippingAddress.City, null, new { @placeholder = "City" })  
+                    @Html.ValidationMessageFor(m => m.billingAddress.City)      <br />
+                   @Html.TextBoxFor(m => m.billingAddress.City, null, new { @placeholder = "City" })  
 
 
                     @Html.Label("Postal Code:")
-                    @Html.ValidationMessageFor(m => m.shippingAddress.PostalZip)     <br />
-                    @Html.TextBoxFor(m => m.shippingAddress.PostalZip, null, new { @placeholder = "Postal zip" })
+                    @Html.ValidationMessageFor(m => m.billingAddress.PostalZip)     <br />
+                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new { @placeholder = "Postal zip" })
 
                     @Html.Label("Same as billing: ")
-                    @Html.CheckBoxFor(m => m.sameAsBilling)
+                    @Html.CheckBoxFor(m => m.shippingSameAsBilling)
 
                     @Html.Label("Country:")
-                    @Html.ValidationMessageFor(m => m.shippingAddress.CountryId)     <br />
-                    @Html.DropDownListFor(m => m.shippingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
+                    @Html.ValidationMessageFor(m => m.billingAddress.CountryId)     <br />
+                    @Html.DropDownListFor(m => m.billingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
 
                     @Html.Label("State:")
-                    @Html.DropDownListFor(m => m.shippingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
+                    @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
 
-                    <div style="display:none">
-                        @Html.TextBoxFor(m => m.shippingAddress.Country, new { @class = "countryName" })
-                        @Html.TextBoxFor(m => m.shippingAddress.State, new { @class = "stateName" })
+                    <div>
+                        @Html.TextBoxFor(m => m.billingAddress.Country, new { @class = "countryName" })
+                        @Html.TextBoxFor(m => m.billingAddress.State, new { @class = "stateName" })
                     </div>
 
 
@@ -106,7 +106,9 @@
     <script>
     $(document).ready(function () {
       
+
         var model = @Html.HtmlConvertToJson(Model);
+        var selectedCountryCountry;
 
         $(".country").click(
         function () {
@@ -114,14 +116,14 @@
 
             //the value of the selcted country
             var selectedCountryValue = $(".country").val();
-
+            
             //we find the selected country's position in the countries list in order to access its states
             for (var i = 0; i < model.listOfCountriesCountry.length; i++)
             {
                 if (selectedCountryValue == model.listOfCountriesCountry[i].id)
                 {
-                    var selectedCountryCountry = model.listOfCountriesCountry[i];
-                    $(".countryName").text(selectedCountryCountry);
+                    selectedCountryCountry = model.listOfCountriesCountry[i];
+                    $(".countryName").val(selectedCountryCountry.name);
                 }
             }
 
@@ -131,12 +133,11 @@
                 $(".state").append($('<option>', {
                     value: selectedCountryCountry.states[i].id,
                     text: selectedCountryCountry.states[i].name
-
+                  
                 }));
+               
             };
         });
-
-     
 
     });
     </script>

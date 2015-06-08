@@ -19,7 +19,7 @@
             <br />
             <br />
             <label>Card Number</label>
-            @*@Html.DropDownListFor(m => m.creditCardNumber, Model.listOfCreditCards, "Select your card")*@
+            @Html.DropDownListFor(m => m.creditCardNumber, Model.listOfCreditCards, "Select your card")
 
             <label>CVV</label>
             @Html.TextBoxFor(m => m.cvv, new { @placeholder = "XXX" })

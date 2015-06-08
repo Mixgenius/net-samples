@@ -23,32 +23,37 @@
             </thead>
             <tbody>
 
-                @foreach (var product in Model.AvailableProducts)
-                       {
+                @*To pass each product's quantity and included options to the viewModal, we must pass it to the modal. Yeah, i know, obviously
+                Thus, we use a for loop instead of a foreach loop *@
+
+                @for (int i = 0; i < Model.AvailableProducts.Count; i++)
+                {
                     <tr>
-                        @if (product.IsOptional == false)
+                        @if (Model.AvailableProducts[i].IsOptional == false)
                         {
                             <td class="productsFirstColumn">Included</td>
-                            <td style="display:none">@Html.CheckBoxFor(m => m.planProductIncludes[@product.ProductName])</td>
-                                                        }
-                        @if (product.IsOptional == true)
-                        {
-                            <td class="productsFirstColumn">@Html.CheckBoxFor(m => m.planProductIncludes[@product.ProductName] )</td>
+                          @*  <td style="display:none">@Html.CheckBoxFor(m => m.AvailableProducts[i].)</td> *@
                         }
-                            <td class="productsThirdColumn">
-                                <strong>Name: @product.ProductName</strong> <br />
-                                Description: @product.ProductDescription </td>
-                            <td class="productsSecondColumn">@Html.TextBoxFor(m => m.QuantityOfProducts[product.ProductName], new { @Value = Model.QuantityOfProducts[@product.ProductName]})</td>
-                        </tr>
-               
+                        @if (Model.AvailableProducts[i].IsOptional == true)
+                        {
+                            <td class="productsFirstColumn"></td>
+                        }
+                        <td class="productsThirdColumn">
+                            <strong>Name: @Model.AvailableProducts[i].ProductName</strong> <br />
+                            Description: @Model.AvailableProducts[i].ProductDescription
+                        </td>
+                        <td class="productsSecondColumn">@Html.TextBoxFor(m => m.AvailableProducts[i].Quantity)</td>
+                    </tr>
                 }
+                
+           
                     </tbody>
                 </table>
                     <br />
                     <input id="Button1" type="button" value="Back" onclick="@("window.location.href='" + @Url.Action("Index", "Registration") + "'");" />
 
                     <input type="submit" value="Next" name="action:Step3GetCustomerInformation" />
-                    <p class="hey"> hi </p>
+            
                 </div>
             </form>
 

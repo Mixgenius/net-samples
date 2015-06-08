@@ -25,20 +25,20 @@
             @Html.TextBoxFor(m => m.cvv, new { @placeholder = "XXX" })
 
 
-            @if (Model.sameAsBilling)
+            @if (Model.shippingSameAsBilling)
             {
                 <label>First Name: @Model.customerInformation.FirstName</label>
                 <label>Last Name: @Model.customerInformation.LastName</label>
-                <label>Primary Address: @Model.shippingAddress.Line1</label>
-                <label>Secondary Address: @Model.shippingAddress.Line2</label>
-                <label>Postal Code: @Model.shippingAddress.PostalZip</label>
+                <label>Primary Address: @Model.billingAddress.Line1</label>
+                <label>Secondary Address: @Model.billingAddress.Line2</label>
+                <label>Postal Code: @Model.billingAddress.PostalZip</label>
 
-                <label>Country: @Model.shippingAddress.Country</label>
-                <label>State: @Model.shippingAddress.State</label>
-                <label>City: @Model.shippingAddress.City</label>
+                <label>Country: @Model.billingAddress.Country</label>
+                <label>State: @Model.billingAddress.State</label>
+                <label>City: @Model.billingAddress.City</label>
             }
 
-            @if (!Model.sameAsBilling)
+            @if (!Model.shippingSameAsBilling)
             {
                 <label>First Name</label>
                 @Html.ValidationMessageFor(m => m.customerInformation.FirstName)    <br />
@@ -48,32 +48,33 @@
                 @Html.ValidationMessageFor(m => m.customerInformation.LastName) <br />
                 @Html.TextBoxFor(m => m.customerInformation.LastName, new { @placeholder = "Last name" })
 
-                <label>Primary Address</label>
-                @Html.ValidationMessageFor(m => m.shippingAddress.Line1)    <br />
-                @Html.TextBoxFor(m => m.shippingAddress.Line1, new { @placeholder = "Primary Address" })
+                @*
+    <label>Primary Address</label>
+    @Html.ValidationMessageFor(m => m.shippingAddress.Line1)    <br />
+    @Html.TextBoxFor(m => m.shippingAddress.Line1, new { @placeholder = "Primary Address" })
 
-                <label>Secondary Address</label>
-                @Html.ValidationMessageFor(m => m.shippingAddress.Line2)    <br />
-                @Html.TextBoxFor(m => m.shippingAddress.Line2, new { @placeholder = "Secondary Address" })
+    <label>Secondary Address</label>
+    @Html.ValidationMessageFor(m => m.shippingAddress.Line2)    <br />
+    @Html.TextBoxFor(m => m.shippingAddress.Line2, new { @placeholder = "Secondary Address" })
 
-                <label>Zip</label>
-                @Html.ValidationMessageFor(m => m.shippingAddress.PostalZip)    <br />
-                @Html.TextBoxFor(m => m.shippingAddress.PostalZip, new { @placeholder = "Zip Code" })
+    <label>Zip</label>
+    @Html.ValidationMessageFor(m => m.shippingAddress.PostalZip)    <br />
+    @Html.TextBoxFor(m => m.shippingAddress.PostalZip, new { @placeholder = "Zip Code" })
 
 
-                <label>City</label>
-                @Html.ValidationMessageFor(m => m.shippingAddress.City) <br />
-                @Html.TextBoxFor(m => m.shippingAddress.City, new { @placeholder = "City" })
+    <label>City</label>
+    @Html.ValidationMessageFor(m => m.shippingAddress.City) <br />
+    @Html.TextBoxFor(m => m.shippingAddress.City, new { @placeholder = "City" })
 
-                @Html.Label("Country:")
-                @Html.ValidationMessageFor(m => m.shippingAddress.CountryId)    <br />
-                @Html.DropDownListFor(m => m.shippingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
+    @Html.Label("Country:")
+    @Html.ValidationMessageFor(m => m.shippingAddress.CountryId)    <br />
+    @Html.DropDownListFor(m => m.shippingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
 
-                @Html.Label("State:")   
-                @Html.ValidationMessageFor(m => m.shippingAddress.StateId)  <br />
-                @Html.DropDownListFor(m => m.shippingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
+    @Html.Label("State:")
+    @Html.ValidationMessageFor(m => m.shippingAddress.StateId)  <br />
+    @Html.DropDownListFor(m => m.shippingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
 
-                
+                *@
             }
 
             <br />
@@ -106,7 +107,6 @@
                     if (selectedCountryValue == model.listOfCountriesCountry[i].id)
                     {
                         var selectedCountryCountry = model.listOfCountriesCountry[i];
-                        $(".countryName").text(selectedCountryCountry);
                     }
                 }
 

@@ -167,6 +167,12 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                     ((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts[i].IsIncluded = registrationVM.AvailableProducts[i].IsIncluded;
                 }
             }
+            else
+            {
+                step3RegistrationVM.billingAddress = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress;
+                step3RegistrationVM.customerInformation = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation;
+                step3RegistrationVM.shippingSameAsBilling = ((RegistrationVM)Session[REGISTRATIONVM]).shippingSameAsBilling;
+            }
 
 
             step3RegistrationVM.listOfCountriesSLI = new List<SelectListItem>();
@@ -205,7 +211,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
              * which exists if we came from step3 or step5. */
 
             //this if statement is equivalement to simply if (registartionVM.customerInformation!= null) because if one is null, all must be null
-            if ((registrationVM.customerInformation != null && registrationVM.billingAddress != null && registrationVM.shippingSameAsBilling != null))
+            if ((registrationVM.customerInformation != null && registrationVM.billingAddress != null))
             {
                 ((RegistrationVM)Session[REGISTRATIONVM]).shippingSameAsBilling = registrationVM.shippingSameAsBilling;
                 ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation = registrationVM.customerInformation;
@@ -327,56 +333,59 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         }
 
 
-    /*
+ /// <summary>
+ /// We obtain credit card and payment information
+ /// </summary>
+ /// <returns></returns>
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "Step5GetPayment")]
         public ActionResult Step5GetPayment()
         {
-
             RegistrationVM step5RegistrationVM = new RegistrationVM();
 
             step5RegistrationVM.billingAddress = new Address();
             step5RegistrationVM.billingAddress.AddressType = "Shipping";
-
             step5RegistrationVM.customerInformation = new Customer();
 
-            step5RegistrationVM.shippingSameAsBilling = (bool)Session[new RegistrationStronglyTypedSessionState().shippingSameAsBilling];
 
-            //  if the shippingSameAsBilling checkbox is checked, we will use the same fields, otherwise, new fields
-            if (step5RegistrationVM.shippingSameAsBilling)
+            //step5RegistrationVM.shippingSameAsBilling will be used by the view to determine whether to show text or textboxes
+            step5RegistrationVM.shippingSameAsBilling = ((RegistrationVM)Session[REGISTRATIONVM]).shippingSameAsBilling;
+
+
+            //if the user checked the "shipping is same as billing" checkbox in step3, we supply the view's fields with previously entered fields
+            //which we had placed in the session
+            if (( (RegistrationVM) Session[REGISTRATIONVM] ).shippingSameAsBilling == true)
             {
-                var shipping = (Address)Session[new RegistrationStronglyTypedSessionState().shippingAddress];
-                step5RegistrationVM.billingAddress.Line1 = shipping.Line1;
-                step5RegistrationVM.billingAddress.Line2 = shipping.Line2;
-                step5RegistrationVM.billingAddress.PostalZip = shipping.PostalZip;
-                step5RegistrationVM.billingAddress.City = shipping.City;
-                step5RegistrationVM.billingAddress.Country = (string)Session[new RegistrationStronglyTypedSessionState().selectedCountryName];
-                step5RegistrationVM.billingAddress.State = (string)Session[new RegistrationStronglyTypedSessionState().selectedStateName];
-                var customer = (Customer)Session[new RegistrationStronglyTypedSessionState().customerInformation];
-                step5RegistrationVM.customerInformation.FirstName = customer.FirstName;
-                step5RegistrationVM.customerInformation.LastName = customer.LastName;
+                step5RegistrationVM.billingAddress.Line1 = ((RegistrationVM) Session[REGISTRATIONVM] ).billingAddress.Line1;
+                step5RegistrationVM.billingAddress.Line2 = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.Line2;
+                step5RegistrationVM.billingAddress.PostalZip = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.PostalZip;
+                step5RegistrationVM.billingAddress.City = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.City;
+                step5RegistrationVM.billingAddress.Country = ((RegistrationVM) Session[REGISTRATIONVM] ).selectedCountryName;
+                step5RegistrationVM.billingAddress.State = ((RegistrationVM)Session[REGISTRATIONVM]).selectedStateyName;
+
+                step5RegistrationVM.customerInformation.FirstName = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.FirstName;
+                step5RegistrationVM.customerInformation.LastName = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.LastName;
             }
-
-            step5RegistrationVM.listOfCountriesSLI = new List<SelectListItem>();
-            step5RegistrationVM.listOfCountriesCountry = new List<Country>();
-            step5RegistrationVM.listOfCountriesCountry = ApiClient.GetCountries();
-
-            for (int i = 0; i < step5RegistrationVM.listOfCountriesCountry.Count; i++)
+            else
             {
-                step5RegistrationVM.listOfCountriesSLI.Add(new SelectListItem
+                step5RegistrationVM.listOfCountriesSLI = new List<SelectListItem>();
+                step5RegistrationVM.listOfCountriesCountry = new List<Country>();
+                step5RegistrationVM.listOfCountriesCountry = ApiClient.GetCountries();
+
+                for (int i = 0; i < step5RegistrationVM.listOfCountriesCountry.Count; i++)
                 {
+                    step5RegistrationVM.listOfCountriesSLI.Add(new SelectListItem
+                    {
 
-                    Text = step5RegistrationVM.listOfCountriesCountry[i].Name,
-                    Value = step5RegistrationVM.listOfCountriesCountry[i].Id.ToString(),
-                    Selected = false
-                });
+                        Text = step5RegistrationVM.listOfCountriesCountry[i].Name,
+                        Value = step5RegistrationVM.listOfCountriesCountry[i].Id.ToString(),
+                        Selected = false
+                    });
+                }
+
             }
-
-
-
 
             step5RegistrationVM.listOfCreditCards = new List<SelectListItem>();
-
 
             step5RegistrationVM.listOfCreditCards.Add(new SelectListItem
             {
@@ -391,9 +400,15 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             return View(step5RegistrationVM);
         }
+/*
 
-
-
+        /// <summary>
+        /// Please note that this method is for demonstration purposes only and is NOT PCI Compliant. For PCI Compliant calls, please view an example on our website
+        /// 
+        /// LIST WEBSITE...............AHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!
+        /// </summary>
+        /// <param name="registrationVM"></param>
+        /// <returns></returns>
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "Step6GetActivation")]
         public ActionResult Step6GetActivation(RegistrationVM registrationVM)
@@ -502,7 +517,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             }
             return View();
         }
-       */
+     */
          
     }
  }

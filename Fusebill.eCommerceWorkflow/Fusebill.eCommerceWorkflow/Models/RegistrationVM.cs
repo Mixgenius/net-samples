@@ -47,7 +47,9 @@ namespace Fusebill.eCommerceWorkflow.Models
 
         public List<Country> listOfCountriesCountry { get; set; }
 
-        public Customer postedCustomer { get; set; }
+        public Customer returnedCustomerActivation { get; set; }
+
+        public Customer returnedCustomer { get; set; }
 
         public string selectedCountryName { get; set; }
 

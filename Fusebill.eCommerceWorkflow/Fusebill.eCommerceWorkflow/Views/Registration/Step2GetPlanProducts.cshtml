@@ -32,11 +32,11 @@
                         @if (Model.AvailableProducts[i].IsOptional == false)
                         {
                             <td class="productsFirstColumn">Included</td>
-                          @*  <td style="display:none">@Html.CheckBoxFor(m => m.AvailableProducts[i].)</td> *@
+                            <td>@Html.CheckBoxFor(m => m.AvailableProducts[i].IsIncluded )</td> 
                         }
                         @if (Model.AvailableProducts[i].IsOptional == true)
                         {
-                            <td class="productsFirstColumn"></td>
+                            <td class="productsFirstColumn">@Html.CheckBoxFor( m => m.AvailableProducts[i].IsIncluded)</td>
                         }
                         <td class="productsThirdColumn">
                             <strong>Name: @Model.AvailableProducts[i].ProductName</strong> <br />

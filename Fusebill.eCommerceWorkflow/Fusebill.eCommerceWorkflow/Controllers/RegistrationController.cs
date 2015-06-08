@@ -80,7 +80,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             {
                 Session[REGISTRATIONVM] = registrationVM;
                 Session[STEP2FIRSTVISIT] = false;   //if we enter from Step 3 to step 2, we will not store the local view model and thus will sustain the planFrequencyID
-
             }
 
             //we get the planID from the Session because it contains the planID if we proceeded from step1 or step3 whereas the local viewmodal only contains the planID
@@ -89,9 +88,19 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             ((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts = ApiClient.GetPlanProductsByPlanId(sessionRegistration.SelectedPlanId, new QueryOptions { }).Results;
 
             //we populate the AvailableProducts section of the ViewModal with the AvailableProducts section of the Session
-            var j = ((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts;
-
             step2RegistrationVM.AvailableProducts = ((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts;
+
+            //now, we set the IsIncluded property of certain items in AvailableProducts to true
+            for (int i = 0; i < ((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts.Count; i++)
+            {
+                if (((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts[i].IsOptional == false)
+                {
+                    step2RegistrationVM.AvailableProducts[i].IsIncluded = true;
+                }
+            }
+
+            
+
 
 
             /*
@@ -151,17 +160,16 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             if (registrationVM.AvailableProducts != null)
             {
-                //we use a for loop instead of a foreach loop to also loop through the session's AvailableProducts
+                //we use a for loop instead of a foreach loop to also loop through the session's AvailableProducts. We seek to set its quantities and inclusions
                 for (int i = 0; i < registrationVM.AvailableProducts.Count; i++)
                 {
                     ((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts[i].Quantity = registrationVM.AvailableProducts[i].Quantity;
-
+                    ((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts[i].IsIncluded = registrationVM.AvailableProducts[i].IsIncluded;
                 }
             }
 
 
             step3RegistrationVM.listOfCountriesSLI = new List<SelectListItem>();
-
 
             step3RegistrationVM.listOfCountriesCountry = new List<Country>();
             step3RegistrationVM.listOfCountriesCountry = ApiClient.GetCountries();
@@ -214,13 +222,9 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 postCustomer.PrimaryEmail = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.PrimaryEmail;
                 postCustomer.PrimaryPhone = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.PrimaryPhone;
 
-                var returnedCustomer = ApiClient.PostCustomer(postCustomer);
+                ((RegistrationVM) Session[REGISTRATIONVM]).returnedCustomer = ApiClient.PostCustomer(postCustomer);
 
-                Fusebill.ApiWrapper.Dto.Post.CustomerActivation postCustomerActivation = new ApiWrapper.Dto.Post.CustomerActivation();
-                postCustomerActivation.ActivateAllSubscriptions = true;
-                postCustomerActivation.ActivateAllDraftPurchases = true;
-                postCustomerActivation.CustomerId = returnedCustomer.Id;
-
+      
                 //  *****************************************************************************
                 //============================== CREATING BILLING ADDRESS ======================================
                 //  *****************************************************************************
@@ -236,7 +240,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
                 postBillingAddress.AddressType = "Billing";
                 //postBillingAddress.CustomerAddressPreferenceId = 36;
-                var returnedBilling = ApiClient.PostAddress(postBillingAddress);
+             //   var returnedBilling = ApiClient.PostAddress(postBillingAddress);
          
 
                 //given the selected state's and country's IDs, we shall find their respective names, which are shown in the invoice and possibly
@@ -264,64 +268,71 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             }
      
          //  *****************************************************************************
-                //============================== CREATING SUBSCRIPTION ======================================
-                //  *****************************************************************************
+         //============================== CREATING SUBSCRIPTION ======================================
+         //  *****************************************************************************
     
-
-            #region                             Creating a Subscription
             Fusebill.ApiWrapper.Dto.Post.Subscription postSubscription = new ApiWrapper.Dto.Post.Subscription();
+            postSubscription.CustomerId = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomer.Id;
+            postSubscription.PlanFrequencyId = ((RegistrationVM)Session[REGISTRATIONVM]).SelectedPlanFrequencyID;
+
+            var returnedSubscription = ApiClient.PostSubscription(postSubscription);
 
 
-          //  postSubscription.CustomerId = c.Id;
-            postSubscription.PlanFrequencyId = ((long)Session[new RegistrationStronglyTypedSessionState().selectedPlanFrequencyID]);
+          //  *****************************************************************************
+          //============================== PUTTING UPDATED SUBSCRIPTION ======================================
+         //  *****************************************************************************
 
-            var subResult = ApiClient.PostSubscription(postSubscription);
-
-            //putting items into subscription
-
-            step4RegistrationVM.AvailableProducts = ApiClient.GetPlanProductsByPlanId(((long)Session[new RegistrationStronglyTypedSessionState().selectedPlanId]), new QueryOptions() { }).Results;
-            step4RegistrationVM.QuantityOfProducts = ((Dictionary<string, decimal>)Session[new RegistrationStronglyTypedSessionState().planProductQuantities]);
-            step4RegistrationVM.planProductIncludes = ((Dictionary<string, bool>)Session[new RegistrationStronglyTypedSessionState().planProductIncludes]);
-            step4RegistrationVM.AvailableProducts = ((List<PlanProduct>)Session[new RegistrationStronglyTypedSessionState().planProducts]);
-
-            for (int i = 0; i < step4RegistrationVM.AvailableProducts.Count; i++)
-            {
-                var product = step4RegistrationVM.QuantityOfProducts[step4RegistrationVM.AvailableProducts[i].ProductName];
-                var include = step4RegistrationVM.planProductIncludes[step4RegistrationVM.AvailableProducts[i].ProductName];
-                subResult.SubscriptionProducts[i].Quantity = product;
-                subResult.SubscriptionProducts[i].IsIncluded = include;
-            }
-
+                for (int i = 0; i < ((RegistrationVM) Session[REGISTRATIONVM]).AvailableProducts.Count; i++)
+                {
+                    var quantity = ((RegistrationVM) Session[REGISTRATIONVM]).AvailableProducts[i].Quantity;
+                    var inclusion = ((RegistrationVM) Session[REGISTRATIONVM]).AvailableProducts[i].IsIncluded;
+                    returnedSubscription.SubscriptionProducts[i].Quantity = quantity;
+                    returnedSubscription.SubscriptionProducts[i].IsIncluded = inclusion;
+                }
 
             Automapping.SetupSubscriptionGetToPutMapping();
-            var putSubscription = Mapper.Map<Subscription, Fusebill.ApiWrapper.Dto.Put.Subscription>(subResult);
-            #endregion
+            var putSubscription = Mapper.Map<Subscription, Fusebill.ApiWrapper.Dto.Put.Subscription>(returnedSubscription);
 
             ApiClient.PutSubscription(putSubscription);
-
-
-
-           // var postedCustomerActivation = ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
-
-
-            if (Session[new RegistrationStronglyTypedSessionState().postCustomerActivation] == null)
-            {
-  //              Session[new RegistrationStronglyTypedSessionState().postCustomerActivation] = postedCustomerActivation;
             }
 
-            //we make an instance of the returned customer to provide its values to the field
-            step4RegistrationVM.postedCustomer = new Customer();
-            step4RegistrationVM.postedCustomer = (Customer)Session[new RegistrationStronglyTypedSessionState().postCustomerActivation];
+            Fusebill.ApiWrapper.Dto.Post.CustomerActivation postCustomerActivation = new ApiWrapper.Dto.Post.CustomerActivation();
+            postCustomerActivation.ActivateAllSubscriptions = true;
+            postCustomerActivation.ActivateAllDraftPurchases = true;
+            postCustomerActivation.CustomerId = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomer.Id;
+            ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation = ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
+
+
+            var asdf = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation;
+            
+            //now, we set the properties that will be displayed on the step4 view with the properties from the Session. We use postedCustomer because the view is set to that. But we could
+            //also change the view to take customerInfo and use customerInfo here.
+            step4RegistrationVM.returnedCustomerActivation = new Customer();
+
+            step4RegistrationVM.returnedCustomerActivation.FirstName = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.FirstName ;
+            step4RegistrationVM.returnedCustomerActivation.LastName = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.LastName ;
+
+             step4RegistrationVM.returnedCustomerActivation.PrimaryEmail = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.PrimaryEmail ;
+            step4RegistrationVM.returnedCustomerActivation.PrimaryPhone = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.PrimaryPhone ;
+
+
+            step4RegistrationVM.returnedCustomerActivation.InvoicePreview = new InvoicePreview();
+
+            step4RegistrationVM.returnedCustomerActivation.InvoicePreview.Subtotal = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.Subtotal;
+            step4RegistrationVM.returnedCustomerActivation.InvoicePreview.TotalTaxes = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.TotalTaxes;
+            step4RegistrationVM.returnedCustomerActivation.InvoicePreview.Total = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.Total;
+
 
             return View(step4RegistrationVM);
         }
 
-        /*
-        [HttpPost]
 
+    /*
+        [HttpPost]
         [MultipleButton(Name = "action", Argument = "Step5GetPayment")]
         public ActionResult Step5GetPayment()
         {
+
             RegistrationVM step5RegistrationVM = new RegistrationVM();
 
             step5RegistrationVM.billingAddress = new Address();
@@ -491,7 +502,9 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             }
             return View();
         }
-         * */
+       */
+         
     }
-}
+ }
+
 

@@ -30,6 +30,9 @@ namespace Fusebill.ApiWrapper.Dto.Get
 
     public class PlanProduct : BaseDto
     {
+
+        public bool IsIncluded { get; set; }
+
         [JsonProperty(PropertyName = "status")]
         public string Status { get; set; }
 

@@ -18,42 +18,40 @@
         <table class="invoiceTable">
             <tr>
                 <td>@Html.Label("First Name:")</td>
-                <td>@Html.Label(Model.postedCustomer.FirstName)</td>
+                <td>@Html.Label(Model.returnedCustomerActivation.FirstName)</td>
             </tr>
 
 
             <tr>
                 <td>@Html.Label("Last Name:")</td>
-                <td>@Html.Label(Model.postedCustomer.LastName)</td>
+                <td>@Html.Label(Model.returnedCustomerActivation.LastName)</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Primary Email:")</td>
-                <td>@Html.Label(Model.postedCustomer.PrimaryEmail)</td>
+                <td>@Html.Label(Model.returnedCustomerActivation.PrimaryEmail)</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Primary Phone:")</td>
-                <td>@Html.Label(Model.postedCustomer.PrimaryPhone)</td>
+                <td>@Html.Label(Model.returnedCustomerActivation.PrimaryPhone)</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Subtotal:") </td>
-                <td>@Model.postedCustomer.InvoicePreview.Subtotal
+                <td>@Model.returnedCustomerActivation.InvoicePreview.Subtotal
             </tr>
 
             <tr>
                 <td> @Html.Label("Total taxes:")  </td>
-                <td>@Model.postedCustomer.InvoicePreview.TotalTaxes
+                <td>@Model.returnedCustomerActivation.InvoicePreview.TotalTaxes
             </tr>
             
-            @Model.postedCustomer.InvoicePreview.Total 
-            @Html.Label(Model.postedCustomer.InvoicePreview.TotalString)
-
-        <tr>
-                <td> @Html.Label("Total:") </td>
-                <td>@Model.postedCustomer.InvoicePreview.Total </td>
+            <tr>
+                <td> @Html.Label("Total taxes:")  </td>
+                <td>@Model.returnedCustomerActivation.InvoicePreview.Total</td>
             </tr>
+ 
         </table>
 
     <br />

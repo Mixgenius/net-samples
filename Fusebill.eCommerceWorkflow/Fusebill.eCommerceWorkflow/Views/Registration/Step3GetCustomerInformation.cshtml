@@ -21,7 +21,7 @@
     <table class="customerTable">
         <tr>
             <td>
-                <h1 style="margin-top: -175px; color:darkslategrey; ">Contact information</h1>
+                <h1 style="color:darkslategrey; ">Contact information</h1>
                 <div class="customerCustomerInfo">
                     @Html.Label("First Name:")
                     @Html.ValidationMessageFor(m => m.customerInformation.FirstName) <br />
@@ -39,11 +39,10 @@
                     @Html.Label("Phone:")
                     @Html.ValidationMessageFor(m => m.customerInformation.PrimaryPhone) <br />
                     @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone, new { @Value = Model.customerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX" })
-
                 </div>
 
-                <h1>Credit Card Information</h1>
-                <div style="border: 2px solid black">
+                <h1 style="color: darkslategrey;">Credit Card Information</h1>
+                <div style="border: 1px solid lightgrey; margin-left: 20px; margin-top: 10px;">
                     <p>Same as billing:</p>
                     @Html.CheckBoxFor(m => m.creditCardSameAsBilling)
                 </div>
@@ -56,7 +55,6 @@
                     @Html.Label("Company Name:")
                     @Html.ValidationMessageFor(m => m.billingAddress.CompanyName)   <br />
                     @Html.TextBoxFor(m => m.billingAddress.CompanyName, new { @Value = Model.billingAddress.CompanyName, @placeholder = "Company name" })
-
 
 
                     @Html.Label("Primary Address:")

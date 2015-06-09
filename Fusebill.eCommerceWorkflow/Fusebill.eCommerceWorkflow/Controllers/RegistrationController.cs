@@ -283,12 +283,15 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             RegistrationVM step6RegistrationVM = new RegistrationVM();
             step6RegistrationVM = registrationVM;
 
+
             var postCreditCard = PostCreditCardAndPayment(step6RegistrationVM);
-            var postPayment = PostPayment();
+
+            var returnedCreditCard = ApiClient.PostCreditCard(postCreditCard);
+
+            var postPayment = PostPayment(returnedCreditCard);
 
 
             //we try to post the credit card
-            ApiClient.PostCreditCard(postCreditCard);
 
             //after posting the credit card, we post the payment method, which contains the amount to charge the credit card
             ApiClient.PostPayment(postPayment);
@@ -302,7 +305,9 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             try
            {
                 //we try to post the credit card
-                ApiClient.PostCreditCard(postCreditCard);
+               ApiClient.PostCreditCard(postCreditCard);
+
+                
 
                 //after posting the credit card, we post the payment method, which contains the amount to charge the credit card
                 ApiClient.PostPayment(postPayment);
@@ -346,6 +351,8 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 return View("Step5GetPayment", step6RegistrationVM);
           }
         }
+
+  
 
 // ***********************************************************************************
 // ================================ HELPER METHODS ===================================
@@ -495,18 +502,16 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             }
         }
 
+        
 
-
-
-
-
-
-
-        private Fusebill.ApiWrapper.Dto.Post.Payment PostPayment()
+        private Fusebill.ApiWrapper.Dto.Post.Payment PostPayment(CreditCard credit)
         {
             Fusebill.ApiWrapper.Dto.Post.Payment postPayment = new Fusebill.ApiWrapper.Dto.Post.Payment();
             postPayment.Amount = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.Total;
             postPayment.CustomerId = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.Id;
+            postPayment.Source = "Manual";
+            postPayment.PaymentMethodType = "CreditCard";
+            postPayment.PaymentMethodTypeId = credit.Id;
 
             return postPayment;
         }

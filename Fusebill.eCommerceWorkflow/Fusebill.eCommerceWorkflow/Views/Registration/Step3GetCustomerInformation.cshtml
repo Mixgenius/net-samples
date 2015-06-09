@@ -61,17 +61,17 @@
 
                     @Html.Label("Secondary Address:")
                     @Html.ValidationMessageFor(m => m.billingAddress.Line2)     <br />
-                    @Html.TextBoxFor(m => m.billingAddress.Line2, null, new { @placeholder = "Secondary address" })
+                    @Html.TextBoxFor(m => m.billingAddress.Line2, null, new { @Value = Model.billingAddress.Line2, @placeholder = "Secondary address" })
 
 
                     @Html.Label("City:")
                     @Html.ValidationMessageFor(m => m.billingAddress.City)      <br />
-                   @Html.TextBoxFor(m => m.billingAddress.City, null, new { @placeholder = "City" })  
+                   @Html.TextBoxFor(m => m.billingAddress.City, null, new { @Value = Model.billingAddress.City, @placeholder = "City" })  
 
 
                     @Html.Label("Postal Code:")
                     @Html.ValidationMessageFor(m => m.billingAddress.PostalZip)     <br />
-                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new { @placeholder = "Postal zip" })
+                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new {@Value = Model.billingAddress.PostalZip,  @placeholder = "Postal zip" })
 
                     @Html.Label("Same as billing: ")
                     @Html.CheckBoxFor(m => m.shippingSameAsBilling)

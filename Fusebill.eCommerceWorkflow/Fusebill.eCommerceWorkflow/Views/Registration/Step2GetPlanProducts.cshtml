@@ -42,7 +42,7 @@
                             <strong>Name: @Model.AvailableProducts[i].ProductName</strong> <br />
                             Description: @Model.AvailableProducts[i].ProductDescription
                         </td>
-                        <td class="productsSecondColumn">@Html.TextBoxFor(m => m.AvailableProducts[i].Quantity)</td>
+                        <td class="productsSecondColumn">@Html.TextBoxFor(m => m.AvailableProducts[i].Quantity, new { @Value = Model.AvailableProducts[i].Quantity })</td>
                     </tr>
                 }       
                     </tbody>

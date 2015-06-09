@@ -29,13 +29,20 @@
             <label>CVV</label>
             @Html.TextBoxFor(m => m.cvv, new { @placeholder = "XXX" })
 
+
+
             <label>Expiration Month</label>
-            @Html.TextBoxFor(m => m.expirationMonth, new { @placeholder = "XX" })
+            @Html.DropDownListFor(m => m.expirationMonth, Model.listOfExpirationMonths, "Select your expiration month")
+
 
             <label>Expiration Year</label>
-            @Html.TextBoxFor(m => m.expirationYear, new { @placeholder = "XX" })
+            @Html.DropDownListFor(m => m.expirationYear, Model.ListOfExpirationYears, "Select your expiration year")
 
-            @if (Model.shippingSameAsBilling)
+
+
+            <label>Shipping Information</label>
+
+            @if (Model.creditCardSameAsBilling)
             {
                 <label>First Name: @Model.customerInformation.FirstName</label>
                 <label>Last Name: @Model.customerInformation.LastName</label>
@@ -48,7 +55,7 @@
                 <label>City: @Model.billingAddress.City</label>
             }
 
-            @if (!Model.shippingSameAsBilling)
+            @if (!Model.creditCardSameAsBilling)
             {
 
               

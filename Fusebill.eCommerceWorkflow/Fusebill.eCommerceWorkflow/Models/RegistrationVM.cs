@@ -41,11 +41,16 @@ namespace Fusebill.eCommerceWorkflow.Models
 
         public Address shippingAddress { get; set; }
 
-        public bool shippingSameAsBilling { get; set; }
+        public bool creditCardSameAsBilling { get; set; }
 
         public List<SelectListItem> listOfCountriesSLI {get;set;}
 
         public List<SelectListItem> listOfCreditCards { get; set; }
+        public List<SelectListItem> listOfExpirationMonths { get; set; }
+
+        public List<SelectListItem> ListOfExpirationYears { get; set; }
+
+
 
         public List<Country> listOfCountriesCountry { get; set; }
 
@@ -55,7 +60,7 @@ namespace Fusebill.eCommerceWorkflow.Models
 
         public string selectedCountryName { get; set; }
 
-        public string selectedStateyName { get; set; }
+        public string selectedStateName { get; set; }
 
         //This has the planFrequencyID?
         public PlanOrderToCashCycle planOrderToCashCycle { get; set; }

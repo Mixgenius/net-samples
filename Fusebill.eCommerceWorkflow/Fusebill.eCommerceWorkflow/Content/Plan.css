@@ -3,6 +3,12 @@ body {
     height: 900px;
 }
 
+.stepNumber {
+    margin-top: 200px;
+    text-align:center;
+    color: orange;
+}
+
 /*==============Index=============*/
 
 .plan_plan {
@@ -138,6 +144,8 @@ body {
     padding-left: 20px;
 
 }
+
+
 
 .validation-summary-errors ul li {
    color: green;

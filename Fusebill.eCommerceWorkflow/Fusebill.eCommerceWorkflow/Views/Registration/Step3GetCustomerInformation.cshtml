@@ -15,44 +15,50 @@
 
 <link href="~/Content/Plan.css" rel="stylesheet" />
 
-<h1 style="margin-top: 200px; text-align:center">Step 3/5: Enter customer information</h1>
+<h1 class="stepNumber">Step 3/5: Enter customer information</h1>
 
 <form action="" method="post" id="customerForm">
     <table class="customerTable">
         <tr>
             <td>
-                <h1 style="margin-top: -175px;" >Customer information</h1>
+                <h1 style="margin-top: -175px; color:darkslategrey; ">Contact information</h1>
                 <div class="customerCustomerInfo">
                     @Html.Label("First Name:")
                     @Html.ValidationMessageFor(m => m.customerInformation.FirstName) <br />
-                    @Html.TextBoxFor(m => m.customerInformation.FirstName,  new {@Value = Model.customerInformation.FirstName, @placeholder = "First name"})
-                      
-                     @Html.Label("Last Name:")
+                    @Html.TextBoxFor(m => m.customerInformation.FirstName, new { @Value = Model.customerInformation.FirstName, @placeholder = "First name" })
+
+                    @Html.Label("Last Name:")
                     @Html.ValidationMessageFor(m => m.customerInformation.LastName) <br />
-                   @Html.TextBoxFor(m => m.customerInformation.LastName,  new { @Value = Model.customerInformation.LastName, @placeholder = "Last name" }) 
-          
-                      @Html.Label("Email Address:")
+                    @Html.TextBoxFor(m => m.customerInformation.LastName, new { @Value = Model.customerInformation.LastName, @placeholder = "Last name" })
+
+                    @Html.Label("Email Address:")
                     @Html.ValidationMessageFor(m => m.customerInformation.PrimaryEmail) <br />
-              @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail,  new { @Value = Model.customerInformation.PrimaryEmail, @placeholder = "example@email.com"  })
+                    @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail, new { @Value = Model.customerInformation.PrimaryEmail, @placeholder = "example@email.com" })
 
 
-            @Html.Label("Phone:")
-            @Html.ValidationMessageFor(m => m.customerInformation.PrimaryPhone) <br />
-            @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone,  new { @Value = Model.customerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX"  })
-           
+                    @Html.Label("Phone:")
+                    @Html.ValidationMessageFor(m => m.customerInformation.PrimaryPhone) <br />
+                    @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone, new { @Value = Model.customerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX" })
+
+                </div>
+
+                <h1>Credit Card Information</h1>
+                <div style="border: 2px solid black">
+                    <p>Same as billing:</p>
+                    @Html.CheckBoxFor(m => m.creditCardSameAsBilling)
                 </div>
             </td>
 
             <td class="customerBetweenColumnSpace"></td>
             <td style="vertical-align:top;">
-                    <h1>Shipping information</h1>
+                <h1 style="color:darkslategrey;">Billing information</h1>
                 <div class="customerBillingInfo">
                     @Html.Label("Company Name:")
                     @Html.ValidationMessageFor(m => m.billingAddress.CompanyName)   <br />
-                    @Html.TextBoxFor(m => m.billingAddress.CompanyName, new { @Value = Model.billingAddress.CompanyName, @placeholder = "Company name" })  
+                    @Html.TextBoxFor(m => m.billingAddress.CompanyName, new { @Value = Model.billingAddress.CompanyName, @placeholder = "Company name" })
 
-  
-                   
+
+
                     @Html.Label("Primary Address:")
                     @Html.ValidationMessageFor(m => m.billingAddress.Line1) <br />
                     @Html.TextBoxFor(m => m.billingAddress.Line1, new { @Value = Model.billingAddress.Line1, @placeholder = "Primary address" })
@@ -66,15 +72,14 @@
 
                     @Html.Label("City:")
                     @Html.ValidationMessageFor(m => m.billingAddress.City)      <br />
-                   @Html.TextBoxFor(m => m.billingAddress.City, null, new { @Value = Model.billingAddress.City, @placeholder = "City" })  
+                    @Html.TextBoxFor(m => m.billingAddress.City, null, new { @Value = Model.billingAddress.City, @placeholder = "City" })
 
 
                     @Html.Label("Postal Code:")
                     @Html.ValidationMessageFor(m => m.billingAddress.PostalZip)     <br />
-                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new {@Value = Model.billingAddress.PostalZip,  @placeholder = "Postal zip" })
+                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new { @Value = Model.billingAddress.PostalZip, @placeholder = "Postal zip" })
 
-                    @Html.Label("Same as billing: ")
-                    @Html.CheckBoxFor(m => m.shippingSameAsBilling)
+
 
                     @Html.Label("Country:")
                     @Html.ValidationMessageFor(m => m.billingAddress.CountryId)     <br />
@@ -92,14 +97,14 @@
         @Html.ValidationSummary("Please enter your information. We will save the information should you wish to return to this page.", new { @class = "validation-summary-errors" })
     </div>
 
-          <input type="submit" value="Back" name="action:Step2GetPlanProducts" />
-          <input type="submit" value="To Subscription" name="action:Step4GetInvoice" />
-      </form>
+    <input type="submit" value="Back" name="action:Step2GetPlanProducts" />
+    <input type="submit" value="To Subscription" name="action:Step4GetInvoice" />
+</form>
 
 
-    <script>
+<script>
     $(document).ready(function () {
-      
+
 
         var model = @Html.HtmlConvertToJson(Model);
         var selectedCountryCountry;
@@ -110,7 +115,7 @@
 
             //the value of the selcted country
             var selectedCountryValue = $(".country").val();
-            
+
             //we find the selected country's position in the countries list in order to access its states
             for (var i = 0; i < model.listOfCountriesCountry.length; i++)
             {
@@ -127,11 +132,11 @@
                 $(".state").append($('<option>', {
                     value: selectedCountryCountry.states[i].id,
                     text: selectedCountryCountry.states[i].name
-                  
+
                 }));
-               
+
             };
         });
 
     });
-    </script>
+</script>

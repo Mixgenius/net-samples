@@ -33,6 +33,8 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         // GET: /Registration/
         public ActionResult Index()
         {
+            //This Session will store relevant information pertaining to each plan. When we come to step1, we set its value to null, essentially resetting it
+            Session[REGISTRATIONVM] = null;
             RegistrationVM step1RegistrationVM = new RegistrationVM();
 
             var desiredPlanIds = ConfigurationManager.AppSettings["DesiredPlanIds"];
@@ -99,43 +101,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 }
             }
 
-            
-
-
-
-            /*
-        //if the session state containing the dictionary with the number of products exists, we'll use that to display the number of products.
-        //if the session state DOESN'T EXIST, we'll use the original APIClient values
-
-        if (Session[new RegistrationStronglyTypedSessionState().planProductQuantities] == null)
-        {
-            for (int i = 0; i < step2RegistrationVM.AvailableProducts.Count; i++)
-            {
-                step2RegistrationVM.QuantityOfProducts.Add(step2RegistrationVM.AvailableProducts[i].ProductName, step2RegistrationVM.AvailableProducts[i].Quantity);
-            }
-        }
-        else
-        {
-            step2RegistrationVM.QuantityOfProducts = ((Dictionary<string, decimal>)Session[new RegistrationStronglyTypedSessionState().planProductQuantities]);
-        }
-
-        step2RegistrationVM.planProductIncludes = new Dictionary<string, bool>();
-
-        //If the session state containing the dictionary with the checkbox values, we'll use that to display the checkbox values.
-        //if the session state DOESN'T EXIST, we'll set the checkbox values to false
-        if (Session[new RegistrationStronglyTypedSessionState().planProductIncludes] == null)
-        {
-            for (int i = 0; i < step2RegistrationVM.AvailableProducts.Count; i++)
-            {
-                step2RegistrationVM.planProductIncludes.Add(step2RegistrationVM.AvailableProducts[i].ProductName, !step2RegistrationVM.AvailableProducts[i].IsOptional);
-            }
-        }
-        else
-        {
-            step2RegistrationVM.planProductIncludes = ((Dictionary<string, bool>)Session[new RegistrationStronglyTypedSessionState().planProductIncludes]);
-        }
-    
-            */
 
             return View(step2RegistrationVM);
         }
@@ -228,9 +193,9 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 postCustomer.PrimaryEmail = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.PrimaryEmail;
                 postCustomer.PrimaryPhone = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.PrimaryPhone;
 
-                ((RegistrationVM) Session[REGISTRATIONVM]).returnedCustomer = ApiClient.PostCustomer(postCustomer);
+                ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomer = ApiClient.PostCustomer(postCustomer);
 
-      
+
                 //  *****************************************************************************
                 //============================== CREATING BILLING ADDRESS ======================================
                 //  *****************************************************************************
@@ -241,65 +206,72 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 postBillingAddress.Line2 = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.Line2;
                 postBillingAddress.City = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.City;
                 postBillingAddress.PostalZip = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.PostalZip;
-                postBillingAddress.CountryId = step4RegistrationVM.billingAddress.CountryId;
-                postBillingAddress.StateId = step4RegistrationVM.billingAddress.StateId;
+                postBillingAddress.CountryId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.CountryId;
+                postBillingAddress.StateId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.StateId;
 
-                postBillingAddress.AddressType = "Billing";
+                if (((RegistrationVM)Session[REGISTRATIONVM]).shippingSameAsBilling)
+                {
+                    postBillingAddress.AddressType = "Billing and Shipping";
+                }
+                else
+                {
+                    postBillingAddress.AddressType = "Billing";
+                }
+
                 //postBillingAddress.CustomerAddressPreferenceId = 36;
-             //   var returnedBilling = ApiClient.PostAddress(postBillingAddress);
-         
+                // var returnedBilling = ApiClient.PostAddress(postBillingAddress);
 
                 //given the selected state's and country's IDs, we shall find their respective names, which are shown in the invoice and possibly
                 //in step5 if ShippingSameAsBilling has been checked. 
-            step4RegistrationVM.listOfCountriesCountry = new List<Country>();
-            step4RegistrationVM.listOfCountriesCountry = ApiClient.GetCountries();
+                step4RegistrationVM.listOfCountriesCountry = new List<Country>();
+                step4RegistrationVM.listOfCountriesCountry = ApiClient.GetCountries();
 
-            for (int i = 0; i < step4RegistrationVM.listOfCountriesCountry.Count; i++)
-            {
-                if (step4RegistrationVM.listOfCountriesCountry[i].Id == step4RegistrationVM.billingAddress.CountryId)
+                for (int i = 0; i < step4RegistrationVM.listOfCountriesCountry.Count; i++)
                 {
-                    //if country ids are identical, store the country name
-                  ( (RegistrationVM) Session[REGISTRATIONVM]).selectedCountryName = step4RegistrationVM.listOfCountriesCountry[i].Name;
-
-                    //after finding the country, we find the state
-                    for (int j = 0; j < step4RegistrationVM.listOfCountriesCountry[i].States.Count; j++)
+                    if (step4RegistrationVM.listOfCountriesCountry[i].Id == step4RegistrationVM.billingAddress.CountryId)
                     {
-                        //if state ids are identical store the state name
-                        if (step4RegistrationVM.listOfCountriesCountry[i].States[j].Id == step4RegistrationVM.billingAddress.StateId)
+                        //if country ids are identical, store the country name
+                        ((RegistrationVM)Session[REGISTRATIONVM]).selectedCountryName = step4RegistrationVM.listOfCountriesCountry[i].Name;
+
+                        //after finding the country, we find the state
+                        for (int j = 0; j < step4RegistrationVM.listOfCountriesCountry[i].States.Count; j++)
                         {
-                            ((RegistrationVM)Session[REGISTRATIONVM]).selectedStateyName = step4RegistrationVM.listOfCountriesCountry[i].States[j].Name;
+                            //if state ids are identical store the state name
+                            if (step4RegistrationVM.listOfCountriesCountry[i].States[j].Id == step4RegistrationVM.billingAddress.StateId)
+                            {
+                                ((RegistrationVM)Session[REGISTRATIONVM]).selectedStateyName = step4RegistrationVM.listOfCountriesCountry[i].States[j].Name;
+                            }
                         }
                     }
                 }
-            }
-     
-         //  *****************************************************************************
-         //============================== CREATING SUBSCRIPTION ======================================
-         //  *****************************************************************************
-    
-            Fusebill.ApiWrapper.Dto.Post.Subscription postSubscription = new ApiWrapper.Dto.Post.Subscription();
-            postSubscription.CustomerId = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomer.Id;
-            postSubscription.PlanFrequencyId = ((RegistrationVM)Session[REGISTRATIONVM]).SelectedPlanFrequencyID;
 
-            var returnedSubscription = ApiClient.PostSubscription(postSubscription);
+                //  *****************************************************************************
+                //============================== CREATING SUBSCRIPTION ======================================
+                //  *****************************************************************************
+
+                Fusebill.ApiWrapper.Dto.Post.Subscription postSubscription = new ApiWrapper.Dto.Post.Subscription();
+                postSubscription.CustomerId = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomer.Id;
+                postSubscription.PlanFrequencyId = ((RegistrationVM)Session[REGISTRATIONVM]).SelectedPlanFrequencyID;
+
+                var returnedSubscription = ApiClient.PostSubscription(postSubscription);
 
 
-          //  *****************************************************************************
-          //============================== PUTTING UPDATED SUBSCRIPTION ======================================
-         //  *****************************************************************************
+                //  *****************************************************************************
+                //============================== PUTTING UPDATED SUBSCRIPTION ======================================
+                //  *****************************************************************************
 
-                for (int i = 0; i < ((RegistrationVM) Session[REGISTRATIONVM]).AvailableProducts.Count; i++)
+                for (int i = 0; i < ((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts.Count; i++)
                 {
-                    var quantity = ((RegistrationVM) Session[REGISTRATIONVM]).AvailableProducts[i].Quantity;
-                    var inclusion = ((RegistrationVM) Session[REGISTRATIONVM]).AvailableProducts[i].IsIncluded;
+                    var quantity = ((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts[i].Quantity;
+                    var inclusion = ((RegistrationVM)Session[REGISTRATIONVM]).AvailableProducts[i].IsIncluded;
                     returnedSubscription.SubscriptionProducts[i].Quantity = quantity;
                     returnedSubscription.SubscriptionProducts[i].IsIncluded = inclusion;
                 }
 
-            Automapping.SetupSubscriptionGetToPutMapping();
-            var putSubscription = Mapper.Map<Subscription, Fusebill.ApiWrapper.Dto.Put.Subscription>(returnedSubscription);
+                Automapping.SetupSubscriptionGetToPutMapping();
+                var putSubscription = Mapper.Map<Subscription, Fusebill.ApiWrapper.Dto.Put.Subscription>(returnedSubscription);
 
-            ApiClient.PutSubscription(putSubscription);
+                ApiClient.PutSubscription(putSubscription);
             }
 
             Fusebill.ApiWrapper.Dto.Post.CustomerActivation postCustomerActivation = new ApiWrapper.Dto.Post.CustomerActivation();
@@ -308,35 +280,31 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             postCustomerActivation.CustomerId = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomer.Id;
             ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation = ApiClient.PostCustomerActivation(postCustomerActivation, true, true);
 
-
-            var asdf = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation;
-            
             //now, we set the properties that will be displayed on the step4 view with the properties from the Session. We use postedCustomer because the view is set to that. But we could
             //also change the view to take customerInfo and use customerInfo here.
             step4RegistrationVM.returnedCustomerActivation = new Customer();
 
-            step4RegistrationVM.returnedCustomerActivation.FirstName = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.FirstName ;
-            step4RegistrationVM.returnedCustomerActivation.LastName = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.LastName ;
+            step4RegistrationVM.returnedCustomerActivation.FirstName = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.FirstName;
+            step4RegistrationVM.returnedCustomerActivation.LastName = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.LastName;
 
-             step4RegistrationVM.returnedCustomerActivation.PrimaryEmail = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.PrimaryEmail ;
-            step4RegistrationVM.returnedCustomerActivation.PrimaryPhone = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.PrimaryPhone ;
+            step4RegistrationVM.returnedCustomerActivation.PrimaryEmail = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.PrimaryEmail;
+            step4RegistrationVM.returnedCustomerActivation.PrimaryPhone = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.PrimaryPhone;
 
 
             step4RegistrationVM.returnedCustomerActivation.InvoicePreview = new InvoicePreview();
 
             step4RegistrationVM.returnedCustomerActivation.InvoicePreview.Subtotal = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.Subtotal;
-            step4RegistrationVM.returnedCustomerActivation.InvoicePreview.TotalTaxes = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.TotalTaxes;
-            step4RegistrationVM.returnedCustomerActivation.InvoicePreview.Total = ( (RegistrationVM) Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.Total;
-
+            step4RegistrationVM.returnedCustomerActivation.InvoicePreview.TotalTaxes = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.TotalTaxes;
+            step4RegistrationVM.returnedCustomerActivation.InvoicePreview.Total = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.Total;
 
             return View(step4RegistrationVM);
         }
 
 
- /// <summary>
- /// We obtain credit card and payment information
- /// </summary>
- /// <returns></returns>
+        /// <summary>
+        /// We obtain credit card and payment information
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "Step5GetPayment")]
         public ActionResult Step5GetPayment()
@@ -354,13 +322,13 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             //if the user checked the "shipping is same as billing" checkbox in step3, we supply the view's fields with previously entered fields
             //which we had placed in the session
-            if (( (RegistrationVM) Session[REGISTRATIONVM] ).shippingSameAsBilling == true)
+            if (((RegistrationVM)Session[REGISTRATIONVM]).shippingSameAsBilling == true)
             {
-                step5RegistrationVM.billingAddress.Line1 = ((RegistrationVM) Session[REGISTRATIONVM] ).billingAddress.Line1;
+                step5RegistrationVM.billingAddress.Line1 = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.Line1;
                 step5RegistrationVM.billingAddress.Line2 = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.Line2;
                 step5RegistrationVM.billingAddress.PostalZip = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.PostalZip;
                 step5RegistrationVM.billingAddress.City = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.City;
-                step5RegistrationVM.billingAddress.Country = ((RegistrationVM) Session[REGISTRATIONVM] ).selectedCountryName;
+                step5RegistrationVM.billingAddress.Country = ((RegistrationVM)Session[REGISTRATIONVM]).selectedCountryName;
                 step5RegistrationVM.billingAddress.State = ((RegistrationVM)Session[REGISTRATIONVM]).selectedStateyName;
 
                 step5RegistrationVM.customerInformation.FirstName = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.FirstName;
@@ -400,11 +368,12 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             return View(step5RegistrationVM);
         }
-/*
+
 
         /// <summary>
         /// Please note that this method is for demonstration purposes only and is NOT PCI Compliant. For PCI Compliant calls, please view an example on our website
-        /// 
+        /// We need the customerId, the cardnumber, the cvv, first and last names, primary and secondary address, postal code, country, state, and city. In our example
+        /// because we're using invalid credit cards, we did not include expiration dates.
         /// LIST WEBSITE...............AHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!
         /// </summary>
         /// <param name="registrationVM"></param>
@@ -415,50 +384,69 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         {
             //WARNING: IN YOUR WEBSITE, USE PCI COMPLIANT CALLS. AN EXAMPLE IS AVAILABLE ON OUR WEBSITE
             RegistrationVM step6RegistrationVM = new RegistrationVM();
-
             step6RegistrationVM = registrationVM;
 
             Fusebill.ApiWrapper.Dto.Post.CreditCard postCreditCard = new ApiWrapper.Dto.Post.CreditCard();
 
-            if ((bool)Session[new RegistrationStronglyTypedSessionState().shippingSameAsBilling])
+            postCreditCard.CustomerId = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomer.Id;
+            postCreditCard.CardNumber = step6RegistrationVM.creditCardNumber;
+            postCreditCard.Cvv = step6RegistrationVM.cvv;
+            postCreditCard.ExpirationMonth = step6RegistrationVM.expirationMonth;
+            postCreditCard.ExpirationYear = step6RegistrationVM.expirationYear;
+
+            postCreditCard.FirstName = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.FirstName;
+            postCreditCard.LastName = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.LastName;
+
+            postCreditCard.Address1 = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.Line1;
+            postCreditCard.Address2 = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.Line2;
+            postCreditCard.PostalZip = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.PostalZip;
+            postCreditCard.City = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.City;
+
+            postCreditCard.CountryId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.CountryId;
+            postCreditCard.StateId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.StateId;
+
+
+            Fusebill.ApiWrapper.Dto.Post.Payment postPayment = new Fusebill.ApiWrapper.Dto.Post.Payment();
+            postPayment.Amount = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.Total;
+            postPayment.CustomerId = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.Id;
+
+            //if the shipping information is different from the billing information, we also post the shipping information
+            if (!((RegistrationVM)Session[REGISTRATIONVM]).shippingSameAsBilling)
             {
-                postCreditCard.CardNumber = step6RegistrationVM.creditCardNumber;
-                postCreditCard.Cvv = step6RegistrationVM.cvv;
+                Fusebill.ApiWrapper.Dto.Post.Address postShippingAddress = new ApiWrapper.Dto.Post.Address();
 
-                var customer = (Customer)Session[new RegistrationStronglyTypedSessionState().customerInformation];
-                postCreditCard.FirstName = customer.FirstName;
-                postCreditCard.LastName = customer.LastName;
+                //     ((RegistrationVM) Session[REGISTRATIONVM]).shippingAddress = registrationVM.shippingAddress;
 
-                var shipping = (Address)Session[new RegistrationStronglyTypedSessionState().shippingAddress];
-                postCreditCard.Address1 = shipping.Line1;
-                postCreditCard.Address2 = shipping.Line2;
-                postCreditCard.PostalZip = shipping.PostalZip;
-                postCreditCard.City = shipping.City;
+                postShippingAddress.Line1 = step6RegistrationVM.shippingAddress.Line1;
+                postShippingAddress.Line2 = step6RegistrationVM.shippingAddress.Line2;
+                postShippingAddress.PostalZip = step6RegistrationVM.shippingAddress.PostalZip;
+                postShippingAddress.City = step6RegistrationVM.shippingAddress.City;
+                postShippingAddress.CountryId = step6RegistrationVM.shippingAddress.CountryId;
+                postShippingAddress.StateId = step6RegistrationVM.shippingAddress.StateId;
+                postShippingAddress.AddressType = "Shipping";
 
-                postCreditCard.CountryId = (long)Session[new RegistrationStronglyTypedSessionState().selectedCountryID];
-                postCreditCard.StateId = (long)Session[new RegistrationStronglyTypedSessionState().selectedStateID];
-            }
-            else
-            {
-                postCreditCard.FirstName = step6RegistrationVM.customerInformation.FirstName;
-                postCreditCard.LastName = step6RegistrationVM.customerInformation.LastName;
-
-                postCreditCard.Address1 = step6RegistrationVM.billingAddress.Line1;
-                postCreditCard.Address2 = step6RegistrationVM.billingAddress.Line2;
-                postCreditCard.PostalZip = step6RegistrationVM.billingAddress.PostalZip;
-                postCreditCard.City = step6RegistrationVM.billingAddress.City;
-
-                postCreditCard.CountryId = step6RegistrationVM.billingAddress.CountryId;
-                postCreditCard.StateId = step6RegistrationVM.billingAddress.StateId;
+                ApiClient.PostAddress(postShippingAddress);
             }
 
             try
             {
+                //we try to post the credit card
                 ApiClient.PostCreditCard(postCreditCard);
 
-                //display success message
-                //Activate customer
-                ApiClient.PostCustomerActivation((Fusebill.ApiWrapper.Dto.Post.CustomerActivation)Session[new RegistrationStronglyTypedSessionState().postCustomerActivation], false, true);
+                //after posting the credit card, we post the payment method, which contains the amount to charge the credit card
+                ApiClient.PostPayment(postPayment);
+
+                //Activate customer by setting the preview to false
+
+                Fusebill.ApiWrapper.Dto.Post.CustomerActivation postCustomerActivationPreviewFalse = new ApiWrapper.Dto.Post.CustomerActivation();
+                postCustomerActivationPreviewFalse.ActivateAllDraftPurchases = true;
+                postCustomerActivationPreviewFalse.ActivateAllSubscriptions = true;
+                postCustomerActivationPreviewFalse.CustomerId = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomer.Id;
+
+                ApiClient.PostCustomerActivation(postCustomerActivationPreviewFalse, false, true);
+
+                //display new view that containa success message
+                return View();
             }
             catch
             {
@@ -468,38 +456,38 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 step6RegistrationVM.customerInformation = new Customer();
 
 
-                if ((bool)Session[new RegistrationStronglyTypedSessionState().shippingSameAsBilling])
+                if (((RegistrationVM)Session[REGISTRATIONVM]).shippingSameAsBilling == true)
                 {
-                    var shipping = (Address)Session[new RegistrationStronglyTypedSessionState().shippingAddress];
-                    step6RegistrationVM.billingAddress.Line1 = shipping.Line1;
-                    step6RegistrationVM.billingAddress.Line2 = shipping.Line2;
-                    step6RegistrationVM.billingAddress.PostalZip = shipping.PostalZip;
-                    step6RegistrationVM.billingAddress.City = shipping.City;
-                    step6RegistrationVM.billingAddress.Country = (string)Session[new RegistrationStronglyTypedSessionState().selectedCountryName];
-                    step6RegistrationVM.billingAddress.State = (string)Session[new RegistrationStronglyTypedSessionState().selectedStateName];
-                    var customer = (Customer)Session[new RegistrationStronglyTypedSessionState().customerInformation];
-                    step6RegistrationVM.customerInformation.FirstName = customer.FirstName;
-                    step6RegistrationVM.customerInformation.LastName = customer.LastName;
+                    step6RegistrationVM.billingAddress.Line1 = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.Line1;
+                    step6RegistrationVM.billingAddress.Line2 = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.Line2;
+                    step6RegistrationVM.billingAddress.PostalZip = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.PostalZip;
+                    step6RegistrationVM.billingAddress.City = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.City;
+                    step6RegistrationVM.billingAddress.Country = ((RegistrationVM)Session[REGISTRATIONVM]).selectedCountryName;
+                    step6RegistrationVM.billingAddress.State = ((RegistrationVM)Session[REGISTRATIONVM]).selectedStateyName;
+
+                    step6RegistrationVM.customerInformation.FirstName = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.FirstName;
+                    step6RegistrationVM.customerInformation.LastName = ((RegistrationVM)Session[REGISTRATIONVM]).customerInformation.LastName;   
                 }
-
-                step6RegistrationVM.listOfCountriesSLI = new List<SelectListItem>();
-                step6RegistrationVM.listOfCountriesCountry = new List<Country>();
-                step6RegistrationVM.listOfCountriesCountry = ApiClient.GetCountries();
-
-                for (int i = 0; i < step6RegistrationVM.listOfCountriesCountry.Count; i++)
+                else
                 {
-                    step6RegistrationVM.listOfCountriesSLI.Add(new SelectListItem
+
+                    step6RegistrationVM.listOfCountriesSLI = new List<SelectListItem>();
+                    step6RegistrationVM.listOfCountriesCountry = new List<Country>();
+                    step6RegistrationVM.listOfCountriesCountry = ApiClient.GetCountries();
+
+                    for (int i = 0; i < step6RegistrationVM.listOfCountriesCountry.Count; i++)
                     {
+                        step6RegistrationVM.listOfCountriesSLI.Add(new SelectListItem
+                        {
 
-                        Text = step6RegistrationVM.listOfCountriesCountry[i].Name,
-                        Value = step6RegistrationVM.listOfCountriesCountry[i].Id.ToString(),
-                        Selected = false
-                    });
+                            Text = step6RegistrationVM.listOfCountriesCountry[i].Name,
+                            Value = step6RegistrationVM.listOfCountriesCountry[i].Id.ToString(),
+                            Selected = false
+                        });
+                    }
                 }
-
 
                 step6RegistrationVM.listOfCreditCards = new List<SelectListItem>();
-
 
                 step6RegistrationVM.listOfCreditCards.Add(new SelectListItem
                 {
@@ -512,14 +500,13 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                     Value = "4111111111111111"
                 });
 
-                step6RegistrationVM.shippingSameAsBilling = (bool)Session[new RegistrationStronglyTypedSessionState().shippingSameAsBilling];
+
+                TempData["InvalidCreditCard"] = "Invalid credit card. Please re-enter your credit card information";
+              step6RegistrationVM.shippingSameAsBilling = ((RegistrationVM)Session[REGISTRATIONVM]).shippingSameAsBilling;
                 return View("Step5GetPayment", step6RegistrationVM);
             }
-            return View();
         }
-     */
-         
     }
- }
+}
 
 

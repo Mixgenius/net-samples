@@ -83,12 +83,6 @@
                     @Html.Label("State:")
                     @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
 
-                    <div>
-                        @Html.TextBoxFor(m => m.billingAddress.Country, new { @class = "countryName" })
-                        @Html.TextBoxFor(m => m.billingAddress.State, new { @class = "stateName" })
-                    </div>
-
-
                 </div>
             </td>
         </tr>

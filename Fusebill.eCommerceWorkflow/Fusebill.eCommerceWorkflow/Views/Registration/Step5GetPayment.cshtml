@@ -13,17 +13,27 @@
 
 
 <body>
+
+
+    <br />
+    <br />
+    <div style="color:red; text-align:center">
+        @TempData["InvalidCreditCard"]
+    </div>
     <div class="paymentTable">
         <form action="" method="post">
 
-            <br />
-            <br />
             <label>Card Number</label>
             @Html.DropDownListFor(m => m.creditCardNumber, Model.listOfCreditCards, "Select your card")
 
             <label>CVV</label>
             @Html.TextBoxFor(m => m.cvv, new { @placeholder = "XXX" })
 
+            <label>Expiration Month</label>
+            @Html.TextBoxFor(m => m.expirationMonth, new { @placeholder = "XX" })
+
+            <label>Expiration Year</label>
+            @Html.TextBoxFor(m => m.expirationYear, new { @placeholder = "XX" })
 
             @if (Model.shippingSameAsBilling)
             {
@@ -40,15 +50,8 @@
 
             @if (!Model.shippingSameAsBilling)
             {
-                <label>First Name</label>
-                @Html.ValidationMessageFor(m => m.customerInformation.FirstName)    <br />
-                @Html.TextBoxFor(m => m.customerInformation.FirstName, new { @placeholder = "First name" })
 
-                <label>Last Name</label>
-                @Html.ValidationMessageFor(m => m.customerInformation.LastName) <br />
-                @Html.TextBoxFor(m => m.customerInformation.LastName, new { @placeholder = "Last name" })
-
-                @*
+              
     <label>Primary Address</label>
     @Html.ValidationMessageFor(m => m.shippingAddress.Line1)    <br />
     @Html.TextBoxFor(m => m.shippingAddress.Line1, new { @placeholder = "Primary Address" })
@@ -74,7 +77,6 @@
     @Html.ValidationMessageFor(m => m.shippingAddress.StateId)  <br />
     @Html.DropDownListFor(m => m.shippingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
 
-                *@
             }
 
             <br />

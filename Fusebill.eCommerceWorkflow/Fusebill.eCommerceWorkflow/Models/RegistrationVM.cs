@@ -39,6 +39,8 @@ namespace Fusebill.eCommerceWorkflow.Models
         //The Address objects contains properties pertaining to the billing address, such as City and PostalZip 
         public Address billingAddress { get; set; }
 
+        public Address shippingAddress { get; set; }
+
         public bool shippingSameAsBilling { get; set; }
 
         public List<SelectListItem> listOfCountriesSLI {get;set;}
@@ -69,5 +71,11 @@ namespace Fusebill.eCommerceWorkflow.Models
         public string cvv { get; set;  }
 
         public string creditCardNumber { get; set; }
+
+        public int expirationMonth { get; set; }
+
+        public int expirationYear { get; set; }
+
+
     }
 }

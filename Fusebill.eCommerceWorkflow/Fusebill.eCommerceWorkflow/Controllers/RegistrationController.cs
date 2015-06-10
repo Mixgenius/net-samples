@@ -12,19 +12,18 @@ using AutoMapper;
 using Fusebill.eCommerceWorkflow.Models;
 
 /*
- * Step3, in state dropdown: select your state for non-Canadian vs select your province for Canada
- * Step3, validation
- *  postBillingAddress.CustomerAddressPreferenceId, and how to find it
+ * NOTE: We use a Session object in this sample to store the user's information. Because a Session times out after 20 minutes, if you project your customers to take
+ * more than 20 miunutes to purchase products, we recommend extending the Session's timeout time.
+ * 
+ * NOTE: Whenever possible, we extract information from the session, because it acts as the "global container" and because it is consistent
  * 
  * */
-//Whenever possible, we extract information from the session, because it acts as the "global container" and because it is consistent
 
 namespace Fusebill.eCommerceWorkflow.Controllers
 {
     public class RegistrationController : FusebillController
     {
-        //Read step2 for why we include this 
-        const string STEP2FIRSTVISIT = "STEP2FIRSTVISIT";
+
 
         //session key that stores the viewmodel
         const string REGISTRATIONVM = "REGISTRATIONVM";
@@ -198,11 +197,15 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                                                                                  where country.Id == step4RegistrationVM.billingAddress.CountryId
                                                                                  select country.Name).First();
 
-                ((RegistrationVM)Session[REGISTRATIONVM]).selectedStateName = (from country in step4RegistrationVM.listOfCountriesCountry
-                                                                               where country.Id == step4RegistrationVM.billingAddress.CountryId
-                                                                               from state in country.States
-                                                                               where state.Id == step4RegistrationVM.billingAddress.StateId
-                                                                               select state.Name).First();
+                if (step4RegistrationVM.billingAddress.StateId != null)
+                {
+
+                    ((RegistrationVM)Session[REGISTRATIONVM]).selectedStateName = (from country in step4RegistrationVM.listOfCountriesCountry
+                                                                                   where country.Id == step4RegistrationVM.billingAddress.CountryId
+                                                                                   from state in country.States
+                                                                                   where state.Id == step4RegistrationVM.billingAddress.StateId
+                                                                                   select state.Name).First();
+                }
                 #endregion
             }
 
@@ -444,10 +447,15 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 City = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.City,
                 PostalZip = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.PostalZip,
                 CountryId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.CountryId,
-                StateId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.StateId,
                 AddressType = "Billing",
                 CustomerAddressPreferenceId = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomer.Id
             };
+
+            //some countries do not have states
+             if (((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.StateId != null)
+                {
+                    postBillingAddress.StateId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.StateId;
+                }
 
             ApiClient.PostAddress(postBillingAddress);
         }

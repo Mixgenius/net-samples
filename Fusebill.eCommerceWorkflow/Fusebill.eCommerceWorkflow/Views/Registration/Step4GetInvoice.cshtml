@@ -7,54 +7,54 @@
     ViewBag.Title = "Step4GetInvoice";
 }
 
-
-
-<h1 style="margin-top: 200px; text-align:center">Step 4/5: Invoice Preview</h1>
 <link href="~/Content/Plan.css" rel="stylesheet" />
 
-
-<form action="" method="post">
-    <p>&nbsp;</p>
-    <table class="invoiceTable">
-        <tr>
-            <td>@Html.Label("First Name:")</td>
-            <td>@Model.returnedCustomerActivation.FirstName</td>
-        </tr>
+<body style="padding-bottom: 100px;">
+    <h1 style="margin-top: 200px; text-align:center; color: orange;">Step 4/5: Invoice Preview</h1>
 
 
-        <tr>
-            <td>@Html.Label("Last Name:")</td>
-            <td>@Model.returnedCustomerActivation.LastName</td>
-        </tr>
+    <form action="" method="post">
+        <p>&nbsp;</p>
+        <table class="invoiceTable">
+            <tr>
+                <td>@Html.Label("First Name:")</td>
+                <td>@Model.returnedCustomerActivation.FirstName</td>
+            </tr>
 
-        <tr>
-            <td>@Html.Label("Primary Email:")</td>
-            <td>@Model.returnedCustomerActivation.PrimaryEmail</td>
-        </tr>
 
-        <tr>
-            <td>@Html.Label("Primary Phone:")</td>
-            <td>@Model.returnedCustomerActivation.PrimaryPhone</td>
-        </tr>
+            <tr>
+                <td>@Html.Label("Last Name:")</td>
+                <td>@Model.returnedCustomerActivation.LastName</td>
+            </tr>
 
-        <tr>
-            <td>@Html.Label("Primary Address:")</td>
-            <td>@Model.billingAddress.Line1</td>
-        </tr>
+            <tr>
+                <td>@Html.Label("Primary Email:")</td>
+                <td>@Model.returnedCustomerActivation.PrimaryEmail</td>
+            </tr>
 
-        <tr>
-            <td>@Html.Label("Secondary Address:")</td>
-            <td>@Model.billingAddress.Line1</td>
-        </tr>
+            <tr>
+                <td>@Html.Label("Primary Phone:")</td>
+                <td>@Model.returnedCustomerActivation.PrimaryPhone</td>
+            </tr>
 
-        <tr>
-            <td>@Html.Label("Postal Code:")</td>
-            <td>@Model.billingAddress.PostalZip</td>
-        </tr>
+            <tr>
+                <td>@Html.Label("Primary Address:")</td>
+                <td>@Model.billingAddress.Line1</td>
+            </tr>
 
-        <tr>
-            <td>@Html.Label("City:")</td>
-            <td>@Model.billingAddress.City</td>
+            <tr>
+                <td>@Html.Label("Secondary Address:")</td>
+                <td>@Model.billingAddress.Line1</td>
+            </tr>
+
+            <tr>
+                <td>@Html.Label("Postal Code:")</td>
+                <td>@Model.billingAddress.PostalZip</td>
+            </tr>
+
+            <tr>
+                <td>@Html.Label("City:")</td>
+                <td>@Model.billingAddress.City</td>
         </tr>
 
         <tr>
@@ -67,7 +67,7 @@
             <td>@Model.billingAddress.Country</td>
         </tr>
 
-       
+
 
         <tr>
             <td>@Html.Label("Subtotal:") </td>
@@ -93,8 +93,4 @@
         <input type="submit" value="Next: Checkout" name="action:Step5GetPayment" style="background-color: orange;" />
     </div>
 </form>
-
-<script>
-    var model = @Html.HtmlConvertToJson(Model);
-</script>
-
+</body>

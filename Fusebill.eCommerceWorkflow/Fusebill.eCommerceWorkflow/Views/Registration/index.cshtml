@@ -7,12 +7,12 @@
 
 <link rel="stylesheet" href="~/Content/Plan.css" />
 
-<h1 style="margin-top: 200px; text-align:center; color: orange;">Step 1/5: Choose your plan</h1>
+<body style="padding-bottom: 65px;">
+    <h1 style="margin-top: 200px; text-align:center; color: orange;">Step 1/5: Choose your plan</h1>
 
-<br />
-   @foreach (var plan in Model.AvailablePlans)
-
-{
+    <br />
+    @foreach (var plan in Model.AvailablePlans)
+    {
         <form action="" method="post">
 
             <div class="plan_plan">
@@ -43,6 +43,7 @@
                 </div>
                 <br /> <br />
             </div>
-    </form>  
-}
+        </form>
+    }
 
+</body>

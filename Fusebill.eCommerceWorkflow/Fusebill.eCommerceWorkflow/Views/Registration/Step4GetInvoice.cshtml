@@ -15,49 +15,83 @@
 
 <form action="" method="post">
     <p>&nbsp;</p>
-        <table class="invoiceTable">
-            <tr>
-                <td>@Html.Label("First Name:")</td>
-                <td>@Html.Label(Model.returnedCustomerActivation.FirstName)</td>
-            </tr>
+    <table class="invoiceTable">
+        <tr>
+            <td>@Html.Label("First Name:")</td>
+            <td>@Model.returnedCustomerActivation.FirstName</td>
+        </tr>
 
 
-            <tr>
-                <td>@Html.Label("Last Name:")</td>
-                <td>@Html.Label(Model.returnedCustomerActivation.LastName)</td>
-            </tr>
+        <tr>
+            <td>@Html.Label("Last Name:")</td>
+            <td>@Model.returnedCustomerActivation.LastName</td>
+        </tr>
 
-            <tr>
-                <td>@Html.Label("Primary Email:")</td>
-                <td>@Html.Label(Model.returnedCustomerActivation.PrimaryEmail)</td>
-            </tr>
+        <tr>
+            <td>@Html.Label("Primary Email:")</td>
+            <td>@Model.returnedCustomerActivation.PrimaryEmail</td>
+        </tr>
 
-            <tr>
-                <td>@Html.Label("Primary Phone:")</td>
-                <td>@Html.Label(Model.returnedCustomerActivation.PrimaryPhone)</td>
-            </tr>
+        <tr>
+            <td>@Html.Label("Primary Phone:")</td>
+            <td>@Model.returnedCustomerActivation.PrimaryPhone</td>
+        </tr>
 
-            <tr>
-                <td>@Html.Label("Subtotal:") </td>
-                <td>@Model.returnedCustomerActivation.InvoicePreview.Subtotal
-            </tr>
+        <tr>
+            <td>@Html.Label("Primary Address:")</td>
+            <td>@Model.returnedCustomerActivation.PrimaryPhone</td>
+        </tr>
 
-            <tr>
-                <td> @Html.Label("Total taxes:")  </td>
-                <td>@Model.returnedCustomerActivation.InvoicePreview.TotalTaxes
-            </tr>
-            
-            <tr>
-                <td> @Html.Label("Total taxes:")  </td>
-                <td>@Model.returnedCustomerActivation.InvoicePreview.Total</td>
-            </tr>
- 
-        </table>
+        <tr>
+            <td>@Html.Label("Secondary Address:")</td>
+            <td>@Model.returnedCustomerActivation.PrimaryPhone</td>
+        </tr>
+
+        <tr>
+            <td>@Html.Label("Postal Code:")</td>
+            <td>@Model.returnedCustomerActivation.PrimaryPhone</td>
+        </tr>
+
+        <tr>
+            <td>@Html.Label("City:")</td>
+            <td>@Model.returnedCustomerActivation.PrimaryPhone</td>
+        </tr>
+
+        <tr>
+            <td>@Html.Label("State:")</td>
+            <td>@Model.returnedCustomerActivation.PrimaryPhone</td>
+        </tr>
+
+        <tr>
+            <td>@Html.Label("Country:")</td>
+            <td>@Model.returnedCustomerActivation.PrimaryPhone</td>
+        </tr>
+
+       
+
+        <tr>
+            <td>@Html.Label("Subtotal:") </td>
+            <td>@Model.returnedCustomerActivation.InvoicePreview.Subtotal
+        </tr>
+
+        <tr>
+            <td> @Html.Label("Total taxes:")  </td>
+            <td>@Model.returnedCustomerActivation.InvoicePreview.TotalTaxes
+        </tr>
+
+        <tr>
+            <td> @Html.Label("Total:")  </td>
+            <td>@Model.returnedCustomerActivation.InvoicePreview.Total</td>
+        </tr>
+
+    </table>
 
     <br />
 
-    <input type="submit" value="Back" name="action:Step3GetCustomerInformation" style="margin-left: 45%;"/>
-    <input type="submit" value="Checkout" name="action:Step5GetPayment" />
+    <div style="text-align:center; align-content: center">
+        <input type="submit" value="Back: Customer Information" name="action:Step3GetCustomerInformation" />
+        <input type="submit" value="Next: Checkout" name="action:Step5GetPayment" />
+    </div>
 </form>
 
 <script>

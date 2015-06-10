@@ -23,43 +23,45 @@
             <td>
                 <h1 style="color:darkslategrey; ">Contact information</h1>
                 <div class="customerCustomerInfo">
-                    @Html.Label("First Name:")
                     @Html.ValidationMessageFor(m => m.customerInformation.FirstName) <br />
-                    @Html.TextBoxFor(m => m.customerInformation.FirstName, new { @Value = Model.customerInformation.FirstName, @placeholder = "First name" })
+                    @Html.Label("First Name:")
+                    @Html.TextBoxFor(m => m.customerInformation.FirstName, new { @Value = Model.customerInformation.FirstName, @placeholder = "First name" }) <br />
 
-                    @Html.Label("Last Name:")
+
                     @Html.ValidationMessageFor(m => m.customerInformation.LastName) <br />
-                    @Html.TextBoxFor(m => m.customerInformation.LastName, new { @Value = Model.customerInformation.LastName, @placeholder = "Last name" })
+                    @Html.Label("Last Name:")
+                    @Html.TextBoxFor(m => m.customerInformation.LastName, new { @Value = Model.customerInformation.LastName, @placeholder = "Last name" }) <br />
 
-                    @Html.Label("Email Address:")
                     @Html.ValidationMessageFor(m => m.customerInformation.PrimaryEmail) <br />
-                    @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail, new { @Value = Model.customerInformation.PrimaryEmail, @placeholder = "example@email.com" })
+                    @Html.Label("Email Address:")
+                    @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail, new { @Value = Model.customerInformation.PrimaryEmail, @placeholder = "example@email.com" }) <br />
 
-
-                    @Html.Label("Phone:")
                     @Html.ValidationMessageFor(m => m.customerInformation.PrimaryPhone) <br />
-                    @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone, new { @Value = Model.customerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX" })
+                    @Html.Label("Phone:")
+                    @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone, new { @Value = Model.customerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX" })  <br />
                 </div>
 
                 <h1 style="color: darkslategrey;">Credit Card Information</h1>
-                <div style="border: 1px solid lightgrey; margin-left: 20px; margin-top: 10px;">
-                    <p>Same as billing:</p>
+                <div style="border: 1px solid lightgrey; margin-left: 20px; margin-top: 10px; padding-left: 20px; padding-bottom: 5px; padding-top: 5px">
+                    @Html.Label("Same as billing:")
+                </div>
+                <div style="margin-left: 168px; margin-top: -25px;">
                     @Html.CheckBoxFor(m => m.creditCardSameAsBilling)
                 </div>
+                
             </td>
 
             <td class="customerBetweenColumnSpace"></td>
             <td style="vertical-align:top;">
                 <h1 style="color:darkslategrey;">Billing information</h1>
                 <div class="customerBillingInfo">
-                    @Html.Label("Company Name:")
                     @Html.ValidationMessageFor(m => m.billingAddress.CompanyName)   <br />
-                    @Html.TextBoxFor(m => m.billingAddress.CompanyName, new { @Value = Model.billingAddress.CompanyName, @placeholder = "Company name" })
+                    @Html.Label("Company Name:")
+                    @Html.TextBoxFor(m => m.billingAddress.CompanyName, new { @Value = Model.billingAddress.CompanyName, @placeholder = "Company name" }) <br />
 
-
-                    @Html.Label("Primary Address:")
                     @Html.ValidationMessageFor(m => m.billingAddress.Line1) <br />
-                    @Html.TextBoxFor(m => m.billingAddress.Line1, new { @Value = Model.billingAddress.Line1, @placeholder = "Primary address" })
+                    @Html.Label("Primary Address:")
+                    @Html.TextBoxFor(m => m.billingAddress.Line1, new { @Value = Model.billingAddress.Line1, @placeholder = "Primary address" })  <br />
 
 
 
@@ -67,21 +69,18 @@
                     @Html.ValidationMessageFor(m => m.billingAddress.Line2)     <br />
                     @Html.TextBoxFor(m => m.billingAddress.Line2, null, new { @Value = Model.billingAddress.Line2, @placeholder = "Secondary address" })
 
-
-                    @Html.Label("City:")
                     @Html.ValidationMessageFor(m => m.billingAddress.City)      <br />
-                    @Html.TextBoxFor(m => m.billingAddress.City, null, new { @Value = Model.billingAddress.City, @placeholder = "City" })
+                    @Html.Label("City:")
+                    @Html.TextBoxFor(m => m.billingAddress.City, null, new { @Value = Model.billingAddress.City, @placeholder = "City" })   <br />
 
-
-                    @Html.Label("Postal Code:")
                     @Html.ValidationMessageFor(m => m.billingAddress.PostalZip)     <br />
-                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new { @Value = Model.billingAddress.PostalZip, @placeholder = "Postal zip" })
+                    @Html.Label("Postal Code:")
+                    @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new { @Value = Model.billingAddress.PostalZip, @placeholder = "Postal zip" })  <br />
 
 
-
-                    @Html.Label("Country:")
                     @Html.ValidationMessageFor(m => m.billingAddress.CountryId)     <br />
-                    @Html.DropDownListFor(m => m.billingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })
+                    @Html.Label("Country:")
+                    @Html.DropDownListFor(m => m.billingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })   <br />
 
                     @Html.Label("State:")
                     @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
@@ -94,9 +93,10 @@
     <div style="text-align:center">
         @Html.ValidationSummary("Please enter your information. We will save the information should you wish to return to this page.", new { @class = "validation-summary-errors" })
     </div>
-
-    <input type="submit" value="Back" name="action:Step2GetPlanProducts" />
-    <input type="submit" value="To Subscription" name="action:Step4GetInvoice" />
+    <div style="text-align:center; align-content: center">
+        <input type="submit" value="Back: Choose Plan Products" name="action:Step2GetPlanProducts" />
+        <input type="submit" value="Next: Invoice Preview" name="action:Step4GetInvoice" />
+    </div>
 </form>
 
 

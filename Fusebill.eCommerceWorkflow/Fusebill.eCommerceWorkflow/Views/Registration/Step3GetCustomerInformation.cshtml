@@ -42,7 +42,7 @@
                 </div>
 
                 <h1 style="color: darkslategrey;">Credit Card Information</h1>
-                <div style="border: 1px solid lightgrey; margin-left: 20px; margin-top: 10px; padding-left: 20px; padding-bottom: 5px; padding-top: 5px">
+                <div style="border: 1px solid lightgrey; margin-left: 20px; margin-top: 10px; padding-left: 20px; padding-bottom: 5px; padding-top: 5px;">
                     @Html.Label("Same as billing:")
                 </div>
                 <div style="margin-left: 168px; margin-top: -25px;">
@@ -84,7 +84,7 @@
 
                     @Html.Label("State:")
                     @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
-
+                    <br />
                 </div>
             </td>
         </tr>

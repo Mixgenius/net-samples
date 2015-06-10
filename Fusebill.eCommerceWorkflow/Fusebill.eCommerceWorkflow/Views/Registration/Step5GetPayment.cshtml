@@ -9,7 +9,7 @@
 <script src="~/Scripts/jquery-1.8.2.min.js"></script>
 
 <link href="~/Content/Plan.css" rel="stylesheet" />
-<h1 style="margin-top: 200px; text-align:center">Step 5/5: Enter billing information</h1>
+<h1 style="margin-top: 200px; text-align:center; color:orange">Step 5/5: Enter billing information</h1>
 
 
 <body>
@@ -23,7 +23,7 @@
     <div class="paymentTable">
         <form action="" method="post">
 
-            <h1 style="margin-left: -25px;">Credit Card Information</h1>
+            <h1 style="margin-left: -25px; color:darkslategray">Credit Card Information</h1>
 
             <label>Card Number</label>
             @Html.DropDownListFor(m => m.creditCardNumber, Model.listOfCreditCards, "Select your card number") <br /> <br />
@@ -44,19 +44,45 @@
 
 
             <br /> 
-            <h1 style="margin-left: -25px;">Shipping Information</h1>
+            <h1 style="margin-left: -25px; color:darkslategray">Shipping Information</h1>
 
             @if (Model.creditCardSameAsBilling)
             {
-                <label>First Name: @Model.customerInformation.FirstName</label>
-                <label>Last Name: @Model.customerInformation.LastName</label>
-                <label>Primary Address: @Model.billingAddress.Line1</label>
-                <label>Secondary Address: @Model.billingAddress.Line2</label>
-                <label>Postal Code: @Model.billingAddress.PostalZip</label>
+                <table>
+                    <tr>
+                        <td>First Name:</td>
+                        <td>@Model.customerInformation.FirstName</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name:</td>
+                        <td>@Model.customerInformation.LastName</td>
+                    </tr>
+                    <tr>
+                        <td>Primary Address:</td>
+                        <td>@Model.billingAddress.Line1</td>
+                    </tr>
+                    <tr>
+                        <td>Secondary Address:</td>
+                        <td>@Model.billingAddress.Line2</td>
+                    </tr>
+                    <tr>
+                        <td>Postal Code:</td>
+                        <td>@Model.billingAddress.PostalZip</td>
+                    </tr>
+                    <tr>
+                        <td>City:</td>
+                        <td>@Model.billingAddress.City</td>
+                    </tr>
+                    <tr>
+                        <td>State:</td>
+                        <td>@Model.billingAddress.State</td>
+                    </tr>
+                    <tr>
+                        <td>Country:</td>
+                        <td>@Model.billingAddress.Country</td>
+                    </tr>
+                </table>
 
-                <label>Country: @Model.billingAddress.Country</label>
-                <label>State: @Model.billingAddress.State</label>
-                <label>City: @Model.billingAddress.City</label>
             }
 
             @if (!Model.creditCardSameAsBilling)

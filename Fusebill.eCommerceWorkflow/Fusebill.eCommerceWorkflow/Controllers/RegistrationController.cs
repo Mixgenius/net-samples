@@ -403,6 +403,17 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 TotalTaxes = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.TotalTaxes,
                 Total = ((RegistrationVM)Session[REGISTRATIONVM]).returnedCustomerActivation.InvoicePreview.Total
             };
+
+            step4RegistrationVM.billingAddress = new Address
+            {
+                Line1 = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.Line1,
+                Line2 = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.Line2,
+                PostalZip = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.PostalZip,
+                City = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.City,
+                Country = ((RegistrationVM)Session[REGISTRATIONVM]).selectedCountryName,
+                State = ((RegistrationVM)Session[REGISTRATIONVM]).selectedStateName
+            };
+
         }
 
 
@@ -502,7 +513,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             }
         }
 
-        
 
         private Fusebill.ApiWrapper.Dto.Post.Payment PostPayment(CreditCard credit)
         {

@@ -12,13 +12,14 @@ body {
 /*==============Index=============*/
 
 .plan_plan {
-    width: 80%;
+    width: 40%;
     margin-top: 10px;
     background-color: orange;
     border-radius: 10px;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 5%;
+    margin-right: 5%;
     margin-bottom: 80px;
+    float:left;
 }
 
 .plan_descriptionAndTitle {
@@ -57,7 +58,7 @@ body {
 .plan_miscellaneous ul li {
     padding-top:10px;
     padding-bottom: 10px;
-    border-bottom: 1px solid lightgrey;
+  /*  border-bottom: 1px solid lightgrey;*/
     list-style: none;
     font-size: 20px;
 }

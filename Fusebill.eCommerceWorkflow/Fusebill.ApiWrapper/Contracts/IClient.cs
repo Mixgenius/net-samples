@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Fusebill.ApiWrapper.Dto.Get;
 
-namespace Fusebill.ApiWrapper
+namespace Fusebill.ApiWrapper.Contracts
 {
     public interface IClient
     {

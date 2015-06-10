@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using Fusebill.ApiWrapper.Contracts;
 using Fusebill.ApiWrapper.Dto;
 using Newtonsoft.Json;
 
@@ -81,18 +83,6 @@ namespace Fusebill.ApiWrapper
             ValidateResponse(result);
             return result;
         }
-
-        //public HttpResponseMessage ExecuteHttpPatch<T>(string url, T entity, string acceptType = "application/json")
-        //{
-        //    var httpClient = GetHttpClient(acceptType);
-        //    var stopwatch = Stopwatch.StartNew();
-        //    var result = httpClient.PatchAsync(url, SetupJson(entity));
-        //    stopwatch.Stop();
-        //    LogStopwatch(stopwatch, url);
-
-        //    ValidateResponse(result);
-        //    return result;
-        //}
 
         public HttpResponseMessage ExecuteHttpDelete(string url)
         {

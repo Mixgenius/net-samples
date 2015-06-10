@@ -1,15 +1,12 @@
-﻿using System;
+﻿using Fusebill.ApiWrapper.Contracts;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fusebill.ApiWrapper
 {
     public class ParseHttpResponse : IParseHttpResponse
     {
-        private IJsonDeserializer _jsonDeserializer;
+        private readonly IJsonDeserializer _jsonDeserializer;
 
         public ParseHttpResponse(IJsonDeserializer jsonDeserializer)
         {

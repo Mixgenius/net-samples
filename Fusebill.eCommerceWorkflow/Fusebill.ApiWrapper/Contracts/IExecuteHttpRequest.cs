@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 
-namespace Fusebill.ApiWrapper
+namespace Fusebill.ApiWrapper.Contracts
 {
     public interface IExecuteHttpRequest
     {
@@ -12,7 +12,6 @@ namespace Fusebill.ApiWrapper
         HttpResponseMessage ExecuteHttpPost<T>(string url, T entity, string acceptType = "application/json", int timeout = 60);
 
         HttpResponseMessage ExecuteHttpPut<T>(string url, T entity, string acceptType = "application/json");
-        //HttpResponseMessage ExecuteHttpPatch<T>(string url, T entity, string acceptType = "application/json");
         HttpResponseMessage ExecuteHttpDelete(string url);
 
         long LoggedInUserId { get; set; }

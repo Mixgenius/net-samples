@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Fusebill.ApiWrapper
+namespace Fusebill.ApiWrapper.Contracts
 {
     public interface IJsonDeserializer
     {

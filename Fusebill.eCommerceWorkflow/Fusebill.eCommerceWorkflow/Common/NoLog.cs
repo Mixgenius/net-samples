@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Fusebill.ApiWrapper;
+using Fusebill.ApiWrapper.Contracts;
 
 namespace Fusebill.eCommerceWorkflow.Common
 {

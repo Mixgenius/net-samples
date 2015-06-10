@@ -12,7 +12,7 @@ namespace Fusebill.ApiWrapper.Dto
 
         public override string ToString()
         {
-            string error = String.Format("Api Error: {0}\nHttp Status Code: {1}\nErrors:\n", ErrorId, HttpStatusCode.ToString());
+            string error = String.Format("Api Error: {0}\nHttp Status Code: {1}\nErrors:\n", ErrorId, HttpStatusCode);
 
             foreach (var kvp in Errors)
             {

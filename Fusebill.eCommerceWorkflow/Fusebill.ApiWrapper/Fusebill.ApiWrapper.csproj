@@ -116,7 +116,6 @@
     <Compile Include="Dto\Get\SubscriptionProductPriceOverride.cs" />
     <Compile Include="Dto\Get\Subscriptions.cs" />
     <Compile Include="Dto\Get\Tax.cs" />
-    <Compile Include="Dto\Interfaces\EarningTiming.cs" />
     <Compile Include="Dto\Interfaces\ICreditCard.cs" />
     <Compile Include="Dto\Interfaces\IPaymentMethod.cs" />
     <Compile Include="Dto\Interfaces\ISubscriptionBillingPeriodDefinition.cs" />
@@ -152,6 +151,7 @@
     <Compile Include="Dto\Put\SubscriptionProductEarningTiming.cs" />
     <Compile Include="Dto\Put\SubscriptionProductOverride.cs" />
     <Compile Include="Dto\Put\SubscriptionProductPriceOverride.cs" />
+    <Compile Include="EarningTiming.cs" />
     <Compile Include="ExecuteHttpRequest.cs" />
     <Compile Include="ExtractDataFromHeader.cs" />
     <Compile Include="HtmlExtensions.cs" />

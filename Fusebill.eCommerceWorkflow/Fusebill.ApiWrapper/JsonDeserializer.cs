@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Fusebill.ApiWrapper.Contracts;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Fusebill.ApiWrapper

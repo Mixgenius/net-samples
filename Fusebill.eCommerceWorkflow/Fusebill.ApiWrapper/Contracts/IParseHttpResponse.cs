@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http.Headers;
 
-namespace Fusebill.ApiWrapper
+namespace Fusebill.ApiWrapper.Contracts
 {
     public interface IParseHttpResponse
     {

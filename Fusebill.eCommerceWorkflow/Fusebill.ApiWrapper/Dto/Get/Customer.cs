@@ -9,18 +9,18 @@ namespace Fusebill.ApiWrapper.Dto.Get
     {
 
 
-        [Required(ErrorMessage="Please enter your first name")]
+        [Required(ErrorMessage = "Please enter your first name")]
         [StringLength(50)]
         [JsonProperty(PropertyName = "firstName")]
         [DisplayName("First name")]
-        
+
         public string FirstName { get; set; }
 
         [JsonProperty(PropertyName = "middleName")]
         [DisplayName("Middle name")]
         public string MiddleName { get; set; }
 
-        [Required(ErrorMessage="Tell us your last name!")]
+        [Required(ErrorMessage = "Tell us your last name!")]
         [StringLength(50)]
         [JsonProperty(PropertyName = "lastName")]
         [DisplayName("Last name")]
@@ -35,18 +35,16 @@ namespace Fusebill.ApiWrapper.Dto.Get
         public string Suffix { get; set; }
 
 
-        
-        [Required(ErrorMessage="What's your email address?")]
+
+        [Required(ErrorMessage = "What's your email address?")]
         [StringLength(255)]
         [RegularExpression(
     @"^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-zA-Z0-9]{1}[a-zA-Z0-9\-]{0,62}[a-zA-Z0-9]{1})|[a-zA-Z])\.)+[a-zA-Z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$",
     ErrorMessage = "Invalid Email Address")]
-     //   [JsonProperty(PropertyName = "primaryEmail")]
-      //  [DisplayName("Primary email address")]
         public string PrimaryEmail { get; set; }
 
-        [Required(ErrorMessage="Let us know your phone number")]
-         [StringLength(50)]
+        [Required(ErrorMessage = "Let us know your phone number")]
+        [StringLength(50)]
         [JsonProperty(PropertyName = "primaryPhone")]
         [DisplayName("Primary phone number")]
         public string PrimaryPhone { get; set; }

@@ -18,23 +18,23 @@
         <table class="invoiceTable">
             <tr>
                 <td>@Html.Label("First Name:")</td>
-                <td>@Model.ReturnedCustomerActivation.FirstName</td>
+                <td>@Model.ActivatedCustomer.FirstName</td>
             </tr>
 
 
             <tr>
                 <td>@Html.Label("Last Name:")</td>
-                <td>@Model.ReturnedCustomerActivation.LastName</td>
+                <td>@Model.ActivatedCustomer.LastName</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Primary Email:")</td>
-                <td>@Model.ReturnedCustomerActivation.PrimaryEmail</td>
+                <td>@Model.ActivatedCustomer.PrimaryEmail</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Primary Phone:")</td>
-                <td>@Model.ReturnedCustomerActivation.PrimaryPhone</td>
+                <td>@Model.ActivatedCustomer.PrimaryPhone</td>
             </tr>
 
             <tr>
@@ -71,17 +71,17 @@
 
             <tr>
                 <td>@Html.Label("Subtotal:") </td>
-                <td>@Model.ReturnedCustomerActivation.InvoicePreview.Subtotal
+                <td>@Model.ActivatedCustomer.InvoicePreview.Subtotal
             </tr>
 
             <tr>
                 <td> @Html.Label("Total taxes:")  </td>
-                <td>@Model.ReturnedCustomerActivation.InvoicePreview.TotalTaxes
+                <td>@Model.ActivatedCustomer.InvoicePreview.TotalTaxes
             </tr>
 
             <tr>
                 <td> @Html.Label("Total:")  </td>
-                <td>@Model.ReturnedCustomerActivation.InvoicePreview.Total</td>
+                <td>@Model.ActivatedCustomer.InvoicePreview.Total</td>
             </tr>
 
         </table>

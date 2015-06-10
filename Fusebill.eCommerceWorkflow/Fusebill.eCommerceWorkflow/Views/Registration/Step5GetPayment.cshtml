@@ -36,7 +36,7 @@
 
 
             <label>Expiration Month</label>
-            @Html.DropDownListFor(m => m.ExpirationMonth, Model.listOfExpirationMonths, "Select your expiration month") <br /> <br />
+            @Html.DropDownListFor(m => m.ExpirationMonth, Model.ListOfExpirationMonths, "Select your expiration month") <br /> <br />
 
 
             <label>Expiration Year</label>
@@ -46,7 +46,7 @@
             <br />
             <h1 style="margin-left: -25px; color:darkslategray">Shipping Information</h1>
 
-            @if (Model.CreditCardSameAsBilling)
+            @if (Model.CCAddressSameAsBilling)
             {
                 <table>
                     <tr>
@@ -85,7 +85,7 @@
 
             }
 
-            @if (!Model.CreditCardSameAsBilling)
+            @if (!Model.CCAddressSameAsBilling)
             {
                 @Html.ValidationMessageFor(m => m.CreditAddress.Line1)    <br />
                 <label>Primary Address</label>

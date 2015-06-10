@@ -1,4 +1,5 @@
-﻿using Fusebill.ApiWrapper.Dto.Get;
+﻿using Fusebill.ApiWrapper.Contracts;
+using Fusebill.ApiWrapper.Dto.Get;
 using System;
 using System.Collections.Generic;
 

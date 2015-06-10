@@ -1,4 +1,4 @@
-﻿namespace Fusebill.ApiWrapper
+﻿namespace Fusebill.ApiWrapper.Contracts
 {
     public interface IRestUriBuilder
     {

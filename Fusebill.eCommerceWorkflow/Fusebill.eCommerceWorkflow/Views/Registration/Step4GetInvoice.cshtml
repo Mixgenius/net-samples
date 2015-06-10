@@ -18,70 +18,70 @@
         <table class="invoiceTable">
             <tr>
                 <td>@Html.Label("First Name:")</td>
-                <td>@Model.returnedCustomerActivation.FirstName</td>
+                <td>@Model.ReturnedCustomerActivation.FirstName</td>
             </tr>
 
 
             <tr>
                 <td>@Html.Label("Last Name:")</td>
-                <td>@Model.returnedCustomerActivation.LastName</td>
+                <td>@Model.ReturnedCustomerActivation.LastName</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Primary Email:")</td>
-                <td>@Model.returnedCustomerActivation.PrimaryEmail</td>
+                <td>@Model.ReturnedCustomerActivation.PrimaryEmail</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Primary Phone:")</td>
-                <td>@Model.returnedCustomerActivation.PrimaryPhone</td>
+                <td>@Model.ReturnedCustomerActivation.PrimaryPhone</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Primary Address:")</td>
-                <td>@Model.billingAddress.Line1</td>
+                <td>@Model.BillingAddress.Line1</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Secondary Address:")</td>
-                <td>@Model.billingAddress.Line1</td>
+                <td>@Model.BillingAddress.Line1</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Postal Code:")</td>
-                <td>@Model.billingAddress.PostalZip</td>
+                <td>@Model.BillingAddress.PostalZip</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("City:")</td>
-                <td>@Model.billingAddress.City</td>
+                <td>@Model.BillingAddress.City</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("State:")</td>
-                <td>@Model.billingAddress.State</td>
+                <td>@Model.BillingAddress.State</td>
             </tr>
 
             <tr>
                 <td>@Html.Label("Country:")</td>
-                <td>@Model.billingAddress.Country</td>
+                <td>@Model.BillingAddress.Country</td>
             </tr>
 
 
 
             <tr>
                 <td>@Html.Label("Subtotal:") </td>
-                <td>@Model.returnedCustomerActivation.InvoicePreview.Subtotal
+                <td>@Model.ReturnedCustomerActivation.InvoicePreview.Subtotal
             </tr>
 
             <tr>
                 <td> @Html.Label("Total taxes:")  </td>
-                <td>@Model.returnedCustomerActivation.InvoicePreview.TotalTaxes
+                <td>@Model.ReturnedCustomerActivation.InvoicePreview.TotalTaxes
             </tr>
 
             <tr>
                 <td> @Html.Label("Total:")  </td>
-                <td>@Model.returnedCustomerActivation.InvoicePreview.Total</td>
+                <td>@Model.ReturnedCustomerActivation.InvoicePreview.Total</td>
             </tr>
 
         </table>

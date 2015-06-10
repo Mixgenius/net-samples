@@ -178,7 +178,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\MultipleButtonAttribute.cs" />
-    <Compile Include="Models\RegistrationStronglyTypedSessionState.cs" />
     <Compile Include="Models\RegistrationVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

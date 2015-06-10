@@ -27,56 +27,46 @@ namespace Fusebill.eCommerceWorkflow.Models
         //total invoice
         public decimal invoiceTotal { get; set; }
 
-        public Dictionary<string, bool> planProductIncludes { get; set; }
-
 
         //The Customer object contains properties pertaining to the customer, such as FrstName, LastName
-        public Customer customerInformation { get; set; }
+        public Customer CustomerInformation { get; set; }
 
         //The Address objects contains properties pertaining to the billing address, such as City and PostalZip 
-        public Address billingAddress { get; set; }
+        public Address BillingAddress { get; set; }
 
-        public Address shippingAddress { get; set; }
+        public Address CreditAddress { get; set; }
 
-        public bool creditCardSameAsBilling { get; set; }
 
-        public List<SelectListItem> listOfCountriesSLI {get;set;}
+        public bool CreditCardSameAsBilling { get; set; }
 
-        public List<SelectListItem> listOfCreditCards { get; set; }
+        public List<SelectListItem> ListOfCountriesSLI {get;set;}
+
+        public List<SelectListItem> ListOfCreditCards { get; set; }
         public List<SelectListItem> listOfExpirationMonths { get; set; }
 
         public List<SelectListItem> ListOfExpirationYears { get; set; }
 
+        public List<Country> ListOfCountriesCountry { get; set; }
 
 
-        public List<Country> listOfCountriesCountry { get; set; }
+        public Customer ReturnedCustomerActivation { get; set; }
 
-        public Customer returnedCustomerActivation { get; set; }
+        public Customer ReturnedCustomer { get; set; }
 
-        public Customer returnedCustomer { get; set; }
+        public string SelectedCountryName { get; set; }
 
-        public string selectedCountryName { get; set; }
-
-        public string selectedStateName { get; set; }
-
-        //This has the planFrequencyID?
-        public PlanOrderToCashCycle planOrderToCashCycle { get; set; }
+        public string SelectedStateName { get; set; }
 
         //The Subscription objects contains information needed for the customer to create a subscription
-        public Subscription subscription { get; set; }
+        public Subscription Subscription { get; set; }
 
-        //total cost of subscription
-        public decimal subscriptionTotalCost { get; set; }
+        public string Cvv { get; set;  }
 
-        public CreditCard creditCard { get; set; }
+        public string CreditCardNumber { get; set; }
 
-        public string cvv { get; set;  }
+        public int ExpirationMonth { get; set; }
 
-        public string creditCardNumber { get; set; }
-
-        public int expirationMonth { get; set; }
-
-        public int expirationYear { get; set; }
+        public int ExpirationYear { get; set; }
 
 
     }

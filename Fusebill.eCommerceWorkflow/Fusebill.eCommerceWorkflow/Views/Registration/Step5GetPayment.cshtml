@@ -26,90 +26,90 @@
             <h1 style="margin-left: -25px; color:darkslategray">Credit Card Information</h1>
 
             <label>Card Number</label>
-            @Html.DropDownListFor(m => m.creditCardNumber, Model.listOfCreditCards, "Select your card number") <br /> <br />
+            @Html.DropDownListFor(m => m.CreditCardNumber, Model.ListOfCreditCards, "Select your card number") <br /> <br />
 
 
 
             <label>CVV</label>
-            @Html.TextBoxFor(m => m.cvv, new { @placeholder = "XXX" }) <br /> <br />
+            @Html.TextBoxFor(m => m.Cvv, new { @placeholder = "XXX" }) <br /> <br />
 
 
 
             <label>Expiration Month</label>
-            @Html.DropDownListFor(m => m.expirationMonth, Model.listOfExpirationMonths, "Select your expiration month") <br /> <br />
+            @Html.DropDownListFor(m => m.ExpirationMonth, Model.listOfExpirationMonths, "Select your expiration month") <br /> <br />
 
 
             <label>Expiration Year</label>
-            @Html.DropDownListFor(m => m.expirationYear, Model.ListOfExpirationYears, "Select your expiration year") <br />
+            @Html.DropDownListFor(m => m.ExpirationYear, Model.ListOfExpirationYears, "Select your expiration year") <br />
 
 
             <br />
             <h1 style="margin-left: -25px; color:darkslategray">Shipping Information</h1>
 
-            @if (Model.creditCardSameAsBilling)
+            @if (Model.CreditCardSameAsBilling)
             {
                 <table>
                     <tr>
                         <td>First Name:</td>
-                        <td>@Model.customerInformation.FirstName</td>
+                        <td>@Model.CustomerInformation.FirstName</td>
                     </tr>
                     <tr>
                         <td>Last Name:</td>
-                        <td>@Model.customerInformation.LastName</td>
+                        <td>@Model.CustomerInformation.LastName</td>
                     </tr>
                     <tr>
                         <td>Primary Address:</td>
-                        <td>@Model.billingAddress.Line1</td>
+                        <td>@Model.BillingAddress.Line1</td>
                     </tr>
                     <tr>
                         <td>Secondary Address:</td>
-                        <td>@Model.billingAddress.Line2</td>
+                        <td>@Model.BillingAddress.Line2</td>
                     </tr>
                     <tr>
                         <td>Postal Code:</td>
-                        <td>@Model.billingAddress.PostalZip</td>
+                        <td>@Model.BillingAddress.PostalZip</td>
                     </tr>
                     <tr>
                         <td>City:</td>
-                        <td>@Model.billingAddress.City</td>
+                        <td>@Model.BillingAddress.City</td>
                     </tr>
                     <tr>
                         <td>State:</td>
-                        <td>@Model.billingAddress.State</td>
+                        <td>@Model.BillingAddress.State</td>
                     </tr>
                     <tr>
                         <td>Country:</td>
-                        <td>@Model.billingAddress.Country</td>
+                        <td>@Model.BillingAddress.Country</td>
                     </tr>
                 </table>
 
             }
 
-            @if (!Model.creditCardSameAsBilling)
+            @if (!Model.CreditCardSameAsBilling)
             {
-                @Html.ValidationMessageFor(m => m.shippingAddress.Line1)    <br />
+                @Html.ValidationMessageFor(m => m.CreditAddress.Line1)    <br />
                 <label>Primary Address</label>
-                @Html.TextBoxFor(m => m.shippingAddress.Line1, new { @placeholder = "Primary Address" }) <br />
+                @Html.TextBoxFor(m => m.CreditAddress.Line1, new { @placeholder = "Primary Address" }) <br />
 
-                @Html.ValidationMessageFor(m => m.shippingAddress.Line2)    <br />
+                @Html.ValidationMessageFor(m => m.CreditAddress.Line2)    <br />
                 <label>Secondary Address</label>
-                @Html.TextBoxFor(m => m.shippingAddress.Line2, new { @placeholder = "Secondary Address" })  <br />
+                @Html.TextBoxFor(m => m.CreditAddress.Line2, new { @placeholder = "Secondary Address" })  <br />
 
-                @Html.ValidationMessageFor(m => m.shippingAddress.PostalZip)    <br />
+                @Html.ValidationMessageFor(m => m.CreditAddress.PostalZip)    <br />
                 <label>Zip</label>
-                @Html.TextBoxFor(m => m.shippingAddress.PostalZip, new { @placeholder = "Zip Code" })  <br />
+                @Html.TextBoxFor(m => m.CreditAddress.PostalZip, new { @placeholder = "Zip Code" })  <br />
 
-                @Html.ValidationMessageFor(m => m.shippingAddress.City) <br />
+                @Html.ValidationMessageFor(m => m.CreditAddress.City) <br />
                 <label>City</label>
-                @Html.TextBoxFor(m => m.shippingAddress.City, new { @placeholder = "City" })    <br />
+                @Html.TextBoxFor(m => m.CreditAddress.City, new { @placeholder = "City" })    <br />
 
-                @Html.ValidationMessageFor(m => m.shippingAddress.CountryId)    <br />
+                @Html.ValidationMessageFor(m => m.CreditAddress.CountryId)    <br />
                 @Html.Label("Country:")
-                @Html.DropDownListFor(m => m.shippingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" }) <br />
+                @Html.DropDownListFor(m => m.CreditAddress.CountryId, Model.ListOfCountriesSLI, "Select your country", new { @class = "country" }) <br />
 
-                @Html.ValidationMessageFor(m => m.shippingAddress.StateId)  <br />
+                @Html.ValidationMessageFor(m => m.CreditAddress.StateId)  <br />
                 @Html.Label("State:")
-                @Html.DropDownListFor(m => m.shippingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })  <br />
+                @Html.DropDownListFor(m => m.CreditAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })  <br />
             }
 
             <br />
@@ -127,6 +127,31 @@
     $(document).ready(function () {
 
         var model = @Html.HtmlConvertToJson(Model);
+        var selectedCountryCountry;
+        
+        if ($(".country").val() != 0)
+        {
+            $(".TestingPara").text("The value is NOT 0");
+
+            //we find the selected country's position in the countries list in order to access its states
+            for (var i = 0; i < model.ListOfCountriesCountry.length; i++)
+            {
+                if ($(".country").val() == model.ListOfCountriesCountry[i].id)
+                {
+                    selectedCountryCountry = model.ListOfCountriesCountry[i];
+                }
+            }
+
+            $(".state").empty();
+
+            for (var i = 0; i < selectedCountryCountry.states.length; i++) {
+                $(".state").append($('<option>', {
+                    value: selectedCountryCountry.states[i].id,
+                    text: selectedCountryCountry.states[i].name
+                }));
+            };
+        }
+    
 
 
         $(".country").change(
@@ -138,11 +163,11 @@
                 var selectedCountryValue = $(".country").val();
 
                 //we find the selected country's position in the countries list in order to access its states
-                for (var i = 0; i < model.listOfCountriesCountry.length; i++)
+                for (var i = 0; i < model.ListOfCountriesCountry.length; i++)
                 {
-                    if (selectedCountryValue == model.listOfCountriesCountry[i].id)
+                    if (selectedCountryValue == model.ListOfCountriesCountry[i].id)
                     {
-                        var selectedCountryCountry = model.listOfCountriesCountry[i];
+                        var selectedCountryCountry = model.ListOfCountriesCountry[i];
                     }
                 }
 

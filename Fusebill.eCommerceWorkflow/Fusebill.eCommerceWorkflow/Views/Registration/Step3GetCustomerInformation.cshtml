@@ -24,22 +24,22 @@
                 <td>
                     <h1 style="color:darkslategrey; margin-top:-70px;">Contact information</h1>
                     <div class="customerCustomerInfo">
-                        @Html.ValidationMessageFor(m => m.customerInformation.FirstName) <br />
+                        @Html.ValidationMessageFor(m => m.CustomerInformation.FirstName) <br />
                         @Html.Label("First Name:")
-                        @Html.TextBoxFor(m => m.customerInformation.FirstName, new { @Value = Model.customerInformation.FirstName, @placeholder = "First name" }) <br />
+                        @Html.TextBoxFor(m => m.CustomerInformation.FirstName, new { @Value = Model.CustomerInformation.FirstName, @placeholder = "First name" }) <br />
 
 
-                        @Html.ValidationMessageFor(m => m.customerInformation.LastName) <br />
+                        @Html.ValidationMessageFor(m => m.CustomerInformation.LastName) <br />
                         @Html.Label("Last Name:")
-                        @Html.TextBoxFor(m => m.customerInformation.LastName, new { @Value = Model.customerInformation.LastName, @placeholder = "Last name" }) <br />
+                        @Html.TextBoxFor(m => m.CustomerInformation.LastName, new { @Value = Model.CustomerInformation.LastName, @placeholder = "Last name" }) <br />
 
-                        @Html.ValidationMessageFor(m => m.customerInformation.PrimaryEmail) <br />
+                        @Html.ValidationMessageFor(m => m.CustomerInformation.PrimaryEmail) <br />
                         @Html.Label("Email Address:")
-                        @Html.TextBoxFor(m => m.customerInformation.PrimaryEmail, new { @Value = Model.customerInformation.PrimaryEmail, @placeholder = "example@email.com" }) <br />
+                        @Html.TextBoxFor(m => m.CustomerInformation.PrimaryEmail, new { @Value = Model.CustomerInformation.PrimaryEmail, @placeholder = "example@email.com" }) <br />
 
-                        @Html.ValidationMessageFor(m => m.customerInformation.PrimaryPhone) <br />
+                        @Html.ValidationMessageFor(m => m.CustomerInformation.PrimaryPhone) <br />
                         @Html.Label("Phone:")
-                        @Html.TextBoxFor(m => m.customerInformation.PrimaryPhone, new { @Value = Model.customerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX" })  <br />
+                        @Html.TextBoxFor(m => m.CustomerInformation.PrimaryPhone, new { @Value = Model.CustomerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX" })  <br />
                     </div>
 
                     <h1 style="color: darkslategrey;">Credit Card Information</h1>
@@ -47,7 +47,7 @@
                         @Html.Label("Same as billing:")
                     </div>
                     <div style="margin-left: 168px; margin-top: -25px;">
-                        @Html.CheckBoxFor(m => m.creditCardSameAsBilling)
+                        @Html.CheckBoxFor(m => m.CreditCardSameAsBilling)
                     </div>
 
                 </td>
@@ -56,35 +56,35 @@
                 <td style="vertical-align:top;">
                     <h1 style="color:darkslategrey;">Billing information</h1>
                     <div class="customerBillingInfo">
-                        @Html.ValidationMessageFor(m => m.billingAddress.CompanyName)   <br />
+                        @Html.ValidationMessageFor(m => m.BillingAddress.CompanyName)   <br />
                         @Html.Label("Company Name:")
-                        @Html.TextBoxFor(m => m.billingAddress.CompanyName, new { @Value = Model.billingAddress.CompanyName, @placeholder = "Company name" }) <br />
+                        @Html.TextBoxFor(m => m.BillingAddress.CompanyName, new { @Value = Model.BillingAddress.CompanyName, @placeholder = "Company name" }) <br />
 
-                        @Html.ValidationMessageFor(m => m.billingAddress.Line1) <br />
+                        @Html.ValidationMessageFor(m => m.BillingAddress.Line1) <br />
                         @Html.Label("Primary Address:")
-                        @Html.TextBoxFor(m => m.billingAddress.Line1, new { @Value = Model.billingAddress.Line1, @placeholder = "Primary address" })  <br />
+                        @Html.TextBoxFor(m => m.BillingAddress.Line1, new { @Value = Model.BillingAddress.Line1, @placeholder = "Primary address" })  <br />
 
 
 
                         @Html.Label("Secondary Address:")
-                        @Html.ValidationMessageFor(m => m.billingAddress.Line2)     <br />
-                        @Html.TextBoxFor(m => m.billingAddress.Line2, null, new { @Value = Model.billingAddress.Line2, @placeholder = "Secondary address" })
+                        @Html.ValidationMessageFor(m => m.BillingAddress.Line2)     <br />
+                        @Html.TextBoxFor(m => m.BillingAddress.Line2, null, new { @Value = Model.BillingAddress.Line2, @placeholder = "Secondary address" })
 
-                        @Html.ValidationMessageFor(m => m.billingAddress.City)      <br />
+                        @Html.ValidationMessageFor(m => m.BillingAddress.City)      <br />
                         @Html.Label("City:")
-                        @Html.TextBoxFor(m => m.billingAddress.City, null, new { @Value = Model.billingAddress.City, @placeholder = "City" })   <br />
+                        @Html.TextBoxFor(m => m.BillingAddress.City, null, new { @Value = Model.BillingAddress.City, @placeholder = "City" })   <br />
 
-                        @Html.ValidationMessageFor(m => m.billingAddress.PostalZip)     <br />
+                        @Html.ValidationMessageFor(m => m.BillingAddress.PostalZip)     <br />
                         @Html.Label("Postal Code:")
-                        @Html.TextBoxFor(m => m.billingAddress.PostalZip, null, new { @Value = Model.billingAddress.PostalZip, @placeholder = "Postal zip" })  <br />
+                        @Html.TextBoxFor(m => m.BillingAddress.PostalZip, null, new { @Value = Model.BillingAddress.PostalZip, @placeholder = "Postal zip" })  <br />
 
 
-                        @Html.ValidationMessageFor(m => m.billingAddress.CountryId)     <br />
+                        @Html.ValidationMessageFor(m => m.BillingAddress.CountryId)     <br />
                         @Html.Label("Country:")
-                        @Html.DropDownListFor(m => m.billingAddress.CountryId, Model.listOfCountriesSLI, "Select your country", new { @class = "country" })   <br />
+                        @Html.DropDownListFor(m => m.BillingAddress.CountryId, Model.ListOfCountriesSLI, "Select your country", new { @class = "country" })   <br />
 
                         @Html.Label("State:")
-                        @Html.DropDownListFor(m => m.billingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
+                        @Html.DropDownListFor(m => m.BillingAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })
 
                         <br />
                         &nbsp;
@@ -116,11 +116,11 @@
             $(".TestingPara").text("The value is NOT 0");
 
             //we find the selected country's position in the countries list in order to access its states
-            for (var i = 0; i < model.listOfCountriesCountry.length; i++)
+            for (var i = 0; i < model.ListOfCountriesCountry.length; i++)
             {
-                if ($(".country").val() == model.listOfCountriesCountry[i].id)
+                if ($(".country").val() == model.ListOfCountriesCountry[i].id)
                 {
-                    selectedCountryCountry = model.listOfCountriesCountry[i];
+                    selectedCountryCountry = model.ListOfCountriesCountry[i];
                 }
             }
 
@@ -146,11 +146,11 @@
             var selectedCountryValue = $(".country").val();
 
             //we find the selected country's position in the countries list in order to access its states
-            for (var i = 0; i < model.listOfCountriesCountry.length; i++)
+            for (var i = 0; i < model.ListOfCountriesCountry.length; i++)
             {
-                if (selectedCountryValue == model.listOfCountriesCountry[i].id)
+                if (selectedCountryValue == model.ListOfCountriesCountry[i].id)
                 {
-                    selectedCountryCountry = model.listOfCountriesCountry[i];
+                    selectedCountryCountry = model.ListOfCountriesCountry[i];
                 }
             }
 

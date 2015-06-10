@@ -101,14 +101,42 @@
             <input type="submit" value="Next: Invoice Preview" name="action:Step4GetInvoice" style="background-color:orange" />
         </div>
     </form>
+
+    <p class="TestingPara">This is the testing para</p>
 </body>
 
 <script>
     $(document).ready(function () {
 
-
         var model = @Html.HtmlConvertToJson(Model);
         var selectedCountryCountry;
+
+        if ($(".country").val() != 0)
+        {
+            $(".TestingPara").text("The value is NOT 0");
+
+            //we find the selected country's position in the countries list in order to access its states
+            for (var i = 0; i < model.listOfCountriesCountry.length; i++)
+            {
+                if ($(".country").val() == model.listOfCountriesCountry[i].id)
+                {
+                    selectedCountryCountry = model.listOfCountriesCountry[i];
+                }
+            }
+
+            $(".state").empty();
+
+            for (var i = 0; i < selectedCountryCountry.states.length; i++) {
+                $(".state").append($('<option>', {
+                    value: selectedCountryCountry.states[i].id,
+                    text: selectedCountryCountry.states[i].name
+                }));
+            };
+        }
+    
+
+
+       
 
         $(".country").click(
         function () {
@@ -123,7 +151,6 @@
                 if (selectedCountryValue == model.listOfCountriesCountry[i].id)
                 {
                     selectedCountryCountry = model.listOfCountriesCountry[i];
-                    $(".countryName").val(selectedCountryCountry.name);
                 }
             }
 
@@ -133,7 +160,6 @@
                 $(".state").append($('<option>', {
                     value: selectedCountryCountry.states[i].id,
                     text: selectedCountryCountry.states[i].name
-
                 }));
 
             };

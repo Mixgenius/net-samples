@@ -114,7 +114,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
 
 
-      
+
 
 
 
@@ -151,7 +151,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             //Add a list of country for the dropdown menu in Step3's view
             PopulateCountryDropdown(ref step3RegistrationVM);
-            
+
             return View(step3RegistrationVM);
         }
 
@@ -214,11 +214,9 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             //We set the properties that will be displayed in Step4's view with the appropriate properties from the Session. 
             PrepareStep4View(ref step4RegistrationVM);
-           
+
             return View(step4RegistrationVM);
         }
-
-
 
 
         /// <summary>
@@ -268,7 +266,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             return View(step5RegistrationVM);
         }
 
-     
+
 
         /// <summary>
         /// Please note that this method is for demonstration purposes only and is NOT PCI Compliant. For PCI Compliant calls, please view an example on our website
@@ -286,31 +284,14 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             RegistrationVM step6RegistrationVM = new RegistrationVM();
             step6RegistrationVM = registrationVM;
 
-
-            var postCreditCard = PostCreditCardAndPayment(step6RegistrationVM);
-
-            var returnedCreditCard = ApiClient.PostCreditCard(postCreditCard);
-
-            var postPayment = PostPayment(returnedCreditCard);
-
-
-            //we try to post the credit card
-
-            //after posting the credit card, we post the payment method, which contains the amount to charge the credit card
-            ApiClient.PostPayment(postPayment);
-
-            //Activate customer by setting the preview to false
-            PostCustomerActivation(preview: false);
-
-            //Display the next view, which indicates that the user's transaction was successful
-            return View();
-
             try
-           {
-                //we try to post the credit card
-               ApiClient.PostCreditCard(postCreditCard);
+            {
+                var postCreditCard = PostCreditCardAndPayment(step6RegistrationVM);
 
-                
+                //we try to post the credit card
+                var returnedCreditCard = ApiClient.PostCreditCard(postCreditCard);
+
+                var postPayment = PostPayment(returnedCreditCard);
 
                 //after posting the credit card, we post the payment method, which contains the amount to charge the credit card
                 ApiClient.PostPayment(postPayment);
@@ -319,10 +300,10 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 PostCustomerActivation(preview: false);
 
                 //Display the next view, which indicates that the user's transaction was successful
-               return View();
+                return View();
             }
             catch
-         {
+            {
                 step6RegistrationVM.billingAddress = new Address();
                 step6RegistrationVM.customerInformation = new Customer();
 
@@ -352,17 +333,17 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 step6RegistrationVM.creditCardSameAsBilling = ((RegistrationVM)Session[REGISTRATIONVM]).creditCardSameAsBilling;
 
                 return View("Step5GetPayment", step6RegistrationVM);
-          }
+            }
         }
 
-  
-
-// ***********************************************************************************
-// ================================ HELPER METHODS ===================================
-// ***********************************************************************************
 
 
-//helper method for Step1
+        // ***********************************************************************************
+        // ================================ HELPER METHODS ===================================
+        // ***********************************************************************************
+
+
+        //helper method for Step1
         private void SetCustomerAndBillingInformationToEmptyStrings()
         {
             ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress = new Address
@@ -420,7 +401,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         }
 
 
-    
+
 
 
 
@@ -452,10 +433,10 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             };
 
             //some countries do not have states
-             if (((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.StateId != null)
-                {
-                    postBillingAddress.StateId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.StateId;
-                }
+            if (((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.StateId != null)
+            {
+                postBillingAddress.StateId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.StateId;
+            }
 
             ApiClient.PostAddress(postBillingAddress);
         }
@@ -555,7 +536,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             postCreditCard.CountryId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.CountryId;
             postCreditCard.StateId = ((RegistrationVM)Session[REGISTRATIONVM]).billingAddress.StateId;
 
-          return postCreditCard;
+            return postCreditCard;
         }
 
         private void ListOfCreditCards(ref Models.RegistrationVM registrationVM)

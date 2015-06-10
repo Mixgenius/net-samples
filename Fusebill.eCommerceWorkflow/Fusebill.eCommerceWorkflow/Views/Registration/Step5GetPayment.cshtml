@@ -29,7 +29,7 @@
             @Html.DropDownListFor(m => m.creditCardNumber, Model.listOfCreditCards, "Select your card number") <br /> <br />
 
 
-           
+
             <label>CVV</label>
             @Html.TextBoxFor(m => m.cvv, new { @placeholder = "XXX" }) <br /> <br />
 
@@ -43,7 +43,7 @@
             @Html.DropDownListFor(m => m.expirationYear, Model.ListOfExpirationYears, "Select your expiration year") <br />
 
 
-            <br /> 
+            <br />
             <h1 style="margin-left: -25px; color:darkslategray">Shipping Information</h1>
 
             @if (Model.creditCardSameAsBilling)

@@ -9,51 +9,51 @@
 <link href="~/Content/Plan.css" rel="stylesheet" />
 
 <body style="padding-bottom: 65px">
-<h1 style="margin-top: 200px; text-align:center; color:orange">Step 2/5: Choose your plan products</h1>
+    <h1 style="margin-top: 200px; text-align:center; color:orange">Step 2/5: Choose your plan products</h1>
 
-<br />
-<form action="" method="post">
-    <div style="align-content:center; text-align:center">
-        <table class="products_table">
-            <thead class="products_tableHead">
-                <tr>
-                    <td class="productsFirstColumn">Include</td>
-                    <td class="productsThirdColumn">Product</td>
-                    <td class="productsSecondColumn">Quantity</td>
-                </tr>
-            </thead>
-            <tbody>
-
-                @*To pass each product's quantity and included options to the viewModal, we must pass it to the modal. Yeah, i know, obviously
-                Thus, we use a for loop instead of a foreach loop *@
-
-                @for (int i = 0; i < Model.AvailableProducts.Count; i++)
-                {
+    <br />
+    <form action="" method="post">
+        <div style="align-content:center; text-align:center">
+            <table class="products_table">
+                <thead class="products_tableHead">
                     <tr>
-                        @if (Model.AvailableProducts[i].IsOptional == false)
-                        {
-                            <td class="productsFirstColumn">Included</td>
-                            <td style="display:none;">@Html.CheckBoxFor(m => m.AvailableProducts[i].IsIncluded )</td> 
-                        }
-                        @if (Model.AvailableProducts[i].IsOptional == true)
-                        {
-                            <td class="productsFirstColumn">@Html.CheckBoxFor( m => m.AvailableProducts[i].IsIncluded)</td>
-                        }
-                        <td class="productsThirdColumn">
-                            <strong>Name: @Model.AvailableProducts[i].ProductName</strong> <br />
-                            Description: @Model.AvailableProducts[i].ProductDescription
-                        </td>
-                        <td class="productsSecondColumn">@Html.TextBoxFor(m => m.AvailableProducts[i].Quantity, new { @Value = Model.AvailableProducts[i].Quantity })</td>
+                        <td class="productsFirstColumn">Include</td>
+                        <td class="productsThirdColumn">Product</td>
+                        <td class="productsSecondColumn">Quantity</td>
                     </tr>
-                }       
-                    </tbody>
-                </table>
-                    <br />
-                    <input id="Button1" type="button" value="Back: Choose Plan" onclick="@("window.location.href='" + @Url.Action("Index", "Registration") + "'");" />
+                </thead>
+                <tbody>
 
-                    <input type="submit" style="background-color: orange" value="Next: Customer Information" name="action:Step3GetCustomerInformation" />
-            
-                </div>
-            </form>
+                    @*To pass each product's quantity and included options to the viewModal, we must pass it to the modal. Yeah, i know, obviously
+                        Thus, we use a for loop instead of a foreach loop *@
+
+                    @for (int i = 0; i < Model.AvailableProducts.Count; i++)
+                    {
+                        <tr>
+                            @if (Model.AvailableProducts[i].IsOptional == false)
+                            {
+                                <td class="productsFirstColumn">Included</td>
+                                <td style="display:none;">@Html.CheckBoxFor(m => m.AvailableProducts[i].IsIncluded)</td>
+                            }
+                            @if (Model.AvailableProducts[i].IsOptional == true)
+                            {
+                                <td class="productsFirstColumn">@Html.CheckBoxFor(m => m.AvailableProducts[i].IsIncluded)</td>
+                            }
+                            <td class="productsThirdColumn">
+                                <strong>Name: @Model.AvailableProducts[i].ProductName</strong> <br />
+                                Description: @Model.AvailableProducts[i].ProductDescription
+                            </td>
+                            <td class="productsSecondColumn">@Html.TextBoxFor(m => m.AvailableProducts[i].Quantity, new { @Value = Model.AvailableProducts[i].Quantity })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <input id="Button1" type="button" value="Back: Choose Plan" onclick="@("window.location.href='" + @Url.Action("Index", "Registration") + "'");" />
+
+            <input type="submit" style="background-color: orange" value="Next: Customer Information" name="action:Step3GetCustomerInformation" />
+
+        </div>
+    </form>
 
 </body>

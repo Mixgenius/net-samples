@@ -27,9 +27,6 @@ namespace Fusebill.eCommerceWorkflow.Models
         //total invoice
         public decimal invoiceTotal { get; set; }
 
-        //How many of each product the user decides to have
-        public Dictionary<string, decimal> QuantityOfProducts { get; set; }
-
         public Dictionary<string, bool> planProductIncludes { get; set; }
 
 

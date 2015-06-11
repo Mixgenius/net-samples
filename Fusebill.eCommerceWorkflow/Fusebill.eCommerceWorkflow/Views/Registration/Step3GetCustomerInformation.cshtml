@@ -22,7 +22,7 @@
         <table class="customerTable">
             <tr>
                 <td>
-                    <h1 style="color:darkslategrey; margin-top:-70px;">Contact information</h1>
+                    <h1 style="color:darkslategrey; margin-top: -165px">Contact information</h1>
                     <div class="customerCustomerInfo">
                         @Html.ValidationMessageFor(m => m.CustomerInformation.FirstName) <br />
                         @Html.Label("First Name:")
@@ -40,14 +40,6 @@
                         @Html.ValidationMessageFor(m => m.CustomerInformation.PrimaryPhone) <br />
                         @Html.Label("Phone:")
                         @Html.TextBoxFor(m => m.CustomerInformation.PrimaryPhone, new { @Value = Model.CustomerInformation.PrimaryPhone, @placeholder = "(XXX) XXX-XXXX" })  <br />
-                    </div>
-
-                    <h1 style="color: darkslategrey;">Credit Card Information</h1>
-                    <div style="border: 1px solid lightgrey; margin-left: 20px; margin-top: 10px; padding-left: 20px; padding-bottom: 5px; padding-top: 5px; margin-right: -45px;">
-                        @Html.Label("Same as billing:")
-                    </div>
-                    <div style="margin-left: 168px; margin-top: -25px;">
-                        @Html.CheckBoxFor(m => m.CCAddressSameAsBilling)
                     </div>
 
                 </td>
@@ -100,9 +92,16 @@
             <input type="submit" value="Back: Choose Plan Products" name="action:Step2GetPlanProducts" />
             <input type="submit" value="Next: Invoice Preview" name="action:Step4GetInvoice" style="background-color:orange" />
         </div>
+
+        <div style="display:none">
+            @Html.TextBoxFor(m => m.Step, new { @Value = 3 })
+        </div>
+
     </form>
 
-    <p class="TestingPara">This is the testing para</p>
+
+   
+
 </body>
 
 <script>
@@ -113,8 +112,6 @@
 
         if ($(".country").val() != 0)
         {
-            $(".TestingPara").text("The value is NOT 0");
-
             //we find the selected country's position in the countries list in order to access its states
             for (var i = 0; i < model.ListOfCountriesCountry.length; i++)
             {

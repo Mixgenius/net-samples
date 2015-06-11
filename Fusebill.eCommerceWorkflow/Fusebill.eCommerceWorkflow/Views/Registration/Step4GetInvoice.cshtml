@@ -44,7 +44,7 @@
 
             <tr>
                 <td>@Html.Label("Secondary Address:")</td>
-                <td>@Model.BillingAddress.Line1</td>
+                <td>@Model.BillingAddress.Line2</td>
             </tr>
 
             <tr>
@@ -91,6 +91,10 @@
         <div style="text-align:center; align-content: center">
             <input type="submit" value="Back: Customer Information" name="action:Step3GetCustomerInformation" />
             <input type="submit" value="Next: Checkout" name="action:Step5GetPayment" style="background-color: orange;" />
+        </div>
+
+        <div style="display:none">
+            @Html.TextBoxFor(m => m.Step, new { @Value = 4 })
         </div>
     </form>
 </body>

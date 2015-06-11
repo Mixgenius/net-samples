@@ -46,47 +46,7 @@
             <br />
             <h1 style="margin-left: -25px; color:darkslategray">Shipping Information</h1>
 
-            @if (Model.CCAddressSameAsBilling)
-            {
-                <table>
-                    <tr>
-                        <td>First Name:</td>
-                        <td>@Model.CustomerInformation.FirstName</td>
-                    </tr>
-                    <tr>
-                        <td>Last Name:</td>
-                        <td>@Model.CustomerInformation.LastName</td>
-                    </tr>
-                    <tr>
-                        <td>Primary Address:</td>
-                        <td>@Model.BillingAddress.Line1</td>
-                    </tr>
-                    <tr>
-                        <td>Secondary Address:</td>
-                        <td>@Model.BillingAddress.Line2</td>
-                    </tr>
-                    <tr>
-                        <td>Postal Code:</td>
-                        <td>@Model.BillingAddress.PostalZip</td>
-                    </tr>
-                    <tr>
-                        <td>City:</td>
-                        <td>@Model.BillingAddress.City</td>
-                    </tr>
-                    <tr>
-                        <td>State:</td>
-                        <td>@Model.BillingAddress.State</td>
-                    </tr>
-                    <tr>
-                        <td>Country:</td>
-                        <td>@Model.BillingAddress.Country</td>
-                    </tr>
-                </table>
-
-            }
-
-            @if (!Model.CCAddressSameAsBilling)
-            {
+   
                 @Html.ValidationMessageFor(m => m.CreditAddress.Line1)    <br />
                 <label>Primary Address</label>
                 @Html.TextBoxFor(m => m.CreditAddress.Line1, new { @placeholder = "Primary Address" }) <br />
@@ -110,7 +70,7 @@
                 @Html.ValidationMessageFor(m => m.CreditAddress.StateId)  <br />
                 @Html.Label("State:")
                 @Html.DropDownListFor(m => m.CreditAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })  <br />
-            }
+    
 
             <br />
             <br />
@@ -119,6 +79,11 @@
                 <input type="submit" value="Back: Invoice Preview" name="action:Step4GetInvoice">
                 <input type="submit" value="Submit Card" name="action:Step6GetActivation" style="background-color: orange;">
             </div>
+
+            <div style="display:none">
+                @Html.TextBoxFor(m => m.Step, new { @Value = 5 })
+            </div>
+
         </form>
     </div>
 </body>

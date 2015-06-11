@@ -9,18 +9,19 @@ using System.Web.Mvc;
 
 namespace Fusebill.eCommerceWorkflow.Models
 {
-    public enum CurrentStep 
+    public enum FromStep 
     {
         Step1 = 1, 
         Step2 = 2, 
         Step3 = 3, 
         Step4 = 4, 
         Step5 = 5,
-        Completed = 6
     }
     public class RegistrationVM
     {
-        public CurrentStep CurrentStep = CurrentStep.Step1;
+
+        public int Step { get; set; }
+
         /// <summary>
         /// Update this list with your account's plans
         /// </summary>
@@ -46,30 +47,32 @@ namespace Fusebill.eCommerceWorkflow.Models
         /// </summary>
         public long SelectedPlanFrequencyID { get; set; }
 
+
         
         public Customer CustomerInformation { get; set; }
         public Address BillingAddress { get; set; }
         public Address CreditAddress { get; set; }
-        public bool CCAddressSameAsBilling { get; set; }
 
         /// <summary>
         /// Used in our countries dropdown
         /// </summary>
         public List<SelectListItem> ListOfCountriesSLI {get;set;}
+        public List<Country> ListOfCountriesCountry { get; set; }
+
+
         /// <summary>
         /// Demo credit cards
         /// </summary>
         public List<SelectListItem> ListOfCreditCards { get; set; }
         public List<SelectListItem> ListOfExpirationMonths { get; set; }
         public List<SelectListItem> ListOfExpirationYears { get; set; }
-        public List<Country> ListOfCountriesCountry { get; set; }
 
         /// <summary>
         /// Customer after activation will contain invoice details
         /// </summary>
         public Customer ActivatedCustomer { get; set; }
-
         public Customer ReturnedCustomer { get; set; }
+
 
         public string SelectedCountryName { get; set; }
         public string SelectedStateName { get; set; }

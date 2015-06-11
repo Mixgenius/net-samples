@@ -15,13 +15,14 @@ namespace Fusebill.eCommerceWorkflow.Controllers
     {
         //session key that stores the viewmodel
         const string RegistrationKey = "RegistrationKey";
-        
-        //
-        // GET: /Registration/
-        // First Step in Registration process
+
+        /// <summary>
+        /// GET: /Registration/
+        /// STEP 1 of the 5-step registration process
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
-         
             // Reset session
             Session[RegistrationKey] = null;
 
@@ -43,8 +44,8 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         }
 
         /// <summary>
-        /// Display the available products. Editable fields include the checkboxes that represent a product's inclusion
-        /// and TextBoxFors that display the number of products to purchase
+        /// STEP 2: Display the available products. Editable fields include the checkboxes that represent a product's inclusion
+        /// and TextBoxFors that contain the number of products to purchase
         /// </summary>
         /// <param name="registrationVM"></param>
         /// <returns></returns>
@@ -52,11 +53,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         [MultipleButton(Name = "action", Argument = "Step2GetPlanProducts")]
         public ActionResult Step2GetPlanProducts(RegistrationVM registration)
         {
-            //KJH: Manilpulate the RegistrationVM (this includes pulling data out of session when we hit back button
-            // KJH: Last step is to stuff the session with the registrationVM object
-            // KJH: Then return View(registrationVM)
-            // KJH: Stuff all, then slot in 
-
             var session = (RegistrationVM)Session[RegistrationKey];
 
             switch (registration.Step)
@@ -64,19 +60,15 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 // We came from Step1
                 case (int)FromStep.Step1:
 
-                    //combine into one line?
-                    registration.AvailableProducts = new List<PlanProduct>();
                     registration.AvailableProducts = ApiClient.GetPlanProductsByPlanId(registration.SelectedPlanId, new QueryOptions { }).Results;
 
-                    // We don't want to enter the textbox fields every time we demo
-                    // registration = RegistrationHelper.SetCustomerAndBillingInformationToDefaults(registration);
 
                     //instantiate these variables so that Step3's view can place information in the next view model's CustomerInformation and BillingAddress fields
                     registration.CustomerInformation = new Customer();
                     registration.BillingAddress = new Address();
                     break;
 
-                // We came from Step3 repopulate viewmodel
+                // We came from Step3, repopulate viewmodel
                 case (int)FromStep.Step3:
 
                     registration.AvailableProducts = session.AvailableProducts;
@@ -90,7 +82,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                     throw new ArgumentException("Invalid Step");
             }
 
-            //If a product's IsOptional value is false, it must be included in the plan and so we set its IsIncluded property to true
+            //If a product's IsOptional value is false, it must be included in the plan and we set its IsIncluded property to true
             foreach (PlanProduct planProduct in registration.AvailableProducts)
             {
                 if (!planProduct.IsOptional)
@@ -100,23 +92,25 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             }
 
             Session[RegistrationKey] = registration;
-
             RegistrationVM registrationVM = registration;
 
             return View(registrationVM);
         }
 
+        /// <summary>
+        /// STEP 3: Prompt the customer to enter contact and billing information. We post the customer's contact information,
+        /// billing information, and subscription, and put the subscription.
+        /// </summary>
+        /// <param name="registration"></param>
+        /// <returns></returns>
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "Step3GetCustomerInformation")]
         public ActionResult Step3GetCustomerInformation(RegistrationVM registration)
         {
             var session = (RegistrationVM)Session[RegistrationKey];
 
-            /* If we came from Step2, we will store the values of the Quantity and IsIncluded properties into their respective fields in our Session's AvailableProducts
-             * List. (Yes, we seek to modify only the Quantity and IsIncluded properties because the other properties in the local VM are null if we come from Step4. We do not wish to include them.
-             * In what ways can we determine ifwe came from Step2 or Step4? 
-             * If we came from Step2, the AvailableProducts list of the local VM is not null. If we came from Step4, it is null.
-            */
+            // If we came from Step2, we will store the values of the Quantity and IsIncluded properties from the VM into our Session
+
 
             if (registration.Step == (int)FromStep.Step2)
             {
@@ -127,7 +121,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 }
             }
 
-            //stuffing everything
             registration.BillingAddress = session.BillingAddress;
             registration.CustomerInformation = session.CustomerInformation;
             registration.SelectedPlanId = session.SelectedPlanId;
@@ -140,22 +133,16 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             PopulateCountryDropdown(ref registration);
 
             Session[RegistrationKey] = registration;
-
-            //we instantiate these two objects in order for Step3's view to pass information to Step4's action method
-            //    registrationVm.CustomerInformation = new Customer();
-            //    registrationVm.BillingAddress = new Address();
-
             RegistrationVM registrationVM = registration;
 
             return View(registrationVM);
         }
 
         /// <summary>
-        /// STEP4 TO REFACTOR
+        /// STEP4 : Display the customer's draft invoice
         /// </summary>
         /// <param name="registration"></param>
         /// <returns></returns>
-
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "Step4GetInvoice")]
         public ActionResult Step4GetInvoice(RegistrationVM registration)
@@ -163,22 +150,15 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             var session = (RegistrationVM)Session[RegistrationKey];
 
-            /* We wish to store the customer's contact, billing, and value of the "Same as billing" checkbox to our Session. 
-             * These fields are populated in the "parametered" VM if we came from Step3 and are null if we came from Step5, in which we seek not to store their values.
-             * We also create a new customer and subscription, etc, if we come from Step3. 
-             * How do we determine if we come from Step3 or Step5?
-             * We came from Step3 if the customerInformation and billingAddress fields and are not null; we came from Step5 if they are null. 
-             */
-
             if (registration.Step == (int)FromStep.Step3)
             {
                 session.CustomerInformation = new Customer();
                 session.CustomerInformation = registration.CustomerInformation;
-                session.BillingAddress = new Address(); 
+                session.BillingAddress = new Address();
                 session.BillingAddress = registration.BillingAddress;
 
                 CreateCustomer(ref session);
-                CreateBillingAddress( session);
+                CreateBillingAddress(session);
                 var returnedSubscription = CreateSubscription(session);
                 PutSubscription(returnedSubscription, session);
 
@@ -193,57 +173,47 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 PostCustomerActivation(preview: true, session: ref session);
 
                 session.SelectedCountryName = (from country in registration.ListOfCountriesCountry
-                                                                                  where country.Id == registration.BillingAddress.CountryId
-                                                                                  select country.Name).First();
+                                               where country.Id == registration.BillingAddress.CountryId
+                                               select country.Name).First();
 
                 if (registration.BillingAddress.StateId != null)
                 {
-
                     session.SelectedStateName = (from country in registration.ListOfCountriesCountry
-                                                                                    where country.Id == registration.BillingAddress.CountryId
-                                                                                    from state in country.States
-                                                                                    where state.Id == registration.BillingAddress.StateId
-                                                                                    select state.Name).First();
+                                                 where country.Id == registration.BillingAddress.CountryId
+                                                 from state in country.States
+                                                 where state.Id == registration.BillingAddress.StateId
+                                                 select state.Name).First();
                 }
                 #endregion
             }
 
-
-                //stuffing everything
-                registration.BillingAddress = session.BillingAddress;
-                registration.CustomerInformation = session.CustomerInformation;
-                registration.SelectedPlanId = session.SelectedPlanId;
-                registration.SelectedPlanFrequencyID = session.SelectedPlanFrequencyID;
-                registration.AvailableProducts = session.AvailableProducts;
-                registration.SelectedCountryName = session.SelectedCountryName;
-                registration.SelectedStateName = session.SelectedStateName;
-                registration.ReturnedCustomer = session.ReturnedCustomer;
-                registration.ActivatedCustomer = session.ActivatedCustomer;
+            registration.BillingAddress = session.BillingAddress;
+            registration.CustomerInformation = session.CustomerInformation;
+            registration.SelectedPlanId = session.SelectedPlanId;
+            registration.SelectedPlanFrequencyID = session.SelectedPlanFrequencyID;
+            registration.AvailableProducts = session.AvailableProducts;
+            registration.SelectedCountryName = session.SelectedCountryName;
+            registration.SelectedStateName = session.SelectedStateName;
+            registration.ReturnedCustomer = session.ReturnedCustomer;
+            registration.ActivatedCustomer = session.ActivatedCustomer;
 
             //We set the properties that will be displayed in Step4's view with the appropriate properties from the Session. 
             PrepareStep4View(ref registration, session);
 
             Session[RegistrationKey] = session;
-
             RegistrationVM registrationVM = registration;
 
             return View(registrationVM);
-
         }
 
-
-
         /// <summary>
-        /// We obtain credit card and payment information
+        /// STEP 5: We obtain credit card and payment information. If the transaction is successful, we return a new view; else, we redisplay this page
         /// </summary>
         /// <returns></returns>
         [HttpPost]
         [MultipleButton(Name = "action", Argument = "Step5GetPayment")]
         public ActionResult Step5GetPayment()
         {
-
-            //var a = (RegistrationVM)Session[RegistrationKey];
-
             var session = ((RegistrationVM)Session[RegistrationKey]);
 
             var registrationVM = new RegistrationVM
@@ -252,26 +222,21 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 CustomerInformation = new Customer()
             };
 
+            PopulateCountryDropdown(ref registrationVM);
+            registrationVM.CreditAddress = new Address();
 
-        
-                PopulateCountryDropdown(ref registrationVM);
-                registrationVM.CreditAddress = new Address();
-        
 
             ListOfCreditCards(ref registrationVM);
             ListOfExpirationMonths(ref registrationVM);
-            ListOfExpirationYears(ref registrationVM);            
+            ListOfExpirationYears(ref registrationVM);
 
             return View(registrationVM);
         }
 
-
-
         /// <summary>
+        /// We post the customer's credit card and payment method
         /// WARNING: Please note that this method is for demonstration purposes only and is NOT PCI Compliant. For PCI Compliant calls, please view an example on our website:
         /// http://help.fusebill.com/ajax-transparent-redirect-add-credit-card-payment-method
-        /// We need the customerId, the cardnumber, the cvv, first and last names, primary and secondary address, postal code, country, state, and city. In our example
-        /// because we're using invalid credit cards, we did not include expiration dates.
         /// </summary>
         /// <param name="registrationVM"></param>
         /// <returns></returns>
@@ -285,7 +250,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             {
                 var postCreditCard = PostCreditCardAndPayment(registrationVM, session);
 
-                //we try to post the credit card
+                //we post the credit card
                 var returnedCreditCard = ApiClient.PostCreditCard(postCreditCard);
 
                 var postPayment = PostPayment(returnedCreditCard, session);
@@ -294,22 +259,19 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 ApiClient.PostPayment(postPayment);
 
                 //Activate customer by setting the preview to false
-                PostCustomerActivation(preview: false, session: ref session );
+                PostCustomerActivation(preview: false, session: ref session);
 
                 //Display the next view, which indicates that the user's transaction was successful
-                return View(); 
+                return View();
             }
             catch
             {
-
-             
-              
                 registrationVM.BillingAddress = new Address();
                 registrationVM.CustomerInformation = new Customer();
-              
 
-                    PopulateCountryDropdown(ref registrationVM);
-                    registrationVM.CreditAddress = new Address();
+
+                PopulateCountryDropdown(ref registrationVM);
+                registrationVM.CreditAddress = new Address();
 
 
                 ListOfCreditCards(ref registrationVM);
@@ -323,46 +285,9 @@ namespace Fusebill.eCommerceWorkflow.Controllers
         }
 
 
-
         // ***********************************************************************************
         // ================================ HELPER METHODS ===================================
         // ***********************************************************************************
-
-
-
-        private void PrepareStep4View(ref Models.RegistrationVM step4RegistrationVM, RegistrationVM session)
-        {
-            step4RegistrationVM.ActivatedCustomer = new Customer()
-            {
-                FirstName = session.ActivatedCustomer.FirstName,
-                LastName = session.ActivatedCustomer.LastName,
-                PrimaryEmail = session.ActivatedCustomer.PrimaryEmail,
-                PrimaryPhone = session.ActivatedCustomer.PrimaryPhone
-
-            };
-
-            step4RegistrationVM.ActivatedCustomer.InvoicePreview = new InvoicePreview
-            {
-                Subtotal = session.ActivatedCustomer.InvoicePreview.Subtotal,
-                TotalTaxes = session.ActivatedCustomer.InvoicePreview.TotalTaxes,
-                Total = session.ActivatedCustomer.InvoicePreview.Total
-            };
-          
-            step4RegistrationVM.BillingAddress = new Address
-            {
-                Line1 = session.BillingAddress.Line1,
-                Line2 = session.BillingAddress.Line2,
-                PostalZip = session.BillingAddress.PostalZip,
-                City = session.BillingAddress.City,
-                Country = session.SelectedCountryName,
-                State = session.SelectedStateName
-            };
-
-        }
-
-
-
-
 
 
         private void CreateCustomer(ref RegistrationVM session)
@@ -377,7 +302,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             session.ReturnedCustomer = ApiClient.PostCustomer(postCustomer);
         }
-
         private void CreateBillingAddress(RegistrationVM session)
         {
             Fusebill.ApiWrapper.Dto.Post.Address postBillingAddress = new Fusebill.ApiWrapper.Dto.Post.Address
@@ -400,8 +324,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             ApiClient.PostAddress(postBillingAddress);
         }
-
-
         private Subscription CreateSubscription(RegistrationVM session)
         {
             var postSubscription = new ApiWrapper.Dto.Post.Subscription
@@ -412,8 +334,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             return ApiClient.PostSubscription(postSubscription);
         }
-
-
         private void PutSubscription(Subscription newlyReturnedSubscription, RegistrationVM session)
         {
             for (int i = 0; i < session.AvailableProducts.Count; i++)
@@ -429,9 +349,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             ApiClient.PutSubscription(putSubscription);
         }
-
-
-
         private void PostCustomerActivation(bool preview, ref RegistrationVM session)
         {
             var postCustomerActivation = new ApiWrapper.Dto.Post.CustomerActivation
@@ -444,23 +361,34 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             session.ActivatedCustomer = ApiClient.PostCustomerActivation(postCustomerActivation, preview, true);
 
         }
-
-
-
-        private void PopulateCountryDropdown(ref Models.RegistrationVM registrationVM)
+        private void PrepareStep4View(ref Models.RegistrationVM step4RegistrationVM, RegistrationVM session)
         {
-            registrationVM.ListOfCountriesSLI = new List<SelectListItem>();
-            registrationVM.ListOfCountriesCountry = new List<Country>();
-            registrationVM.ListOfCountriesCountry = ApiClient.GetCountries();
-
-            for (int i = 0; i < registrationVM.ListOfCountriesCountry.Count; i++)
+            step4RegistrationVM.ActivatedCustomer = new Customer()
             {
-                registrationVM.ListOfCountriesSLI.Add(new SelectListItem
-                {
-                    Text = registrationVM.ListOfCountriesCountry[i].Name,
-                    Value = registrationVM.ListOfCountriesCountry[i].Id.ToString(),
-                });
-            }
+                FirstName = session.ActivatedCustomer.FirstName,
+                LastName = session.ActivatedCustomer.LastName,
+                PrimaryEmail = session.ActivatedCustomer.PrimaryEmail,
+                PrimaryPhone = session.ActivatedCustomer.PrimaryPhone
+
+            };
+
+            step4RegistrationVM.ActivatedCustomer.InvoicePreview = new InvoicePreview
+            {
+                Subtotal = session.ActivatedCustomer.InvoicePreview.Subtotal,
+                TotalTaxes = session.ActivatedCustomer.InvoicePreview.TotalTaxes,
+                Total = session.ActivatedCustomer.InvoicePreview.Total
+            };
+
+            step4RegistrationVM.BillingAddress = new Address
+            {
+                Line1 = session.BillingAddress.Line1,
+                Line2 = session.BillingAddress.Line2,
+                PostalZip = session.BillingAddress.PostalZip,
+                City = session.BillingAddress.City,
+                Country = session.SelectedCountryName,
+                State = session.SelectedStateName
+            };
+
         }
 
 
@@ -475,7 +403,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
             return postPayment;
         }
-
         private Fusebill.ApiWrapper.Dto.Post.CreditCard PostCreditCardAndPayment(Models.RegistrationVM step6RegistrationVM, RegistrationVM session)
         {
             var postCreditCard = new ApiWrapper.Dto.Post.CreditCard();
@@ -491,14 +418,14 @@ namespace Fusebill.eCommerceWorkflow.Controllers
             postCreditCard.LastName = session.CustomerInformation.LastName;
 
 
-                postCreditCard.Address1 = step6RegistrationVM.CreditAddress.Line1;
-                postCreditCard.Address2 = step6RegistrationVM.CreditAddress.Line2;
-                postCreditCard.PostalZip = step6RegistrationVM.CreditAddress.PostalZip;
-                postCreditCard.City = step6RegistrationVM.CreditAddress.City;
+            postCreditCard.Address1 = step6RegistrationVM.CreditAddress.Line1;
+            postCreditCard.Address2 = step6RegistrationVM.CreditAddress.Line2;
+            postCreditCard.PostalZip = step6RegistrationVM.CreditAddress.PostalZip;
+            postCreditCard.City = step6RegistrationVM.CreditAddress.City;
 
-                postCreditCard.CountryId = step6RegistrationVM.CreditAddress.CountryId;
-                postCreditCard.StateId = step6RegistrationVM.CreditAddress.StateId;
-   
+            postCreditCard.CountryId = step6RegistrationVM.CreditAddress.CountryId;
+            postCreditCard.StateId = step6RegistrationVM.CreditAddress.StateId;
+
 
             return postCreditCard;
         }
@@ -518,7 +445,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 Value = "4111111111111111"
             });
         }
-
         private void ListOfExpirationMonths(ref Models.RegistrationVM registrationVM)
         {
             registrationVM.ListOfExpirationMonths = new List<SelectListItem>();
@@ -543,7 +469,6 @@ namespace Fusebill.eCommerceWorkflow.Controllers
 
 
         }
-
         private void ListOfExpirationYears(ref Models.RegistrationVM registrationVM)
         {
             registrationVM.ListOfExpirationYears = new List<SelectListItem>();
@@ -557,10 +482,21 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 });
             }
         }
+
+        private void PopulateCountryDropdown(ref Models.RegistrationVM registrationVM)
+        {
+            registrationVM.ListOfCountriesSLI = new List<SelectListItem>();
+            registrationVM.ListOfCountriesCountry = new List<Country>();
+            registrationVM.ListOfCountriesCountry = ApiClient.GetCountries();
+
+            for (int i = 0; i < registrationVM.ListOfCountriesCountry.Count; i++)
+            {
+                registrationVM.ListOfCountriesSLI.Add(new SelectListItem
+                {
+                    Text = registrationVM.ListOfCountriesCountry[i].Name,
+                    Value = registrationVM.ListOfCountriesCountry[i].Id.ToString(),
+                });
+            }
+        }
     }
 }
-
-
-
-
-

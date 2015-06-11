@@ -13,8 +13,6 @@
 
 
 <body style="padding-bottom: 300px">
-
-
     <br />
     <br />
     <div style="color:red; text-align:center">
@@ -46,31 +44,31 @@
             <br />
             <h1 style="margin-left: -25px; color:darkslategray">Shipping Information</h1>
 
-   
-                @Html.ValidationMessageFor(m => m.CreditAddress.Line1)    <br />
-                <label>Primary Address</label>
-                @Html.TextBoxFor(m => m.CreditAddress.Line1, new { @placeholder = "Primary Address" }) <br />
 
-                @Html.ValidationMessageFor(m => m.CreditAddress.Line2)    <br />
-                <label>Secondary Address</label>
-                @Html.TextBoxFor(m => m.CreditAddress.Line2, new { @placeholder = "Secondary Address" })  <br />
+            @Html.ValidationMessageFor(m => m.CreditAddress.Line1)    <br />
+            <label>Primary Address</label>
+            @Html.TextBoxFor(m => m.CreditAddress.Line1, new { @placeholder = "Primary Address" }) <br />
 
-                @Html.ValidationMessageFor(m => m.CreditAddress.PostalZip)    <br />
-                <label>Zip</label>
-                @Html.TextBoxFor(m => m.CreditAddress.PostalZip, new { @placeholder = "Zip Code" })  <br />
+            @Html.ValidationMessageFor(m => m.CreditAddress.Line2)    <br />
+            <label>Secondary Address</label>
+            @Html.TextBoxFor(m => m.CreditAddress.Line2, new { @placeholder = "Secondary Address" })  <br />
 
-                @Html.ValidationMessageFor(m => m.CreditAddress.City) <br />
-                <label>City</label>
-                @Html.TextBoxFor(m => m.CreditAddress.City, new { @placeholder = "City" })    <br />
+            @Html.ValidationMessageFor(m => m.CreditAddress.PostalZip)    <br />
+            <label>Zip</label>
+            @Html.TextBoxFor(m => m.CreditAddress.PostalZip, new { @placeholder = "Zip Code" })  <br />
 
-                @Html.ValidationMessageFor(m => m.CreditAddress.CountryId)    <br />
-                @Html.Label("Country:")
-                @Html.DropDownListFor(m => m.CreditAddress.CountryId, Model.ListOfCountriesSLI, "Select your country", new { @class = "country" }) <br />
+            @Html.ValidationMessageFor(m => m.CreditAddress.City) <br />
+            <label>City</label>
+            @Html.TextBoxFor(m => m.CreditAddress.City, new { @placeholder = "City" })    <br />
 
-                @Html.ValidationMessageFor(m => m.CreditAddress.StateId)  <br />
-                @Html.Label("State:")
-                @Html.DropDownListFor(m => m.CreditAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })  <br />
-    
+            @Html.ValidationMessageFor(m => m.CreditAddress.CountryId)    <br />
+            @Html.Label("Country:")
+            @Html.DropDownListFor(m => m.CreditAddress.CountryId, Model.ListOfCountriesSLI, "Select your country", new { @class = "country" }) <br />
+
+            @Html.ValidationMessageFor(m => m.CreditAddress.StateId)  <br />
+            @Html.Label("State:")
+            @Html.DropDownListFor(m => m.CreditAddress.StateId, Enumerable.Empty<SelectListItem>(), "Select your state", new { @class = "state" })  <br />
+
 
             <br />
             <br />
@@ -93,7 +91,7 @@
 
         var model = @Html.HtmlConvertToJson(Model);
         var selectedCountryCountry;
-        
+
         if ($(".country").val() != 0)
         {
             $(".TestingPara").text("The value is NOT 0");
@@ -116,7 +114,7 @@
                 }));
             };
         }
-    
+
 
 
         $(".country").change(

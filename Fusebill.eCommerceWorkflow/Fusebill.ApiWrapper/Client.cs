@@ -138,7 +138,11 @@ namespace Fusebill.ApiWrapper
             return PostEntity<Fusebill.ApiWrapper.Dto.Post.Subscription, Subscription>(url, subscription);
         }
 
-
+        public Subscription GetSubscription(long id)
+        {
+            var url = RestUriBuilder.BuildUri("subscriptions", id);
+            return GetEntity<Subscription>(url);
+        }
 
         public Customer PostCustomerActivation(Fusebill.ApiWrapper.Dto.Post.CustomerActivation customerActivation, bool preview, bool showZeroDollarCharges)
         {
@@ -171,6 +175,17 @@ namespace Fusebill.ApiWrapper
             var response = ExecuteHttpRequest.ExecuteHttpGet(url);
             return response.Content.ReadAsByteArrayAsync().Result;
         }
+
+        protected void DeleteEntity(string url, long id)
+        {
+            DeleteEntity(url + "/" + id);
+        }
+
+        protected void DeleteEntity(string url)
+        {
+            ExecuteHttpRequest.ExecuteHttpDelete(url);
+        }
+
         #endregion
 
         #region Public Methods
@@ -212,11 +227,37 @@ namespace Fusebill.ApiWrapper
             return GetEntity<Customer>(url);
         }
 
+        public Subscription PostSubscriptionActivation(Fusebill.ApiWrapper.Dto.Post.SubscriptionActivation subscriptionActivation, bool preview = false, bool showZeroDollarCharges = true, bool temporarilyDisableAutoPost = false)
+        {
+            var url = RestUriBuilder.BuildUri("subscriptionActivation", subscriptionActivation.Id) + string.Format("?preview={0}&showZeroDollarCharges={1}&temporarilyDisableAutoPost={2}", preview, showZeroDollarCharges, temporarilyDisableAutoPost);
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.SubscriptionActivation, Subscription>(url, subscriptionActivation);
+        }
+
+        public Subscription PostSubscriptionProvision(Fusebill.ApiWrapper.Dto.Post.SubscriptionProvision subscriptionProvision, bool preview = false, bool showZeroDollarCharges = true, bool temporarilyDisableAutoPost = false)
+        {
+            var url = RestUriBuilder.BuildUri("subscriptionProvision", subscriptionProvision.Id) + string.Format("?preview={0}&showZeroDollarCharges={1}&temporarilyDisableAutoPost={2}", preview, showZeroDollarCharges, temporarilyDisableAutoPost);
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.SubscriptionProvision, Subscription>(url, subscriptionProvision);
+        }
+
         public ResultList<PlanProduct> GetPlanProductsByPlanId(long id, QueryOptions queryOptions)
         {
             var url = RestUriBuilder.BuildUri("plans", id, "planProducts", queryOptions);
             return GetEntities<PlanProduct>(url);
 
+        }
+
+        public void DeleteSubscription(long id)
+        {
+            var url = RestUriBuilder.BuildUri("subscriptions");
+            DeleteEntity(url, id);
+        }
+
+
+
+        public Subscription PostSubscriptionCancel(Fusebill.ApiWrapper.Dto.Post.SubscriptionCancel subscriptionCancel)
+        {
+            var url = RestUriBuilder.BuildUri("subscriptionCancellation", subscriptionCancel.SubscriptionId);
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.SubscriptionCancel, Subscription>(url, subscriptionCancel);
         }
 
 

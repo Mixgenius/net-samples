@@ -283,7 +283,7 @@ namespace Fusebill.eCommerceWorkflow.Controllers
                 return View("Step5GetPayment", registrationVM);
             }
         }
-
+        
 
         // ***********************************************************************************
         // ================================ HELPER METHODS ===================================

@@ -19,6 +19,7 @@ namespace Fusebill.ApiWrapper.Contracts
         CreditCard PostCreditCard(Fusebill.ApiWrapper.Dto.Post.CreditCard paymentMethod);
 
         Subscription PutSubscription(Fusebill.ApiWrapper.Dto.Put.Subscription model);
+        Subscription PostSubscriptionActivation(Fusebill.ApiWrapper.Dto.Post.SubscriptionActivation subscriptionActivation, bool preview = false, bool showZeroDollarCharges = true, bool temporarilyDisableAutoPost = false);
 
         Customer PostCustomer(Fusebill.ApiWrapper.Dto.Post.Customer customer);
         Address PostAddress(Fusebill.ApiWrapper.Dto.Post.Address model);
@@ -28,12 +29,17 @@ namespace Fusebill.ApiWrapper.Contracts
         Payment PostPayment(Fusebill.ApiWrapper.Dto.Post.Payment payment);
 
         ResultList<PlanProduct> GetPlanProductsByPlanId(long id, QueryOptions queryOptions);
+        Subscription GetSubscription(long id);
 
+        Subscription PostSubscriptionProvision(Fusebill.ApiWrapper.Dto.Post.SubscriptionProvision subscriptionProvision, bool preview = false, bool showZeroDollarCharges = true, bool temporarilyDisableAutoPost = false);
 
         Plan GetPlan(long id);
         List<Country> GetCountries();
         ResultList<CustomerSummary> GetCustomers(QueryOptions queryOptions);
         Customer GetCustomer(long id);
+        void DeleteSubscription(long id);
+        Subscription PostSubscriptionCancel(Fusebill.ApiWrapper.Dto.Post.SubscriptionCancel subscription);
+
 
     }
 }

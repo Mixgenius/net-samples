@@ -120,6 +120,7 @@
     <Compile Include="Dto\Interfaces\IPaymentMethod.cs" />
     <Compile Include="Dto\Interfaces\ISubscriptionBillingPeriodDefinition.cs" />
     <Compile Include="Dto\Interfaces\ISubscriptionProductDiscount.cs" />
+    <Compile Include="Dto\Interfaces\ISubscriptionProductPriceOverride.cs" />
     <Compile Include="Dto\Post\Address.cs" />
     <Compile Include="Dto\Post\BaseDto.cs" />
     <Compile Include="Dto\Post\CreditCard.cs" />
@@ -131,9 +132,12 @@
     <Compile Include="Dto\Post\PaymentMethod.cs" />
     <Compile Include="Dto\Post\Subscription.cs" />
     <Compile Include="Dto\Post\SubscriptionActivation.cs" />
+    <Compile Include="Dto\Post\SubscriptionCancel.cs" />
     <Compile Include="Dto\Post\SubscriptionOverride.cs" />
     <Compile Include="Dto\Post\SubscriptionProductDiscount.cs" />
     <Compile Include="Dto\Post\SubscriptionProductOverride.cs" />
+    <Compile Include="Dto\Post\SubscriptionProductPriceOverride.cs" />
+    <Compile Include="Dto\Post\SubscriptionProvision.cs" />
     <Compile Include="Dto\Put\BaseDto.cs" />
     <Compile Include="Dto\Put\ChargeModel.cs" />
     <Compile Include="Dto\Put\IBaseDto.cs" />

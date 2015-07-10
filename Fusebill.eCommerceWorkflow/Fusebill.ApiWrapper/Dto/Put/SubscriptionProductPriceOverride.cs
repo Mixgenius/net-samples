@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 //using Common.ValidationAttributes;
 using Newtonsoft.Json;
 
+
 namespace Fusebill.ApiWrapper.Dto.Put
 {
     public class SubscriptionProductPriceOverride : BaseDto

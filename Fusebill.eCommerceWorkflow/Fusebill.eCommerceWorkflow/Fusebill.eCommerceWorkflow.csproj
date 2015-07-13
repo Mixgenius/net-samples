@@ -159,6 +159,7 @@
     <Compile Include="Areas\TestArea\Controllers\TestController.cs" />
     <Compile Include="Areas\TestArea\TestAreaAreaRegistration.cs" />
     <Compile Include="Areas\ZampleZ\Controllers\SubscriptionsController.cs" />
+    <Compile Include="Areas\ZampleZ\Models\ListOfCustomersVM.cs" />
     <Compile Include="Areas\ZampleZ\ZampleZAreaRegistration.cs" />
     <Compile Include="Controllers\FusebillBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -305,7 +306,6 @@
     <Folder Include="Areas\Strange\Views\Shared\" />
     <Folder Include="Areas\TestArea\Models\" />
     <Folder Include="Areas\TestArea\Views\Shared\" />
-    <Folder Include="Areas\ZampleZ\Models\" />
     <Folder Include="Areas\ZampleZ\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>

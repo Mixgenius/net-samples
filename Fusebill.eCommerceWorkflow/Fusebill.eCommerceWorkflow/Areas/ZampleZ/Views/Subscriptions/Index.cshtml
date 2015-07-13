@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models.ListOfCustomersVM
+
+@{
     Layout = null;
 }
 
@@ -11,7 +13,19 @@
 </head>
 <body>
     <div>
+
         ZampleZ
+
+        @foreach (var customer in Model.Customers)
+        {
+            <button type="button">
+                <p><strong>First name: </strong>@customer.FirstName</p>
+                <p><strong>Last name: </strong>@customer.LastName</p>
+                <p><strong>Company name: </strong>@customer.CompanyName</p>
+                <p><strong>ID: </strong>@customer.Id</p>
+
+            </button>
+        }
     </div>
 </body>
 </html>

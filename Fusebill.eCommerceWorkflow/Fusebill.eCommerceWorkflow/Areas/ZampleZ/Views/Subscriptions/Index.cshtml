@@ -1,8 +1,11 @@
-﻿@model Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models.ListOfCustomersVM
+﻿@using Fusebill.ApiWrapper
+
+@model Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models.ListOfCustomersVM
 
 @{
     Layout = null;
 }
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
 
 <!DOCTYPE html>
 
@@ -13,12 +16,12 @@
 </head>
 <body>
     <div>
-
+        <script src="~/Scripts/jquery-1.8.2.js"></script>
         ZampleZ
 
         @foreach (var customer in Model.Customers)
         {
-            <button type="button">
+            <button type="button" onclick="loadSubscriptions(@customer.Id)">
                 <p><strong>First name: </strong>@customer.FirstName</p>
                 <p><strong>Last name: </strong>@customer.LastName</p>
                 <p><strong>Company name: </strong>@customer.CompanyName</p>
@@ -27,5 +30,29 @@
             </button>
         }
     </div>
+
+
+    <script>
+
+
+        function loadSubscriptions(id) {
+
+            alert("loadSUbscriptions() called");
+
+            var customer = { CustomerID: id};
+
+            $.ajax({
+                type: "POST",
+                url: "Subscriptions/ListSubscriptionsForCustomer",
+                data: customer ,
+                success: function (data) {
+                    returnedData = data;
+                    
+                    alert("succesfully posted and received edata," + returnedData);
+                },
+                error: alert("Darn!")
+            });
+        }
+    </script>
 </body>
 </html>

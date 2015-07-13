@@ -13,6 +13,7 @@ namespace Fusebill.ApiWrapper.Contracts
         string ApiKey { set; }
 
         DateTime? DateForTesting { set; }
+        ResultList<Subscription> GetSubscriptions(long customerId, QueryOptions queryOptions);
 
         ResultList<Plan> GetPlans(QueryOptions queryOptions);
         ResultList<Plan> GetActivePlans(QueryOptions queryOptions);

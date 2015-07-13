@@ -260,6 +260,11 @@ namespace Fusebill.ApiWrapper
             return PostEntity<Fusebill.ApiWrapper.Dto.Post.SubscriptionCancel, Subscription>(url, subscriptionCancel);
         }
 
+        public ResultList<Subscription> GetSubscriptions(long customerId, QueryOptions queryOptions)
+        {
+            var url = RestUriBuilder.BuildUri("customers", customerId, "subscriptions", queryOptions);
+            return GetEntities<Subscription>(url);
+        }
 
         #endregion
     }

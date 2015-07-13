@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+
 namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 {
     public class SubscriptionsController : FusebillBaseController
@@ -27,12 +28,40 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
                 listOfCustomersVM.Customers.Add(ApiClient.GetCustomer(Convert.ToInt64(customerId)));
             }
 
-
-
             return View(listOfCustomersVM);
         }
 
+        public JsonResult ListSubscriptionsForCustomer(PostCustomerIDVM postCustomerIDVM)
+        {
+           
+            long desiredCustomerID = Convert.ToInt64(postCustomerIDVM.CustomerID);
 
+            var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
+
+          var jsonSubscriptions =   Json(new
+            {
+                //convert each subscription to a JSON object
+
+                firstArray = new[] {
+                    new {planName = subscriptions[0].PlanName.ToString() },
+                    new {planName = subscriptions[0].PlanName.ToString() }
+                //    new {name = "Bob" , index ="1", value = "he"},
+                //new {name = "Ann" , index ="2", value = "he"}
+                }
+            }, JsonRequestBehavior.AllowGet);
+
+
+
+          return jsonSubscriptions;
+        }
+
+        public ActionResult List()
+        {
+            long customerID = Convert.ToInt64(ConfigurationManager.AppSettings["SubscriptionDemoCustomerID"]);
+            var customer1 = ApiClient.GetCustomer(customerID);
+
+            return View();
+        }
 
 
         /// <summary>
@@ -162,19 +191,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
         /// This call will return all Subscriptions regardless of status and will return an empty array if the Customer specified has no Subscriptions.
         /// </summary>
         /// <returns></returns>
-        public ActionResult List()
-        {
-            long customerID = Convert.ToInt64(ConfigurationManager.AppSettings["SubscriptionDemoCustomerID"]);
-            var customer1 = ApiClient.GetCustomer(customerID);
-
-
-
-            //var customer2 = ApiClient.GetCustomers(new QueryOptions()).Results[0];
-            //customer2.
-
-            return View();
-        }
-
+      
         //The PostSubscriptionProvision takes an object, not a id
         /// <summary>
         /// 

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Fusebill.eCommerceWorkflow.Controllers;
 using Fusebill.ApiWrapper;
 using System.Configuration;
+using Fusebill.eCommerceWorkflow.Areas.Samples.Models;
 
 namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
 {
@@ -16,7 +17,18 @@ namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var demoCustomerIds = ConfigurationManager.AppSettings["DemoCustomerIds"].Split(',');
+
+            var listOfCustomersVM = new ListOfCustomersVM { Customers = new List<ApiWrapper.Dto.Get.Customer>() };
+
+            foreach (var customerId in demoCustomerIds)
+            {
+                listOfCustomersVM.Customers.Add(ApiClient.GetCustomer(Convert.ToInt64(customerId)));
+            }
+
+
+
+            return View(listOfCustomersVM);
         }
 
 

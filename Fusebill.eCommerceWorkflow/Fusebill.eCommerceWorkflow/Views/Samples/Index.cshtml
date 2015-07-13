@@ -45,9 +45,15 @@
    
             </li>
             <li class="two">
-                <h5>@Html.ActionLink("Subscriptions", "Index", "Subscriptions", new { Area = "Samples" }, new { @style = "color: darkblue" })</h5>
+                <h5>@Html.ActionLink("Hi", "Index", "Subscriptions", new { Area = "SamplesSSS" }, null)</h5>
+
+                 <h5>@Html.ActionLink("Hi", "Index", "Heyyy", new { Area = "Hi" }, null)</h5>
+                <h5>@Html.ActionLink("To ZampleZ", "Index", "Subscriptions", new {Area = "ZampleZ" }, null )</h5>
+
+                <h5>@Html.ActionLink("TO TestArea", "Index", "Subscriptions", new {Area = "SamplesSSS"}, new {@style = "color: red"})</h5>
                 You can leverage our 5-step registration page as a start for your business' registration page.
                 <ol class="round">
+                    <li><a href="~/Hi/Views/Hey/Index.cshtml">Subscriptions</a></li>
                     <li><h5>1. @Html.ActionLink("Create a Subscription", "Create", "Subscriptions", new { Area = "Samples" }, new { @style = "color: darkblue" })</h5></li>
                     <li><h5>2. @Html.ActionLink("GET a Subscription", "Get", "Subscriptions", new { Area = "Samples" }, new { @style = "color: darkblue" })</h5></li>
                     <li><h5>3. @Html.ActionLink("Edit a Subscription", "Edit", "Subscriptions", new { Area = "Samples" }, new { @style = "color: darkblue" })</h5></li>

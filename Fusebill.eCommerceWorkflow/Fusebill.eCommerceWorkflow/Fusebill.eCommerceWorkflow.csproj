@@ -152,7 +152,14 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Areas\Samples\Controllers\SubscriptionsController.cs" />
+    <Compile Include="Areas\Strange\Controllers\HeyyyController.cs" />
+    <Compile Include="Areas\Strange\HiAreaRegistration.cs" />
+    <Compile Include="Areas\SamplesSSS\Controllers\SubscriptionsController.cs" />
+    <Compile Include="Areas\SamplesSSS\Models\ListOfCustomersVM.cs" />
+    <Compile Include="Areas\TestArea\Controllers\TestController.cs" />
+    <Compile Include="Areas\TestArea\TestAreaAreaRegistration.cs" />
+    <Compile Include="Areas\ZampleZ\Controllers\SubscriptionsController.cs" />
+    <Compile Include="Areas\ZampleZ\ZampleZAreaRegistration.cs" />
     <Compile Include="Controllers\FusebillBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Common\NoLog.cs" />
@@ -227,10 +234,18 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Areas\Samples\Views\Web.config" />
-    <Content Include="Areas\Samples\Views\Shared\Error.cshtml" />
-    <Content Include="Areas\Samples\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\Index.cshtml" />
+    <Content Include="Areas\SamplesSSS\Views\Web.config" />
+    <Content Include="Areas\SamplesSSS\Views\Shared\Error.cshtml" />
+    <Content Include="Areas\SamplesSSS\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\SamplesSSS\Views\Subscriptions\Index.cshtml" />
+    <Content Include="Areas\Strange\Views\Web.config" />
+    <Content Include="Areas\Strange\Views\Subscriptions\Index.cshtml" />
+    <Content Include="Areas\Strange\Views\Heyyy\Index.cshtml" />
+    <Content Include="Areas\Strange\Views\Hey\Index.cshtml" />
+    <Content Include="Areas\TestArea\Views\Web.config" />
+    <Content Include="Areas\TestArea\Views\Test\Index.cshtml" />
+    <Content Include="Areas\ZampleZ\Views\Web.config" />
+    <Content Include="Areas\ZampleZ\Views\Subscriptions\Index.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Images\fusebill_logo-white.png" />
     <Content Include="ReadMe.txt" />
@@ -286,7 +301,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Samples\Models\" />
+    <Folder Include="Areas\Strange\Models\" />
+    <Folder Include="Areas\Strange\Views\Shared\" />
+    <Folder Include="Areas\TestArea\Models\" />
+    <Folder Include="Areas\TestArea\Views\Shared\" />
+    <Folder Include="Areas\ZampleZ\Models\" />
+    <Folder Include="Areas\ZampleZ\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

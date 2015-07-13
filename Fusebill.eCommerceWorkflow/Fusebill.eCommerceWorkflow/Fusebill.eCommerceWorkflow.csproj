@@ -153,7 +153,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Samples\Controllers\SubscriptionsController.cs" />
-    <Compile Include="Areas\Samples\SamplesAreaRegistration.cs" />
     <Compile Include="Controllers\FusebillBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Common\NoLog.cs" />
@@ -232,18 +231,6 @@
     <Content Include="Areas\Samples\Views\Shared\Error.cshtml" />
     <Content Include="Areas\Samples\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Samples\Views\Subscriptions\Index.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\Create.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\Edit.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\Get.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\Delete.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\List.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\Provision.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\Activation.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\Cancellation.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\CreatePriceOverride.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\EditPriceOverride.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\DeletePriceOverride.cshtml" />
-    <Content Include="Areas\Samples\Views\Subscriptions\ProductSearch.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Images\fusebill_logo-white.png" />
     <Content Include="ReadMe.txt" />

@@ -31,30 +31,30 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
             return View(listOfCustomersVM);
         }
 
-        public JsonResult ListSubscriptionsForCustomer(PostCustomerIDVM postCustomerIDVM)
+
+        public int Test(PostCustomerIDVM asdf)
+        {
+            return 123;
+        }
+
+      
+
+
+
+
+
+
+        [HttpPost]
+        public ActionResult ListSubscriptionsForCustomer(PostCustomerIDVM postCustomerIDVM)
         {
            
             long desiredCustomerID = Convert.ToInt64(postCustomerIDVM.CustomerID);
 
             var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
 
-          var jsonSubscriptions =   Json(new
-            {
-                //convert each subscription to a JSON object
-
-                firstArray = new[] {
-                    new {planName = subscriptions[0].PlanName.ToString() },
-                    new {planName = subscriptions[0].PlanName.ToString() }
-                //    new {name = "Bob" , index ="1", value = "he"},
-                //new {name = "Ann" , index ="2", value = "he"}
-                }
-            }, JsonRequestBehavior.AllowGet);
-
-
-
-          return jsonSubscriptions;
+            return Json(subscriptions);
         }
-
+        
         public ActionResult List()
         {
             long customerID = Convert.ToInt64(ConfigurationManager.AppSettings["SubscriptionDemoCustomerID"]);

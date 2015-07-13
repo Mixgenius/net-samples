@@ -36,6 +36,18 @@
 
 
     <script>
+        function loadSubscriptionse(id) {
+
+            
+            var customer = { CustomerID: id};
+
+            $.ajax({
+                type: "POST",
+                url: "Subscriptions/Test",
+                data: customer,
+            });
+
+        }
 
         function loadSubscriptions(id) {
 
@@ -45,15 +57,22 @@
 
             $.ajax({
                 type: "POST",
-                //url: "Subscriptions/ListSubscriptionsForCustomer",
                 url: "Subscriptions/ListSubscriptionsForCustomer",
+                //url: "Subscriptions/ListSubscriptionsForCustomer",
                 data: customer,
                 success: function (data) {
-                    alert(returnedData[0].Id);
-                    var a = document.createElement("p");
-                    a.innerHTML = returnedData[0].Id;
+
                     returnedData = data;
-                
+
+                    alert(returnedData[0].Id);
+
+                    for (var i = 0; i < returnedData.length; i++)
+                    {
+                        var a = document.createElement("p");
+                        a.innerHTML = returnedData[i].Id;
+                        $("#divItems").append(a);
+                    }
+
                     alert("succesfully posted and received edata," + returnedData);
                 },
                 error: alert("Darn!")

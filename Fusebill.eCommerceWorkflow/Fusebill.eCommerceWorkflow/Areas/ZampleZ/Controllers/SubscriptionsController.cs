@@ -52,6 +52,8 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
             var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
 
+
+
             return Json(subscriptions);
         }
         

@@ -159,9 +159,9 @@
     <Compile Include="Areas\TestArea\Controllers\TestController.cs" />
     <Compile Include="Areas\TestArea\TestAreaAreaRegistration.cs" />
     <Compile Include="Areas\ZampleZ\Controllers\SubscriptionsController.cs" />
-    <Compile Include="Areas\ZampleZ\Models\ListOfCustomersVM.cs" />
+    <Compile Include="Areas\ZampleZ\Models\CustomersAndSubscriptionsVM.cs" />
     <Compile Include="Areas\ZampleZ\Models\PostCustomerIDVM.cs" />
-    <Compile Include="Areas\ZampleZ\Models\SubscriptionVM.cs" />
+    <Compile Include="Areas\ZampleZ\Models\PostSubscriptionVM.cs" />
     <Compile Include="Areas\ZampleZ\ZampleZAreaRegistration.cs" />
     <Compile Include="Controllers\FusebillBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

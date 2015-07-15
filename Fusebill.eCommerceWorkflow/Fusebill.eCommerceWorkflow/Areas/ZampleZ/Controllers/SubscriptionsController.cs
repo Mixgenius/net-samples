@@ -11,12 +11,28 @@ using System.Web.Mvc;
 
 namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 {
+    public class House
+    {
+        public int Number { get; set; }
+        public List<int> Numbers { get; set; }
+
+        public int[] NumbersArray { get; set; }
+
+        public string Name { get; set; }
+    }
+
+    //cancel options, more options
+    //same with reverse charges
+
     public class SubscriptionsController : FusebillBaseController
     {
         //
         // GET: /ZampleZ/Subscriptions/
 
-      
+        public void PassHouses(House house)
+        {
+            var t = house;
+        }
 
         public ActionResult Index()
         {
@@ -43,6 +59,24 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
             return View(customersAndSubscriptionsVM);
         }
 
+        public void CancelCustomer(PostCustomerIdVM postCustomerIdVM)
+        {
+            ApiClient.PostCustomerCancel(new ApiWrapper.Dto.Post.CustomerCancel
+            {
+                CustomerId = postCustomerIdVM.CustomerID,
+                CancellationOption = "Full"
+            });
+        }
+
+        public void ReverseCharge(PostCustomerIdVM fillerInteger)
+        {
+            ApiClient.PostReverseCharge(new ApiWrapper.Dto.Post.ReverseCharge
+            {
+                ReverseChargeOption = "Full",
+                ReverseChargeAmount = 1,
+                ChargeId = 4612017
+            });
+        }
 
         [HttpPost]
         public ActionResult ListSubscriptionsForCustomer(PostCustomerIdVM postCustomerIdVM)
@@ -55,6 +89,14 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
 
             return Json(subscriptions);
+        }
+
+        [HttpPost]
+        public void Test(List<string> a)
+        {
+
+
+            var j = a; 
         }
 
         [HttpPost]

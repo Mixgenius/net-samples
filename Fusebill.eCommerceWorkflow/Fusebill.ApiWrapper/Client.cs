@@ -266,6 +266,18 @@ namespace Fusebill.ApiWrapper
             return GetEntities<Subscription>(url);
         }
 
+        public Customer PostCustomerCancel(Fusebill.ApiWrapper.Dto.Post.CustomerCancel customer)
+        {
+            var url = RestUriBuilder.BuildUri("customerCancellation");
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.CustomerCancel, Customer>(url, customer);
+        }
+
+        public ReverseCharge PostReverseCharge(Fusebill.ApiWrapper.Dto.Post.ReverseCharge reverseCharge)
+        {
+            var url = RestUriBuilder.BuildUri("reverseCharges");
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.ReverseCharge, ReverseCharge>(url, reverseCharge);
+        }
+
         #endregion
     }
 }

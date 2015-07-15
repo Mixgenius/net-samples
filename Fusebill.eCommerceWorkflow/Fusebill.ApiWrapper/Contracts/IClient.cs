@@ -14,6 +14,7 @@ namespace Fusebill.ApiWrapper.Contracts
 
         DateTime? DateForTesting { set; }
         ResultList<Subscription> GetSubscriptions(long customerId, QueryOptions queryOptions);
+        Customer PostCustomerCancel(Fusebill.ApiWrapper.Dto.Post.CustomerCancel customer);
 
         ResultList<Plan> GetPlans(QueryOptions queryOptions);
         ResultList<Plan> GetActivePlans(QueryOptions queryOptions);
@@ -41,6 +42,7 @@ namespace Fusebill.ApiWrapper.Contracts
         void DeleteSubscription(long id);
         Subscription PostSubscriptionCancel(Fusebill.ApiWrapper.Dto.Post.SubscriptionCancel subscription);
 
+        ReverseCharge PostReverseCharge(Fusebill.ApiWrapper.Dto.Post.ReverseCharge reverseCharge);
 
     }
 }

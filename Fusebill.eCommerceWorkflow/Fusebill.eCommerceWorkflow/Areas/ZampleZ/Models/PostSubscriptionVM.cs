@@ -26,5 +26,6 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models
         public int RemainingInterval { get; set; }
 
         public List<int> ProductQuantityOverride { get; set; }
+
     }
 }

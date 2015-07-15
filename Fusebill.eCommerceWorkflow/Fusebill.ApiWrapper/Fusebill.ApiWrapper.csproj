@@ -107,6 +107,7 @@
     <Compile Include="Dto\Get\Price.cs" />
     <Compile Include="Dto\Get\PricingModel.cs" />
     <Compile Include="Dto\Get\QuantityRange.cs" />
+    <Compile Include="Dto\Get\ReverseCharge.cs" />
     <Compile Include="Dto\Get\State.cs" />
     <Compile Include="Dto\Get\Country.cs" />
     <Compile Include="Dto\Get\Subscription.cs" />
@@ -131,10 +132,12 @@
     <Compile Include="Dto\Post\CreditCard.cs" />
     <Compile Include="Dto\Post\Customer.cs" />
     <Compile Include="Dto\Post\CustomerActivation.cs" />
+    <Compile Include="Dto\Post\CustomerCancel.cs" />
     <Compile Include="Dto\Post\IBaseDto.cs" />
     <Compile Include="Dto\Post\Payment.cs" />
     <Compile Include="Dto\Post\PaymentAllocation.cs" />
     <Compile Include="Dto\Post\PaymentMethod.cs" />
+    <Compile Include="Dto\Post\ReverseCharge.cs" />
     <Compile Include="Dto\Post\Subscription.cs" />
     <Compile Include="Dto\Post\SubscriptionActivation.cs" />
     <Compile Include="Dto\Post\SubscriptionCancel.cs" />

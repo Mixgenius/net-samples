@@ -121,12 +121,12 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
             for (int i = 0; i < subscription.SubscriptionProducts.Count; i++)
             {
                 //Editing the plan product's quantit             
-                subscription.SubscriptionProducts[i].Quantity = postSubscriptionVM.ProductQuantityOverride[i];
+                subscription.SubscriptionProducts[i].Quantity = postSubscriptionVM.ProductQuantityOverrides[i];
 
                 //editing the plan product's price
                 subscription.SubscriptionProducts[i].SubscriptionProductPriceOverride = new ApiWrapper.Dto.Get.SubscriptionProductPriceOverride
                 {
-                    ChargeAmount = postSubscriptionVM.ProductPriceOverride[i]
+                    ChargeAmount = postSubscriptionVM.ProductPriceOverrides[i]
                 };
 
                 ////Editing a non-mandatory plan product to be included

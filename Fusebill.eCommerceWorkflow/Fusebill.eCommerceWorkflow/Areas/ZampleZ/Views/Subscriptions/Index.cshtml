@@ -19,7 +19,6 @@
     <div>
         <script src="~/Scripts/jquery-1.8.2.js"></script>
         ZampleZ
-        <button type="button" onclick="ClickButton()">ClickButton()</button>
 
         @foreach (var customer in Model.AvailableCustomers)
         {
@@ -47,38 +46,24 @@
 
 
     <script>
+        
+        var subscriptionsArray = new Array();
+
         var house;
         var model ;
+        //array that will store each inputbox that accepts product quantitty override, productPriceOverrides, timestamps
         var productQuantityOverridesArray;
         var productPriceOverridesArray;
+        var timestampsArray;
+        //number of timestamps that exist 
+        var timestampCount = 3;
+
         $(document).ready(function () {
             model = @Html.HtmlConvertToJson(Model);
 
         });
 
 
-
-
-
-
-        function ClickButton() {
-
-
-            house = { Number: 80, Numbers: [12,13,14], NumbersArray: [22,23,24], Name: "StringName" };
-
-            $.ajax({
-                type: "POST",
-                url: "Subscriptions/PassHouses",
-                dataType: "json",traditional: true,
-                data: house,
-                success: function () {
-                    alert("SUccessfull!!!!");
-                },
-                failure: function (response) {
-                    $('#result').html(response);
-                }
-            });
-        }
 
 
         function addSubscription(customerID, planFrequencyID)
@@ -228,7 +213,6 @@
                 productPriceOverridesArray[returnedData[i].Id.toString()] = productPriceOverrides;
 
 
-
                 /* Overrides for subscription name, description, charge amount, and setup amount */
                 var nameOverrideLabel = document.createElement("p");
                 nameOverrideLabel.innerHTML = "Override Name"  + "<br />";
@@ -268,12 +252,44 @@
                 reference.id = "reference_" + returnedData[i].Id;
                 $("#divItems").append(reference);
 
+
+                for (var i = 0; i < timestampCount; i++)
+                {
+                    var timestampLabel = document.createElement("p");
+
+                    //label indicates start timestamp
+                    if (i == 0)
+                    {
+                        timestampLabel.innerHTML = "Start Timestamp" + "<br />";
+                    } 
+                    //label indicates end timestamp
+                    else if(i == 1)
+                    {
+                        timestampLabel.innerHTML = "End Timestamp" + "<br />";
+
+                    } 
+                        //label indicates activation timestamp
+                    else if (i == 2)
+                    {
+                        timestampLabel.innerHTML = "Activation Timestamp" + "<br />";
+                    }
+
+                    $("#divItems").append(timestampLabel);
+
+                    var timestampInput = document.createElement("input");
+                    $("#divItems").append(timestampInput);
+                    timestampsArray[i] = timestampInput;
+
+                }
+
                 var ContractStartTimestampLabel = document.createElement("p");
                 ContractStartTimestampLabel.innerHTML = " Contract Start Date" + "<br />";
                 $("#divItems").append(ContractStartTimestampLabel);
                 var ContractStartTimestamp = document.createElement("input");
                 ContractStartTimestamp.id = "contractStartTimestamp_" + returnedData[i].Id;
                 $("#divItems").append(ContractStartTimestamp);
+
+             
 
                 var ContractEndTimestampLabel = document.createElement("p");
                 ContractEndTimestampLabel.innerHTML = " Contract End Date" + "<br />";
@@ -466,15 +482,21 @@
      
             //this array stores the numerical values of the product overrides arrays' inputs \s
             var productQuantityOverridesValues = new Array();
-            var productPriceOverridesValue = new Array();
+            var productPriceOverridesValues = new Array();
+            var timestampsValues = new Array();
 
             //place inputs into the numerical array
             for (var i = 0; i < productQuantityOverridesArray[subID.toString()].length; i++)
             {
                 productQuantityOverridesValues[i] = productQuantityOverridesArray[subID.toString()][i].value;
-                productPriceOverridesValue[i] = productPriceOverridesArray[subID.toString()][i].value;
+                productPriceOverridesValues[i] = productPriceOverridesArray[subID.toString()][i].value;
             }
 
+            //i<3 because there are three timestamps. We store the timestamp values in a timestamp array
+            for (var i = 0;i < 3; i++ )
+            {
+                timestampsValues[i] = 
+            }
 
             var postSubscription = {
                 SubscriptionID :subID ,
@@ -487,8 +509,9 @@
                 ContractEndTimestamp : $("#contractEndTimestamp_" + subID).val() ,
                 ScheduledActivationTimestamp : $("#scheduledActivationTimestamp_" + subID).val(),
                 RemainingInterval : $("#remainingInterval_" + subID).val(),
-                ProductQuantityOverride : productQuantityOverridesValues,
-                ProductPriceOverride : productPriceOverridesValue
+                ProductQuantityOverrides : productQuantityOverridesValues,
+                ProductPriceOverrides : productPriceOverridesValues,
+                TimeStamps : timestampsValues
             };
 
             alert("onUpdateButton has been called");

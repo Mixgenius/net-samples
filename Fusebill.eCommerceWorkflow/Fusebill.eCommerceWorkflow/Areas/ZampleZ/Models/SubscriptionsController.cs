@@ -27,7 +27,8 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
     //subscription provision with activatio month and date options; refresh screen
     //subscription cancel with activation cancel options; refresh screen
     //there seems to be an issue with the activation timestamp with products quprice overrices (cannot override something with a scheduled activation timestamp)
-
+    //adding label in one line
+    //call a function to create labels
 
 
     public class SubscriptionsController : FusebillBaseController
@@ -104,7 +105,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
             long desiredCustomerID = Convert.ToInt64(postCustomerIdVM.CustomerID);
 
             var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
-
+           
 
 
             return Json(subscriptions);
@@ -116,7 +117,6 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
         {
 
             var subscription = ApiClient.GetSubscription(postSubscriptionVM.SubscriptionID);
-
 
             for (int i = 0; i < subscription.SubscriptionProducts.Count; i++)
             {

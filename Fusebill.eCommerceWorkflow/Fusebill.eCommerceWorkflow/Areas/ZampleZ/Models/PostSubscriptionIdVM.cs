@@ -5,8 +5,8 @@ using System.Web;
 
 namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models
 {
-    public class PostCustomerIdVM
+    public class PostSubscriptionIdVM
     {
-        public long CustomerID { get; set; }
+        public long SubscriptionID { get; set; }
     }
 }

@@ -11,35 +11,44 @@ using System.Web.Mvc;
 
 namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 {
-    public class House
-    {
-        public int Number { get; set; }
-        public List<int> Numbers { get; set; }
+    //public class House
+    //{
+    //    public int Number { get; set; }
+    //    public List<int> Numbers { get; set; }
 
-        public int[] NumbersArray { get; set; }
+    //    public int[] NumbersArray { get; set; }
 
-        public string Name { get; set; }
-    }
+    //    public string Name { get; set; }
+    //}
 
+    //after a subscription is deleted, refresh the screen to show the updated  subscriptions 
     //cancel options, more options
     //same with reverse charges
+    //subscription provision with activatio month and date options; refresh screen
+    //subscription cancel with activation cancel options; refresh screen
+    //there seems to be an issue with the activation timestamp with products quprice overrices (cannot override something with a scheduled activation timestamp)
+
+
 
     public class SubscriptionsController : FusebillBaseController
     {
         //
         // GET: /ZampleZ/Subscriptions/
 
-        public void PassHouses(House house)
-        {
-            var t = house;
-        }
+        //public void PassHouses(House house)
+        //{
+        //    var t = house;
+        //}
 
         public ActionResult Index()
         {
             var demoCustomerIds = ConfigurationManager.AppSettings["DemoCustomerIds"].Split(',');
 
-            var customersAndSubscriptionsVM = new CustomersAndSubscriptionsVM { AvailableCustomers = new List<ApiWrapper.Dto.Get.Customer>(), 
-                                                                                AvailablePlans = new List<ApiWrapper.Dto.Get.Plan>() };
+            var customersAndSubscriptionsVM = new CustomersAndSubscriptionsVM
+            {
+                AvailableCustomers = new List<ApiWrapper.Dto.Get.Customer>(),
+                AvailablePlans = new List<ApiWrapper.Dto.Get.Plan>()
+            };
 
             //add available customers
             foreach (var customerId in demoCustomerIds)
@@ -53,7 +62,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
             foreach (var plan in availablePlans)
             {
-               customersAndSubscriptionsVM.AvailablePlans.Add(ApiClient.GetPlan(Convert.ToInt64(plan)));
+                customersAndSubscriptionsVM.AvailablePlans.Add(ApiClient.GetPlan(Convert.ToInt64(plan)));
             }
 
             return View(customersAndSubscriptionsVM);
@@ -70,18 +79,28 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
         public void ReverseCharge(PostCustomerIdVM fillerInteger)
         {
+            var a = ApiClient.GetInvoicesByCustomerId(fillerInteger.CustomerID, new QueryOptions());
+            var x = a.Results[0].Charges[0].Id;
+
+            // ApiClient.PostReverseCharge(new ApiWrapper.Dto.Post.ReverseCharge{})
+
             ApiClient.PostReverseCharge(new ApiWrapper.Dto.Post.ReverseCharge
             {
-                ReverseChargeOption = "Full",
-                ReverseChargeAmount = 1,
-                ChargeId = 4612017
+                // ReverseChargeOption = "Full",
+                ReverseChargeAmount = 1.05M,
+                Reference = "Hello",
+                ChargeId = x
             });
+
+            var asdf = 4;
+
+
         }
 
         [HttpPost]
         public ActionResult ListSubscriptionsForCustomer(PostCustomerIdVM postCustomerIdVM)
         {
-           
+
             long desiredCustomerID = Convert.ToInt64(postCustomerIdVM.CustomerID);
 
             var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
@@ -91,52 +110,53 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
             return Json(subscriptions);
         }
 
-        [HttpPost]
-        public void Test(List<string> a)
-        {
-
-
-            var j = a; 
-        }
 
         [HttpPost]
         public void UpdateSubscription(PostSubscriptionVM postSubscriptionVM)
-        
         {
-         
-            /*
+
             var subscription = ApiClient.GetSubscription(postSubscriptionVM.SubscriptionID);
 
 
-            ////for (int i = 0; i < subscription. .AvailableProducts.Count; i++)
-            ////{
-            ////    //Editing the quantity of a plan product
-            ////    var quantity = session.AvailableProducts[i].Quantity;
-            ////    subscription.SubscriptionProducts[i].Quantity = quantity;
-            ////    subscription.SubscriptionOverride.
+            for (int i = 0; i < subscription.SubscriptionProducts.Count; i++)
+            {
+                //Editing the plan product's quantit             
+                subscription.SubscriptionProducts[i].Quantity = postSubscriptionVM.ProductQuantityOverride[i];
 
-            ////   //Editing a non-mandatory plan product to be included
-            ////    var inclusion = session.AvailableProducts[i].IsIncluded;
-            ////    subscription.SubscriptionProducts[i].IsIncluded = inclusion;
-            ////}
+                //editing the plan product's price
+                subscription.SubscriptionProducts[i].SubscriptionProductPriceOverride = new ApiWrapper.Dto.Get.SubscriptionProductPriceOverride
+                {
+                    ChargeAmount = postSubscriptionVM.ProductPriceOverride[i]
+                };
+
+                ////Editing a non-mandatory plan product to be included
+                // var inclusion = session.AvailableProducts[i].IsIncluded;
+                // subscription.SubscriptionProducts[i].IsIncluded = inclusion;
+            }
 
             //Editing a subscription's name, description, charge, setupFee, and ID  NOTE: To verify, uri is not included in the dto but is in the help.fusebill.com documentation. DOes API help mean "Sample" when it writes "Simple"?
-            subscription.SubscriptionOverride.Name = postSubscriptionVM.NameOverride;
-            subscription.SubscriptionOverride.Description = postSubscriptionVM.DescriptionOverride;
-            subscription.SubscriptionOverride.Charge = postSubscriptionVM.ChargeOverride;
-            subscription.SubscriptionOverride.SetupFee = postSubscriptionVM.SetupOverride;
-            subscription.SubscriptionOverride.Id = postSubscriptionVM.SubscriptionID;
+
+            subscription.SubscriptionOverride = new ApiWrapper.Dto.Get.SubscriptionOverride
+            {
+                Name = postSubscriptionVM.NameOverride,
+                Description = postSubscriptionVM.DescriptionOverride,
+                Charge = postSubscriptionVM.ChargeOverride,
+                SetupFee = postSubscriptionVM.SetupOverride,
+                Id = postSubscriptionVM.SubscriptionID
+            };
+
+
 
             //Editing the reference
             subscription.Reference = postSubscriptionVM.Reference;
 
             //Editing Contract Start and End Dates
-           
-            //subscription.ContractStartTimestamp = postSubscriptionVM.ContractStartTimestamp;
-           // subscription.ContractEndTimestamp = postSubscriptionVM.ContractEndTimestamp;
+
+            subscription.ContractStartTimestamp = postSubscriptionVM.ContractStartTimestamp;
+            subscription.ContractEndTimestamp = postSubscriptionVM.ContractEndTimestamp;
 
             //Editing the Scheduled Activation Date
-           
+
             //subscription.ScheduledActivationTimestamp = postSubscriptionVM.ScheduledActivationTimestamp;
 
             //Editing the expiration period NOTE: Typo : "This can SET BY submitting..."
@@ -146,139 +166,96 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
             Automapping.SetupSubscriptionGetToPutMapping();
             var putSubscription = AutoMapper.Mapper.Map<Fusebill.ApiWrapper.Dto.Get.Subscription, Fusebill.ApiWrapper.Dto.Put.Subscription>(subscription);
 
-            ApiClient.PutSubscription(putSubscription);   */
+            ApiClient.PutSubscription(putSubscription);
             int a = 4;
-        }
-        
-        public ActionResult List()
-        {
-            long customerID = Convert.ToInt64(ConfigurationManager.AppSettings["SubscriptionDemoCustomerID"]);
-            var customer1 = ApiClient.GetCustomer(customerID);
 
-            return View();
+
         }
 
-
+        //[HttpPost] Include this later
         /// <summary>
         /// To create/post a subscription, we must specify which customer and which plan the subscription is for by using the customerID and planFrequencyID fields.
         /// </summary>
         /// <returns>ApiWrapper.Dto.Get.Subscription</returns>
-        public ActionResult Create()
+        public void CreateSubscription(CreateSubscriptionVM createSubscriptionVM)
         {
-            //var desiredPlansId = ConfigurationManager.AppSettings["DesiredPlanIds"];
-            //var planIds = desiredPlansId.Split(',');
-            //var plan = ApiClient.GetPlan(Convert.ToInt64(planIds[0]));
 
-            //var postSubscription = new ApiWrapper.Dto.Post.Subscription
-            //{
-            //    CustomerId = Convert.ToInt64(ConfigurationManager.AppSettings["SubscriptionDemoCustomerID"]),
-            //    PlanFrequencyId = plan.PlanFrequencies[0].Id
-            //};
+            var postSubscription = new ApiWrapper.Dto.Post.Subscription
+            {
+                CustomerId = Convert.ToInt64(createSubscriptionVM.CustomerID),
+                PlanFrequencyId = createSubscriptionVM.PlanFrequencyID
+            };
 
-            // ApiClient.PostSubscription(postSubscription);
+            ApiClient.PostSubscription(postSubscription);
 
 
-            return View();
-        }
-
-        //same to customer
-        //YEAH, HOW DO I GET A SUBSCRIPTION??
-        /// <summary>
-        ///  This action will return a Subscription object that includes the full details of the Subscription. 
-        ///  The subscription's ID is required to get the subscription
-        /// </summary>
-        /// <returns>ApiWrapper.Dto.Get.Subscription</returns>
-        public ActionResult Get()
-        {
-            //var subscriptionID = Convert.ToInt64(ConfigurationManager.AppSettings["SubscriptionDemoSubscriptionID"]);
-            //var subscription = ApiClient.GetSubscription(123);
-
-
-            return View();
+            var a = 4;
         }
 
 
-        /// <summary>
-        /// A Subscription object must already exist to put edit/put the subscription. Place the changes in the original Dto.Get.Subscription and then automap it to a Dto.Put.Subscription.
-        /// </summary>
-        /// <returns>ApiWrapper.Dto.Get.Subscription</returns>
-        public ActionResult Edit()
-        {
-            //var subscriptionID = Convert.ToInt64(ConfigurationManager.AppSettings["SubscriptionDemoSubscriptionID"]);
-            //var subscription = ApiClient.GetSubscription(subscriptionID);
-
-
-            ////for (int i = 0; i < subscription. .AvailableProducts.Count; i++)
-            ////{
-            ////    //Editing the quantity of a plan product
-            ////    var quantity = session.AvailableProducts[i].Quantity;
-            ////    subscription.SubscriptionProducts[i].Quantity = quantity;
-            ////    subscription.SubscriptionOverride.
-
-            ////   //Editing a non-mandatory plan product to be included
-            ////    var inclusion = session.AvailableProducts[i].IsIncluded;
-            ////    subscription.SubscriptionProducts[i].IsIncluded = inclusion;
-            ////}
-
-            ////Editing a subscription's name, description, charge, setupFee, and ID  NOTE: To verify, uri is not included in the dto but is in the help.fusebill.com documentation. DOes API help mean "Sample" when it writes "Simple"?
-            //subscription.SubscriptionOverride.Name = "New Override Sample Subscription Name";
-            //subscription.SubscriptionOverride.Description = "New Override Sample Plan Description";
-            //subscription.SubscriptionOverride.Charge = 1000.00M;
-            //subscription.SubscriptionOverride.SetupFee = 150.00M;
-            //subscription.SubscriptionOverride.Id = 142655;
-
-            ////Editing the reference
-            //subscription.Reference = "New Sample Reference";
-
-            ////Editing Contract Start and End Dates
-            //subscription.ContractStartTimestamp = new DateTime(2015, 5, 4);
-            //subscription.ContractEndTimestamp = new DateTime(2016, 7, 6);
-
-            ////Editing the Scheduled Activation Date
-            //subscription.ScheduledActivationTimestamp = new DateTime(2015, 2, 3);
-
-            ////Editing the expiration period NOTE: Typo : "This can SET BY submitting..."
-            //subscription.RemainingInterval = 5; //setting the RemainingInterval property to 0 will result in an initial charge and then an immediate expiry of the subscription following activation.
-
-            ///*
-            //When modifying a subscription with discounts you are required to remove the subscriptionProductDiscount (legacy object) entity 
-            //    and leave subscriptionProductDiscounts in place in order to carry forward your discounts.
-            //Does this mean we set the subscriptionProductDiscount to null?*/
-
-
-            //Automapping.SetupSubscriptionGetToPutMapping();
-            //var putSubscription = AutoMapper.Mapper.Map<Fusebill.ApiWrapper.Dto.Get.Subscription, Fusebill.ApiWrapper.Dto.Put.Subscription>(subscription);
-
-            //ApiClient.PutSubscription(putSubscription); 
-            return View();
-        }
-
-
-
-        //WAIT, WHERE's THE DELETE DIRECTORY? I'm gonna assume for now that simply calling the ApiClient is sufficient for deleting a subscription
+        [HttpPost]
         /// <summary>
         /// For this demo, we first create a subscription and then delete it.
         /// </summary>
         /// <returns></returns>
-        public ActionResult Delete()
+        public void DeleteSubscription(PostSubscriptionIdVM postSubscriptionIdVM)
         {
 
-            //var desiredPlansId = ConfigurationManager.AppSettings["DesiredPlanIds"];
-            //var planIds = desiredPlansId.Split(',');
-            //var plan = ApiClient.GetPlan(Convert.ToInt64(planIds[0]));
+            ApiClient.DeleteSubscription(postSubscriptionIdVM.SubscriptionID);
 
-            //var postSubscription = new ApiWrapper.Dto.Post.Subscription
-            //{
-            //    CustomerId = Convert.ToInt64(ConfigurationManager.AppSettings["SubscriptionDemoCustomerID"]),
-            //    PlanFrequencyId = plan.PlanFrequencies[0].Id
-            //};
-
-            //var subscription = ApiClient.PostSubscription(postSubscription);
-
-
-            //ApiClient.DeleteSubscription(subscription.Id);
-            return View();
+            var a = 6;
         }
+
+        [HttpPost]
+        /// <summary>
+        /// For this demo, we first create a subscription and then delete it.
+        /// </summary>
+        /// <returns></returns>
+        public void ProvisionSubscription(PostSubscriptionIdVM postSubscriptionIdVM)
+        {
+
+            var postSubscriptionProvision = new Fusebill.ApiWrapper.Dto.Post.SubscriptionProvision
+            {
+                Id = postSubscriptionIdVM.SubscriptionID,
+                InvoiceDay = 11,
+                InvoiceMonth = 9
+            };
+
+            ApiClient.PostSubscriptionProvision(postSubscriptionProvision);
+
+            var a = 6;
+        }
+
+        public void ActivateSubscription(PostSubscriptionIdVM postSubscriptionIdVM)
+        {
+
+            var postSubscriptionActivation = new Fusebill.ApiWrapper.Dto.Post.SubscriptionActivation
+            {
+                Id = postSubscriptionIdVM.SubscriptionID,
+                InvoiceDay = 11,
+                InvoiceMonth = 9
+            };
+
+            ApiClient.PostSubscriptionActivation(postSubscriptionActivation);
+
+            var a = 6;
+        }
+
+
+        public void CancelSubscription(PostSubscriptionIdVM postSubscriptionIdVM)
+        {
+
+            var postSubscriptionCancel = new Fusebill.ApiWrapper.Dto.Post.SubscriptionCancel
+            {
+                SubscriptionId = postSubscriptionIdVM.SubscriptionID,
+                CancellationOption = "Full"
+            };
+
+            ApiClient.PostSubscriptionCancel(postSubscriptionCancel);
+
+            var a = 6;
+        }
+
 
         //.  I think API meant to use "GetCustomer" instead of "GetCustomers". "GetCustomer" doesn't have the specified properties and neither does GetCustomers
         /// <summary>
@@ -286,7 +263,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
         /// This call will return all Subscriptions regardless of status and will return an empty array if the Customer specified has no Subscriptions.
         /// </summary>
         /// <returns></returns>
-      
+
         //The PostSubscriptionProvision takes an object, not a id
         /// <summary>
         /// 

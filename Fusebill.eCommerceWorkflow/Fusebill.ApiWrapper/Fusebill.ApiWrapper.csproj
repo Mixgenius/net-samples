@@ -91,13 +91,16 @@
     <Compile Include="Dto\Get\DraftCharge.cs" />
     <Compile Include="Dto\Get\DraftChargeGroup.cs" />
     <Compile Include="Dto\Get\DraftDiscount.cs" />
+    <Compile Include="Dto\Get\Invoice.cs" />
     <Compile Include="Dto\Get\InvoiceAllocation.cs" />
+    <Compile Include="Dto\Get\InvoiceCharge.cs" />
     <Compile Include="Dto\Get\InvoicePreview.cs" />
     <Compile Include="Dto\Get\IPagingHeaderData.cs" />
     <Compile Include="Dto\Get\OrderToCashCycle.cs" />
     <Compile Include="Dto\Get\PagingHeaderData.cs" />
     <Compile Include="Dto\Get\Payment.cs" />
     <Compile Include="Dto\Get\PaymentMethod.cs" />
+    <Compile Include="Dto\Get\PaymentSchedule.cs" />
     <Compile Include="Dto\Get\Plan.cs" />
     <Compile Include="Dto\Get\PlanCustomField.cs" />
     <Compile Include="Dto\Get\PlanFrequency.cs" />

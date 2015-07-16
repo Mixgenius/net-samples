@@ -14,6 +14,9 @@ namespace Fusebill.ApiWrapper
         #endregion
 
         #region Properties
+
+        private bool AllowForError { get; set; }
+
         public string SystemSource
         {
             set { ExecuteHttpRequest.SystemSource = value; }
@@ -150,6 +153,13 @@ namespace Fusebill.ApiWrapper
             return PostEntity<Fusebill.ApiWrapper.Dto.Post.CustomerActivation, Customer>(url, customerActivation);
         }
 
+        public void DeleteSubscription(long id, bool allowForError = false)
+        {
+            AllowForError = allowForError;
+
+            var url = RestUriBuilder.BuildUri("subscriptions", id);
+            DeleteEntity(url);
+        }
 
         public Payment PostPayment(Fusebill.ApiWrapper.Dto.Post.Payment payment)
         {
@@ -277,6 +287,15 @@ namespace Fusebill.ApiWrapper
             var url = RestUriBuilder.BuildUri("reverseCharges");
             return PostEntity<Fusebill.ApiWrapper.Dto.Post.ReverseCharge, ReverseCharge>(url, reverseCharge);
         }
+
+        public ResultList<Invoice> GetInvoicesByCustomerId(long customerId, QueryOptions queryOptions)
+        {
+            var url = RestUriBuilder.BuildUri("customers", customerId, "invoices", queryOptions);
+            return GetEntities<Invoice>(url);
+        }
+
+  
+
 
         #endregion
     }

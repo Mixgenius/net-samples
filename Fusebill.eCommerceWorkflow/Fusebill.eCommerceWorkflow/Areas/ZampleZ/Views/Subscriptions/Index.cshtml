@@ -29,8 +29,14 @@
                 <p><strong>Company name: </strong>@customer.CompanyName</p>
                 <p><strong>ID: </strong>@customer.Id</p>
             </button>
-    <button type="button" onclick="cancelCustomer(@customer.Id)">Cancel customer with ID of @customer.Id</button>
-         }
+            <button type="button" onclick="cancelCustomer(@customer.Id)">Cancel customer with ID of @customer.Id</button>
+            
+            foreach (var plan in Model.AvailablePlans)
+            {
+                <button type="button" onclick="addSubscription(@customer.Id, @plan.PlanFrequencies[0].Id)">Add plan with PlanFrequencyID of @plan.PlanFrequencies[0].Id for customer with ID of @customer.Id</button>
+            }
+            
+        }
 
         <button type="button" onclick="reverseCharge(4612017)">Reverse charge for Sevice 7 of Demo Customer 2</button>
 
@@ -41,13 +47,18 @@
 
 
     <script>
-    var house;
-    var model ;
-    var productQuantityOverridesArray;
-    $(document).ready(function () {
-        model = @Html.HtmlConvertToJson(Model);
+        var house;
+        var model ;
+        var productQuantityOverridesArray;
+        var productPriceOverridesArray;
+        $(document).ready(function () {
+            model = @Html.HtmlConvertToJson(Model);
 
         });
+
+
+
+
 
 
         function ClickButton() {
@@ -69,6 +80,25 @@
             });
         }
 
+
+        function addSubscription(customerID, planFrequencyID)
+        {
+            var subscription = { CustomerID: customerID ,
+                PlanFrequencyID: planFrequencyID };
+
+            $.ajax({
+                type: "POST",
+                url: "Subscriptions/CreateSubscription",
+                dataType: "json",
+                data: subscription,
+                success: function () {
+                    alert("Added a subscription to customer");
+                },
+                //error: alert("Darn!")
+            });
+        }
+
+
         function reverseCharge(chargeID)
         {
             var customer = { CustomerID: chargeID};
@@ -84,7 +114,6 @@
                 //error: alert("Darn!")
             });
         }
-
 
 
         function cancelCustomer(id)
@@ -105,231 +134,379 @@
 
 
 
-            function loadSubscriptions(id) {
+        function loadSubscriptions(id) {
 
-                alert("loadSUbscriptions() called");
+            alert("loadSUbscriptions() called");
 
-                var customer = { CustomerID: id};
+            var customer = { CustomerID: id};
 
-                $.ajax({
-                    type: "POST",
-                    url: "Subscriptions/ListSubscriptionsForCustomer",
-                    dataType: "json",
-                    data: customer,
-                    success: function (data) {
+            $.ajax({
+                type: "POST",
+                url: "Subscriptions/ListSubscriptionsForCustomer",
+                dataType: "json",
+                data: customer,
+                success: function (data) {
 
-                        returnedData = data;
+                    returnedData = data;
 
-                        showSubscriptionsInformation(returnedData)
-                    },
-                    //error: alert("Darn!")
-                });
-            }
-
-
-
-
-            function showSubscriptionsInformation(returnedData){
-
-                //we use an array to keep the array that stores the product QUantity
-                productQuantityOverridesArray = new Array();
-
-                for (var i = 0; i < returnedData.length; i++)
-                {
-                    //use this
-                    var productQuantityOverrides = new Array(returnedData[i].SubscriptionProducts.length);
-
-                    var subscriptionInfo = document.createElement("p");
-                    subscriptionInfo.innerHTML = "<strong>Subscription ID</strong> " + returnedData[i].Id + "<br />" +
-                        "<strong>Subscription Status</strong> " + returnedData[i].Status + "<br />" +
-                        "<strong>Subscription ID</strong> " + returnedData[i].Id + "<br />" +
-                                  "<strong>Subscription Name</strong> " + returnedData[i].PlanName + "<br />" +
-                                  "<strong>Subscription Description</strong> " + returnedData[i].PlanDescription + "<br />" +
-                                  "<strong>Subscription Reference</strong> " + returnedData[i].PlanReference + "<br />" +
-                                  "<strong>Subscription Amount</strong>" +  returnedData[i].Amount + "<br />" +
-                                  "<strong>Subscription Override</strong> " + returnedData[i].SubsciptionOverride + "<br />" +
-
-                                  "<strong>Subscription Created Date</strong> " +  returnedData[i].Created + "<br />" +
-                                  "<strong>Subscription Starttime</strong> " + returnedData[i].ContractStartTimestamp + "<br />" +
-                                  "<strong>Subscription Endtime</strong> " + returnedData[i].ContractEndTimestamp + "<br />" +
-                                  "<strong>Subscription Scheduled Activation</strong> " + returnedData[i].ScheduledActivationTimestamp + "<br />" +
-                                  "<strong>Subscription Remaining Interval</strong> " + returnedData[i].RemainingInterval + "<br />" +
-
-                     "<strong>================ Subscription Products ====================</strong>"
-
-                    /*=============================== SHOW SUBSCRIPTION PRODUCTS ==============*/
-
-                    $("#divItems").append(subscriptionInfo);
-
-
-                    for (var j = 0; j < returnedData[i].SubscriptionProducts.length; j++)
-                    {
-                        var subscriptionProductInfo = document.createElement("p");
-                        subscriptionProduct = returnedData[i].SubscriptionProducts[j].PlanProduct;
-                        subscriptionProductInfo.innerHTML = "<strong>Subscription Product " + j + ": </strong>"  + subscriptionProduct.ProductName + "<br />" +
-                                                            + "<strong>Quantity</strong>" + subscriptionProduct.Quantity + "<br />" +
-                                                            + "<strong>Id</strong>" + subscriptionProduct.Id + "<br />";
-
-                        $("#divItems").append(subscriptionProductInfo);
-
-                        var editSubscriptionProductQuantityLabel = document.createElement("p");
-                        editSubscriptionProductQuantityLabel.innerHTML = "Edit Subscription Product Quantity" + "<br />";
-                        $("#divItems").append(editSubscriptionProductQuantityLabel);
-
-                        var editSubscriptionProductQuantity = document.createElement("input");
-                    //    editSubscriptionProductQuantity.id = "editSubscriptionProductQuantity_" + subscriptionProduct.ProductName + "_" + returnedData[i].Id;
-
-                        productQuantityOverrides[j] = editSubscriptionProductQuantity;
-
-                        $("#divItems").append(editSubscriptionProductQuantity);
-                    }
-
-                    productQuantityOverridesArray[returnedData[i].Id.toString()] = productQuantityOverrides;
-
-
-
-                    /* Overrides for subscription name, description, charge amount, and setup amount */
-                    var nameOverrideLabel = document.createElement("p");
-                    nameOverrideLabel.innerHTML = "Override Name"  + "<br />";
-                    $("#divItems").append(nameOverrideLabel);
-                    var nameOverride = document.createElement("input");
-                    nameOverride.id = "nameOverride_" + returnedData[i].Id;
-                    $("#divItems").append(nameOverride);
-
-                    var descriptionOverrideLabel = document.createElement("p");
-                    descriptionOverrideLabel.innerHTML = "Override Description" + "<br />";
-                    $("#divItems").append(descriptionOverrideLabel);
-                    var descriptionOverride = document.createElement("input");
-                    descriptionOverride.id = "descriptionOverride_" + returnedData[i].Id;
-                    $("#divItems").append(descriptionOverride);
-
-                    var chargeOverrideLabel = document.createElement("p");
-                    chargeOverrideLabel.innerHTML = "Override Charge" + "<br />";
-                    $("#divItems").append(chargeOverrideLabel);
-                    var chargeOverride = document.createElement("input");
-                    chargeOverride.id = "chargeOverride_" + returnedData[i].Id;
-                    $("#divItems").append(chargeOverride);
-
-                    var setupOverrideLabel = document.createElement("p");
-                    setupOverrideLabel.innerHTML = "Override Setup" + "<br />";
-                    $("#divItems").append(setupOverrideLabel);
-                    var setupOverride = document.createElement("input");
-                    setupOverride.id = "setupOverride_" + returnedData[i].Id;
-                    $("#divItems").append(setupOverride);
-
-
-                    /* Edit reference, contract start and end dates, scheduled activation date, remaining interval.  */
-
-                    var referenceLabel = document.createElement("p");
-                    referenceLabel.innerHTML = " Reference" + "<br />";
-                    $("#divItems").append(referenceLabel);
-                    var reference = document.createElement("input");
-                    reference.id = "reference_" + returnedData[i].Id;
-                    $("#divItems").append(reference);
-
-                    var ContractStartTimestampLabel = document.createElement("p");
-                    ContractStartTimestampLabel.innerHTML = " Contract Start Date" + "<br />";
-                    $("#divItems").append(ContractStartTimestampLabel);
-                    var ContractStartTimestamp = document.createElement("input");
-                    ContractStartTimestamp.id = "contractStartTimestamp_" + returnedData[i].Id;
-                    $("#divItems").append(ContractStartTimestamp);
-
-                    var ContractEndTimestampLabel = document.createElement("p");
-                    ContractEndTimestampLabel.innerHTML = " Contract End Date" + "<br />";
-                    $("#divItems").append(ContractEndTimestampLabel);
-                    var ContractEndTimestamp = document.createElement("input");
-                    ContractEndTimestamp.id = "contractEndTimestamp_" + returnedData[i].Id;
-                    $("#divItems").append(ContractEndTimestamp);
-
-                    var ScheduledActivationTimestampLabel = document.createElement("p");
-                    ScheduledActivationTimestampLabel.innerHTML = " Scheduled Activation Timestamp" + "<br />";
-                    $("#divItems").append(ScheduledActivationTimestampLabel);
-                    var ScheduledActivationTimestamp = document.createElement("input");
-                    ScheduledActivationTimestamp.id = "scheduledActivationTimestamp_" + returnedData[i].Id;
-                    $("#divItems").append(ScheduledActivationTimestamp);
-
-                    var RemainingIntervalLabel = document.createElement("p");
-                    RemainingIntervalLabel.innerHTML = " Remaining Interval" + "<br />";
-                    $("#divItems").append(RemainingIntervalLabel);
-                    var RemainingInterval = document.createElement("input");
-                    RemainingInterval.id = "remainingInterval_" + returnedData[i].Id;
-                    $("#divItems").append(RemainingInterval);
-
-
-
-                    /*================================ ADD SUBSCRIPTIONS / PLANS ==========================*/
-
-                    for (var k = 0; k < @Model.AvailablePlans.Count; k++)
-            {
-                var button = document.createElement("button");
-                button.innerHTML = "Add this subscription: " + model.AvailablePlans[k].name;
-                button.id = "AddSubscription_" + model.AvailablePlans[k].name + "_" + returnedData[i].Id;
-                $("#divItems").append(button);
-
-            }
-
-
-
-            var updateButton = document.createElement("button");
-            updateButton.innerHTML =  returnedData[i].Id;
-            updateButton.id = "UpdateButton_" + returnedData[i].Id;
-
-            $("#divItems").append(updateButton);
-
-            $("#UpdateButton_" + returnedData[i].Id).on("click", function() {
-                onUpdateButton(this.innerHTML);
-                console.log("update was clicked by " + this.id);
+                    showSubscriptionsInformation(returnedData)
+                },
+                //error: alert("Darn!")
             });
-
-
         }
-    }
-
-    function onUpdateButton(subID)
-    {
-        //determine the values in each of the product quantity fields, which are stored in an array
 
 
-        //this array stores the numerical values of the product overrides arrays' inputs \s
-        var productQuantityOverridesValues = new Array();
 
-        //place inputs into the numerical array
-        for (var i = 0; i < productQuantityOverridesArray[subID.toString()].length; i++)
+
+        function showSubscriptionsInformation(returnedData){
+
+            //we use an array to keep the array that stores the product QUantity
+            productQuantityOverridesArray = new Array();
+            productPriceOverridesArray = new Array();
+
+            for (var i = 0; i < returnedData.length; i++)
+            {
+                //use this
+                var productQuantityOverrides = new Array(returnedData[i].SubscriptionProducts.length);
+                var productPriceOverrides = new Array(returnedData[i].SubscriptionProducts.length);
+
+
+                var subscriptionInfo = document.createElement("p");
+                subscriptionInfo.innerHTML = "<strong>Subscription ID</strong> " + returnedData[i].Id + "<br />" +
+                    "<strong>Subscription Status</strong> " + returnedData[i].Status + "<br />" +
+                    "<strong>Subscription ID</strong> " + returnedData[i].Id + "<br />" +
+                              "<strong>Subscription Name</strong> " + returnedData[i].PlanName + "<br />" +
+                              "<strong>Subscription Description</strong> " + returnedData[i].PlanDescription + "<br />" +
+                              "<strong>Subscription Reference</strong> " + returnedData[i].PlanReference + "<br />" +
+                              "<strong>Subscription Amount</strong>" +  returnedData[i].Amount + "<br />" +
+                              "<strong>Subscription Override</strong> " + returnedData[i].SubsciptionOverride + "<br />" +
+
+                              "<strong>Subscription Created Date</strong> " +  returnedData[i].Created + "<br />" +
+                              "<strong>Subscription Starttime</strong> " + returnedData[i].ContractStartTimestamp + "<br />" +
+                              "<strong>Subscription Endtime</strong> " + returnedData[i].ContractEndTimestamp + "<br />" +
+                              "<strong>Subscription Scheduled Activation</strong> " + returnedData[i].ScheduledActivationTimestamp + "<br />" +
+                              "<strong>Subscription Remaining Interval</strong> " + returnedData[i].RemainingInterval + "<br />" +
+
+                 "<strong>================ Subscription Products ====================</strong>"
+
+                /*=============================== SHOW SUBSCRIPTION PRODUCTS ==============*/
+
+                $("#divItems").append(subscriptionInfo);
+
+                for (var j = 0; j < returnedData[i].SubscriptionProducts.length; j++)
+                {
+                    var subscriptionProductInfo = document.createElement("p");
+                    subscriptionProduct = returnedData[i].SubscriptionProducts[j].PlanProduct;
+                    subscriptionProductInfo.innerHTML = "<strong>Subscription Product " + j + ": </strong>"  + subscriptionProduct.ProductName + "<br />" +
+                                                        + "<strong>Quantity</strong>" + subscriptionProduct.Quantity + "<br />" +
+                                                        + "<strong>Id</strong>" + subscriptionProduct.Id + "<br />";
+
+                    $("#divItems").append(subscriptionProductInfo);
+
+                    var editSubscriptionProductQuantityLabel = document.createElement("p");
+                    editSubscriptionProductQuantityLabel.innerHTML = "Edit Subscription Product Quantity" + "<br />";
+                    $("#divItems").append(editSubscriptionProductQuantityLabel);
+
+                    var editSubscriptionProductQuantity = document.createElement("input");
+                    $("#divItems").append(editSubscriptionProductQuantity);
+
+
+
+                    var editSubscriptionProductPriceLabel = document.createElement("p");
+                    editSubscriptionProductPriceLabel.innerHTML = "Edit Subscription Product Price" + "<br />";
+                    $("#divItems").append(editSubscriptionProductPriceLabel);
+
+                    var editSubscriptionProductPrice = document.createElement("input");
+                    $("#divItems").append(editSubscriptionProductPrice);
+
+                    productQuantityOverrides[j] = editSubscriptionProductQuantity;
+                    productPriceOverrides[j] = editSubscriptionProductPrice;
+                    
+                }
+
+                productQuantityOverridesArray[returnedData[i].Id.toString()] = productQuantityOverrides;
+                productPriceOverridesArray[returnedData[i].Id.toString()] = productPriceOverrides;
+
+
+
+                /* Overrides for subscription name, description, charge amount, and setup amount */
+                var nameOverrideLabel = document.createElement("p");
+                nameOverrideLabel.innerHTML = "Override Name"  + "<br />";
+                $("#divItems").append(nameOverrideLabel);
+                var nameOverride = document.createElement("input");
+                nameOverride.id = "nameOverride_" + returnedData[i].Id;
+                $("#divItems").append(nameOverride);
+
+                var descriptionOverrideLabel = document.createElement("p");
+                descriptionOverrideLabel.innerHTML = "Override Description" + "<br />";
+                $("#divItems").append(descriptionOverrideLabel);
+                var descriptionOverride = document.createElement("input");
+                descriptionOverride.id = "descriptionOverride_" + returnedData[i].Id;
+                $("#divItems").append(descriptionOverride);
+
+                var chargeOverrideLabel = document.createElement("p");
+                chargeOverrideLabel.innerHTML = "Override Charge" + "<br />";
+                $("#divItems").append(chargeOverrideLabel);
+                var chargeOverride = document.createElement("input");
+                chargeOverride.id = "chargeOverride_" + returnedData[i].Id;
+                $("#divItems").append(chargeOverride);
+
+                var setupOverrideLabel = document.createElement("p");
+                setupOverrideLabel.innerHTML = "Override Setup" + "<br />";
+                $("#divItems").append(setupOverrideLabel);
+                var setupOverride = document.createElement("input");
+                setupOverride.id = "setupOverride_" + returnedData[i].Id;
+                $("#divItems").append(setupOverride);
+
+
+                /* Edit reference, contract start and end dates, scheduled activation date, remaining interval.  */
+
+                var referenceLabel = document.createElement("p");
+                referenceLabel.innerHTML = " Reference" + "<br />";
+                $("#divItems").append(referenceLabel);
+                var reference = document.createElement("input");
+                reference.id = "reference_" + returnedData[i].Id;
+                $("#divItems").append(reference);
+
+                var ContractStartTimestampLabel = document.createElement("p");
+                ContractStartTimestampLabel.innerHTML = " Contract Start Date" + "<br />";
+                $("#divItems").append(ContractStartTimestampLabel);
+                var ContractStartTimestamp = document.createElement("input");
+                ContractStartTimestamp.id = "contractStartTimestamp_" + returnedData[i].Id;
+                $("#divItems").append(ContractStartTimestamp);
+
+                var ContractEndTimestampLabel = document.createElement("p");
+                ContractEndTimestampLabel.innerHTML = " Contract End Date" + "<br />";
+                $("#divItems").append(ContractEndTimestampLabel);
+                var ContractEndTimestamp = document.createElement("input");
+                ContractEndTimestamp.id = "contractEndTimestamp_" + returnedData[i].Id;
+                $("#divItems").append(ContractEndTimestamp);
+
+                var ScheduledActivationTimestampLabel = document.createElement("p");
+                ScheduledActivationTimestampLabel.innerHTML = " Scheduled Activation Timestamp" + "<br />";
+                $("#divItems").append(ScheduledActivationTimestampLabel);
+                var ScheduledActivationTimestamp = document.createElement("input");
+                ScheduledActivationTimestamp.id = "scheduledActivationTimestamp_" + returnedData[i].Id;
+                $("#divItems").append(ScheduledActivationTimestamp);
+
+                var RemainingIntervalLabel = document.createElement("p");
+                RemainingIntervalLabel.innerHTML = " Remaining Interval" + "<br />";
+                $("#divItems").append(RemainingIntervalLabel);
+                var RemainingInterval = document.createElement("input");
+                RemainingInterval.id = "remainingInterval_" + returnedData[i].Id;
+                $("#divItems").append(RemainingInterval);
+
+
+
+                /*================================ ADD SUBSCRIPTIONS / PLANS ==========================*/
+
+                for (var k = 0; k < @Model.AvailablePlans.Count; k++)
+                {
+                    var button = document.createElement("button");
+                    button.innerHTML = "Add this subscription: " + model.AvailablePlans[k].name;
+                    button.id = "AddSubscription_" + model.AvailablePlans[k].name + "_" + returnedData[i].Id;
+                    $("#divItems").append(button);
+
+                }
+
+
+                var updateButton = document.createElement("button");
+                updateButton.innerHTML =  returnedData[i].Id;
+                updateButton.id = "UpdateButton_" + returnedData[i].Id;
+
+                $("#divItems").append(updateButton);
+
+                $("#UpdateButton_" + returnedData[i].Id).on("click", function() {
+                    onUpdateButton(this.innerHTML);
+                    alert("Update was completed)");
+                    console.log("update was clicked by " + this.id);
+                });
+
+
+                var deleteButtonLabel = document.createElement("p");
+                deleteButtonLabel.innerHTML = " Delete Subscription" + "<br />";
+                $("#divItems").append(deleteButtonLabel);
+
+
+                var deleteButton = document.createElement("button");
+                deleteButton.innerHTML =  returnedData[i].Id;
+                deleteButton.id = "DeleteButton_" + returnedData[i].Id;
+
+                $("#divItems").append(deleteButton);
+
+                $("#DeleteButton_" + returnedData[i].Id).on("click", function() {
+                    onDeleteButton(this.innerHTML);
+                    console.log("Subscription deletion was clicked by " + this.id);
+                });
+
+
+                var provisionLabel = document.createElement("p");
+                provisionLabel.innerHTML = " Provision Subscription (only if subscription is in Draft status)" + "<br />";
+                $("#divItems").append(provisionLabel);
+
+
+                var provisionButton = document.createElement("button");
+                provisionButton.innerHTML =  returnedData[i].Id;
+                provisionButton.id = "ProvisionButton_" + returnedData[i].Id;
+
+                $("#divItems").append(provisionButton);
+
+                $("#ProvisionButton_" + returnedData[i].Id).on("click", function() {
+                    onProvisionButton(this.innerHTML);
+                    console.log("SUbscription was provisioned by " + this.id);
+                });
+
+                
+                var activateLabel = document.createElement("p");
+                activateLabel.innerHTML = " Activate Subscription (only if subscription is in Provision status)" + "<br />";
+                $("#divItems").append(activateLabel);
+
+
+                var activateButton = document.createElement("button");
+                activateButton.innerHTML =  returnedData[i].Id;
+                activateButton.id = "ActivateButton_" + returnedData[i].Id;
+
+                $("#divItems").append(activateButton);
+
+                $("#ActivateButton_" + returnedData[i].Id).on("click", function() {
+                    onActivateButton(this.innerHTML);
+                    console.log("SUbscription was activated by " + this.id);
+                });
+
+
+                var cancelLabel = document.createElement("p");
+                cancelLabel.innerHTML = " Cancel Subscription (only if subscription is in Active status)" + "<br />";
+                $("#divItems").append(cancelLabel);
+
+
+                var cancelButton = document.createElement("button");
+                cancelButton.innerHTML =  returnedData[i].Id;
+                cancelButton.id = "CancelButton_" + returnedData[i].Id;
+
+                $("#divItems").append(cancelButton);
+
+                $("#CancelButton_" + returnedData[i].Id).on("click", function() {
+                    onCancelButton(this.innerHTML);
+                    console.log("SUbscription was canceled by " + this.id);
+                });
+
+
+            }
+        }
+
+        function onDeleteButton(subID)
         {
-            productQuantityOverridesValues[i] = productQuantityOverridesArray[subID.toString()][i].value;
+            var subscription = { SubscriptionID: subID };
+
+       
+            $.ajax({
+                type: "POST",
+                url: "Subscriptions/DeleteSubscription",
+                dataType: "json",
+                data: subscription,
+                success: function () {
+                    alert("Subscription deleted");
+                },
+                //error: alert("Darn!")
+            });
         }
 
+        function onProvisionButton(subID)
+        {
+            var subscription = { SubscriptionID: subID };
 
-        var postSubscription = {
-            SubscriptionID :subID ,
-            NameOverride : $("#nameOverride_" +subID).val() ,
-            DescriptionOverride : $("#descriptionOverride_" + subID).val(),
-            ChargeOverride : $("#chargeOverride_" + subID).val() ,
-            SetupOverride : $("#setupOverride_" + subID).val() ,
-            Reference : $("#reference_" + subID).val(),
-            ContractStartTimestamp : $("#contractStartTimestamp_" + subID).val() ,
-            ContractEndTimestamp : $("#contractEndTimestamp_" + subID).val() ,
-            ScheduledActivationTimestamp : $("#scheduledActivationTimestamp_" + subID).val(),
-            RemainingInterval : $("#remainingInterval_" + subID).val(),
-            ProductQuantityOverride : productQuantityOverridesValues
-        };
+       
+            $.ajax({
+                type: "POST",
+                url: "Subscriptions/ProvisionSubscription",
+                dataType: "json",
+                data: subscription,
+                success: function () {
+                    alert("Subscription provisioned");
+                },
+                //error: alert("Darn!")
+            });
+        }
 
-        alert("onUpdateButton has been called");
+        function onActivateButton(subID)
+        {
+            var subscription = { SubscriptionID: subID };
 
-        $.ajax( {
-            // contentType: 'application/json; charset=utf-8',
-            dataType : 'json',
-            type: "POST",
-            traditional: true,
-            url: "Subscriptions/UpdateSubscription",
-            data: postSubscription,
-            success: function() {
-                alert("The update button has successfully posted data to the server!!! WHOOO!!"); }
-        });
-    }
+       
+            $.ajax({
+                type: "POST",
+                url: "Subscriptions/ActivateSubscription",
+                dataType: "json",
+                data: subscription,
+                success: function () {
+                    alert("Subscription activated");
+                },
+                //error: alert("Darn!")
+            });
+        }
+
+        function onCancelButton(subID)
+        {
+            var subscription = { SubscriptionID: subID };
+
+            $.ajax({
+                type: "POST",
+                url: "Subscriptions/CancelSubscription",
+                dataType: "json",
+                data: subscription,
+                success: function () {
+                    alert("Subscription activated");
+                },
+                //error: alert("Darn!")
+            });
+        }
+
+        function onUpdateButton(subID)
+        {
+     
+            //this array stores the numerical values of the product overrides arrays' inputs \s
+            var productQuantityOverridesValues = new Array();
+            var productPriceOverridesValue = new Array();
+
+            //place inputs into the numerical array
+            for (var i = 0; i < productQuantityOverridesArray[subID.toString()].length; i++)
+            {
+                productQuantityOverridesValues[i] = productQuantityOverridesArray[subID.toString()][i].value;
+                productPriceOverridesValue[i] = productPriceOverridesArray[subID.toString()][i].value;
+            }
+
+
+            var postSubscription = {
+                SubscriptionID :subID ,
+                NameOverride : $("#nameOverride_" +subID).val() ,
+                DescriptionOverride : $("#descriptionOverride_" + subID).val(),
+                ChargeOverride : $("#chargeOverride_" + subID).val() ,
+                SetupOverride : $("#setupOverride_" + subID).val() ,
+                Reference : $("#reference_" + subID).val(),
+                ContractStartTimestamp : $("#contractStartTimestamp_" + subID).val() ,
+                ContractEndTimestamp : $("#contractEndTimestamp_" + subID).val() ,
+                ScheduledActivationTimestamp : $("#scheduledActivationTimestamp_" + subID).val(),
+                RemainingInterval : $("#remainingInterval_" + subID).val(),
+                ProductQuantityOverride : productQuantityOverridesValues,
+                ProductPriceOverride : productPriceOverridesValue
+            };
+
+            alert("onUpdateButton has been called");
+
+            $.ajax( {
+                // contentType: 'application/json; charset=utf-8',
+                dataType : 'json',
+                type: "POST",
+                traditional: true,
+                url: "Subscriptions/UpdateSubscription",
+                data: postSubscription,
+                success: function() {
+                    alert("The update button has successfully posted data to the server!!! WHOOO!!"); }
+            });
+        }
 
     </script>
 
-        </body>
-        </html>
+</body>
+</html>
 

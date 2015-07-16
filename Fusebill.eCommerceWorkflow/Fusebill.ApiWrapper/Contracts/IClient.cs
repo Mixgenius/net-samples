@@ -39,10 +39,12 @@ namespace Fusebill.ApiWrapper.Contracts
         List<Country> GetCountries();
         ResultList<CustomerSummary> GetCustomers(QueryOptions queryOptions);
         Customer GetCustomer(long id);
-        void DeleteSubscription(long id);
         Subscription PostSubscriptionCancel(Fusebill.ApiWrapper.Dto.Post.SubscriptionCancel subscription);
 
         ReverseCharge PostReverseCharge(Fusebill.ApiWrapper.Dto.Post.ReverseCharge reverseCharge);
+        ResultList<Invoice> GetInvoicesByCustomerId(long customerId, QueryOptions queryOptions);
+        void DeleteSubscription(long id);
+
 
     }
 }

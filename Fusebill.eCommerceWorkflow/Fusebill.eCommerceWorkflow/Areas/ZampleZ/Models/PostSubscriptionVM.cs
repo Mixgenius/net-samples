@@ -27,7 +27,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models
         public List<decimal> ProductPriceOverrides { get; set; }
 
         public List<object> SubscriptionOverrides { get; set; }
-        public List<DateTime> TimeStamps { get; set; }
+        public List<string> TimeStamps { get; set; }
 
     }
 }

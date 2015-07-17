@@ -54,6 +54,7 @@
         //number of timestamps that exist
         var timestampCount = 3;
         var subscriptionOverrideCount = 4;
+        var buttonCount = 5;
 
         $(document).ready(function () {
             model = @Html.HtmlConvertToJson(Model);
@@ -154,10 +155,10 @@
             subscriptionArray["productQuantityOverrides"] = new Array(subscription.SubscriptionProducts.length);
             subscriptionArray["productPriceOverrides"] = new Array(subscription.SubscriptionProducts.length);
             subscriptionArray["subscriptionOverrides"] = new Array(subscriptionOverrideCount);
-            subscriptionArray["reference"];
+            subscriptionArray["reference"] = document.createElement("input");
             subscriptionArray["timestamps"] = new Array();
-            subscriptionArray["remainingInterval"];
-           
+            subscriptionArray["remainingInterval"] = document.createElement("input");
+            subscriptionArray["buttons"] = new Array(buttonCount);
 
             showSubscriptionText(subscription);
             showSubscriptionProducts(subscription.SubscriptionProducts, subscriptionArray["productQuantityOverrides"], subscriptionArray["productPriceOverrides"]);
@@ -165,6 +166,7 @@
             showReference(subscriptionArray["reference"]);
             showTimestamps(subscriptionArray["timestamps"]);
             showRemainingInterval(subscriptionArray["remainingInterval"]);
+            showButtons(subscriptionArray["buttons"], subscriptionID);
 
             subscriptionsArray[subscriptionID.toString()] = subscriptionArray;
         }
@@ -196,24 +198,23 @@
             for (var i = 0; i < subscriptionProducts.length; i++)
             {
                 showSubscriptionProductText(subscriptionProducts[i].PlanProduct);
-                showSubscriptionProductQuantityOverride(productQuantityOverridesArray[i]);
-                showSubscriptionProductPriceOverride(productPriceOverridesArray[i]);
+                showSubscriptionProductQuantityOverride(productQuantityOverridesArray, i);
+                showSubscriptionProductPriceOverride(productPriceOverridesArray, i);
             }
         }
 
                 function showSubscriptionProductText(subscriptionPlanProduct)
                 {
-           
                     var paragraph = document.createElement("p");
                     paragraph.innerHTML =
                         "<strong>Subscription Product Name : </strong>"  + subscriptionPlanProduct.ProductName + "<br />" +
                         "<strong>Quantity : </strong>" + subscriptionPlanProduct.Quantity + "<br />" +
                         "<strong>Id : </strong>" + subscriptionPlanProduct.Id + "<br />";
            
-                    $("#divItems").append(subscriptionProductInfo);
+                    $("#divItems").append(paragraph);
                 }
              
-                function showSubscriptionProductQuantityOverride(productQuantityOverridesArrayIndex)
+                function showSubscriptionProductQuantityOverride(productQuantityOverridesArray, index)
                 {  
                     var label = document.createElement("p");
                     label.innerHTML = "<strong>Edit Subscription Product Quantity</strong>" + "<br />";
@@ -222,10 +223,10 @@
                     var input = document.createElement("input");
                     $("#divItems").append(input);
 
-                    productQuantityOverridesArrayIndex = input;
+                    productQuantityOverridesArray[index] = input;
                 }
         
-                function showSubscriptionProductPriceOverride(productPriceOverridesArrayIndex)
+                function showSubscriptionProductPriceOverride(productPriceOverridesArray, index)
                 {
                     var label = document.createElement("p");
                         label.innerHTML = "<strong>Edit Subscription Product Price</strong>" + "<br />";
@@ -234,7 +235,7 @@
                     var input = document.createElement("input");
                     $("#divItems").append(input);
 
-                    productPriceOverridesArrayIndex = input;
+                    productPriceOverridesArray[index] = input;
                 }
         
         function showSubscriptionOverrides(subscriptionOverridesArray) 
@@ -293,7 +294,7 @@
             var input = document.createElement("input");
             //ContractStartTimestamp.id = "contractStartTimestamp_" + returnedData[i].Id;
                 $("#divItems").append(input);
-            timestamps[0] = input;
+            timestampsArray[0] = input;
 
             var label = document.createElement("p");
                 label.innerHTML = " Contract End Date" + "<br />";
@@ -301,7 +302,7 @@
             var input = document.createElement("input");
             //ContractEndTimestamp.id = "contractEndTimestamp_" + returnedData[i].Id;
                 $("#divItems").append(input);
-            timestamps[0] = input;
+            timestampsArray[1] = input;
 
             var label = document.createElement("p");
                 label.innerHTML = " Scheduled Activation Timestamp" + "<br />";
@@ -309,7 +310,7 @@
             var input = document.createElement("input");
             //ScheduledActivationTimestamp.id = "scheduledActivationTimestamp_" + returnedData[i].Id;
                 $("#divItems").append(input);
-            timestamps[0] = input;
+            timestampsArray[2] = input;
         }
 
         function showRemainingInterval(remainingInterval)
@@ -319,29 +320,44 @@
                 $("#divItems").append(label);
             var input = document.createElement("input");
             //RemainingInterval.id = "remainingInterval_" + returnedData[i].Id;
-                $("#divItems").append(label);
+            $("#divItems").append(input);
             remainingInterval = input;
+        }
+
+        function showButtons(buttonsArray, subscriptionID)
+        {
+            //Buttons: update, cancel, delete, provision, and activate
+
+            buttonsArray[0] = createButton("Update", subscriptionID, onUpdateButton, 0);
+            buttonsArray[1] = createButton("Activate", subscriptionID, onActivateButton,1);
+            buttonsArray[2] = createButton("Provision", subscriptionID, onProvisionButton,2);
+            buttonsArray[3] = createButton("Cancel", subscriptionID, onCancelButton,3);
+            buttonsArray[4] = createButton("Delete", subscriptionID, onDeleteButton,4);
         }
         
         //=================== EVENT FUNCTIONS ======================//
 
         function onDeleteButton(subID)
         {
+            alert("The delete button has been pressed. Id is " + subID);
             postAjax(subID, "Subscriptions/DeleteSubscription");
         }
 
         function onProvisionButton(subID)
-        {
-            postAjax(subID, "Subscriptions/ProvisionSubscription");    
+        {            
+            alert("The provision button has been pressed. Id is " + subID);
+           postAjax(subID, "Subscriptions/ProvisionSubscription");    
         }
 
         function onActivateButton(subID)
         {
+            alert("The activation button has been pressed. Id is " + subID);
             postAjax(subID, "Subscriptions/ActivateSubscription");    
         }
 
         function onCancelButton(subID)
         {
+            alert("The cancel button has been pressed. Id is " + subID);
             postAjax(subID, "Subscriptions/CancelSubscription");    
         }
 
@@ -369,11 +385,11 @@
             }
 
             //place each input's value from timestamps to timestampsValues
-            var timestampValues = new Array();
+            var timestampsValues = new Array();
 
             for (var i = 0; i < subscriptionToUpdate["timestamps"].length; i++)
             {
-                timestampValues = subscriptionToUpdate["timestamps"][i];
+                timestampsValues[i] = subscriptionToUpdate["timestamps"][i].value;
             }
 
 
@@ -388,6 +404,7 @@
             };
 
             alert("onUpdateButton has been called");
+
 
             $.ajax( {
                 // contentType: 'application/json; charset=utf-8',
@@ -405,17 +422,22 @@
 
         //Buttons: update, cancel, delete, provision, and activate
 
-        function createButton(innerHtml, id, clickFunction)
+        function createButton(innerHtml, subscriptionId, clickFunction, index)
         {
             var button = document.createElement("button");
                 button.innerHTML = innerHtml;
-                button.id = id;
-            $("#divItems").append(updateButton);
+                button.id = subscriptionId + "_" + index;
+            $("#divItems").append(button);
 
-                $(button.id).on("click", function() {
-                    clickFunction(this.innerHTML);
-                    alert("Update was completed)");
+
+
+            $("#"+button.id).on("click", function() {
+                alert("The button was clicked");
+
+                    clickFunction(subscriptionId);
                 });
+
+        return button;
         }
         
         function postAjax(subID, controllerUrl)
@@ -632,7 +654,7 @@
 
 
 
-            for (var k = 0; k < @Model.AvailablePlans.Count; k++)
+            @*for (var k = 0; k < @Model.AvailablePlans.Count; k++)
             {
                 var button = document.createElement("button");
                 button.innerHTML = "Add this subscription: " + model.AvailablePlans[k].name;
@@ -720,7 +742,7 @@
             $("#CancelButton_" + returnedData[i].Id).on("click", function() {
                 onCancelButton(this.innerHTML);
                 console.log("SUbscription was canceled by " + this.id);
-            });
+            });*@
 
 
        

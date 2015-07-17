@@ -158,7 +158,6 @@
             subscriptionArray["timestamps"] = new Array();
             subscriptionArray["remainingInterval"];
            
-            subscriptionsArray[subscriptionID.toString()]
 
             showSubscriptionText(subscription);
             showSubscriptionProducts(subscription.SubscriptionProducts, subscriptionArray["productQuantityOverrides"], subscriptionArray["productPriceOverrides"]);
@@ -275,7 +274,7 @@
              subscriptionOverridesArray[3] = input;
         }
 
-        function showReference(referenceArray)
+        function showReference(reference)
         {
             var label = document.createElement("p");
                 label.innerHTML = " Reference" + "<br />";
@@ -313,17 +312,156 @@
             timestamps[0] = input;
         }
 
-        function showRemainingInterval(remainingIntervalArray)
+        function showRemainingInterval(remainingInterval)
         {
+            var label = document.createElement("p");
+                label.innerHTML = " Remaining Interval" + "<br />";
+                $("#divItems").append(label);
+            var input = document.createElement("input");
+            //RemainingInterval.id = "remainingInterval_" + returnedData[i].Id;
+                $("#divItems").append(label);
+            remainingInterval = input;
+        }
+        
+        //=================== EVENT FUNCTIONS ======================//
 
+        function onDeleteButton(subID)
+        {
+            postAjax(subID, "Subscriptions/DeleteSubscription");
         }
 
-        //we use an array to keep the array that stores the product QUantity
-        var productQuantityOverridesArray = new Array();
-        var productPriceOverridesArray = new Array();
-
-        for (var i = 0; i < returnedData.length; i++)
+        function onProvisionButton(subID)
         {
+            postAjax(subID, "Subscriptions/ProvisionSubscription");    
+        }
+
+        function onActivateButton(subID)
+        {
+            postAjax(subID, "Subscriptions/ActivateSubscription");    
+        }
+
+        function onCancelButton(subID)
+        {
+            postAjax(subID, "Subscriptions/CancelSubscription");    
+        }
+
+        function onUpdateButton(subID)
+        {
+            //locate the subscription array that we use in the global "subscriptionsArray" 
+            var subscriptionToUpdate = subscriptionsArray[subID.toString()];
+
+            //these array stores the int values of each product's quantity and price overrides, and subscription overrides, and will be passed to the controller
+            var productQuantityOverridesValues = new Array();
+            var productPriceOverridesValues = new Array();
+
+            //place each input's value from the productQuantityOverrides and productPriceOverrides array into the two arrays instantiated above
+            for (var i = 0; i < subscriptionToUpdate["productQuantityOverrides"].length; i++)
+            {
+                productQuantityOverridesValues[i] = subscriptionToUpdate["productQuantityOverrides"][i].value;
+                productPriceOverridesValues[i] = subscriptionToUpdate["productPriceOverrides"][i].value;
+            }
+
+            //place each input's value from subscriptionOverrides to subscriptionOverridesValue
+            var subscriptionOverridesValues = new Array();
+            for (var i = 0; i < subscriptionToUpdate["subscriptionOverrides"].length; i++)
+            {
+                subscriptionOverridesValues[i] = subscriptionToUpdate["subscriptionOverrides"][i].value;
+            }
+
+            //place each input's value from timestamps to timestampsValues
+            var timestampValues = new Array();
+
+            for (var i = 0; i < subscriptionToUpdate["timestamps"].length; i++)
+            {
+                timestampValues = subscriptionToUpdate["timestamps"][i];
+            }
+
+
+            var postSubscription = {
+                SubscriptionID : subID,             
+                ProductQuantityOverrides : productQuantityOverridesValues,
+                ProductPriceOverrides : productPriceOverridesValues,
+                SubscriptionOverrides : subscriptionOverridesValues,
+                TimeStamps : timestampsValues,
+                Reference : subscriptionToUpdate["reference"].value,     
+                RemainingInterval : subscriptionToUpdate["remainingInterval"].value
+            };
+
+            alert("onUpdateButton has been called");
+
+            $.ajax( {
+                // contentType: 'application/json; charset=utf-8',
+                dataType : 'json',
+                type: "POST",
+                traditional: true,
+                url: "Subscriptions/UpdateSubscription",
+                data: postSubscription,
+                success: function() {
+                    alert("The update button has successfully posted data to the server!!! WHOOO!!"); }
+            });
+        }
+
+        //=================== HELPER FUNCTIONS =====================//
+
+        //Buttons: update, cancel, delete, provision, and activate
+
+        function createButton(innerHtml, id, clickFunction)
+        {
+            var button = document.createElement("button");
+                button.innerHTML = innerHtml;
+                button.id = id;
+            $("#divItems").append(updateButton);
+
+                $(button.id).on("click", function() {
+                    clickFunction(this.innerHTML);
+                    alert("Update was completed)");
+                });
+        }
+        
+        function postAjax(subID, controllerUrl)
+        {
+            var subscription = { SubscriptionID: subID };
+
+            $.ajax({
+                type: "POST",
+                url: controllerUrl,
+                dataType: "json",
+                data: subscription,
+            });
+        }
+
+        //var updateButton = document.createElement("button");
+        //updateButton.innerHTML =  returnedData[i].Id;
+        //updateButton.id = "UpdateButton_" + returnedData[i].Id;
+
+        //$("#divItems").append(updateButton);
+
+        //$("#UpdateButton_" + returnedData[i].Id).on("click", function() {
+        //    onUpdateButton(this.innerHTML);
+        //    alert("Update was completed)");
+        //    console.log("update was clicked by " + this.id);
+        //});
+
+
+
+            //$.ajax({
+            //    type: "POST",
+            //    url: "Subscriptions/ProvisionSubscription",
+            //    dataType: "json",
+            //    data: subscription,
+            //    success: function () {
+            //        alert("Subscription provisioned");
+            //    },
+            //    //error: alert("Darn!")
+        //    //});
+        //}
+       
+        ////we use an array to keep the array that stores the product QUantity
+        //var productQuantityOverridesArray = new Array();
+        //var productPriceOverridesArray = new Array();
+
+        //for (var i = 0; i < returnedData.length; i++)
+        //{
             //use this
             //var productQuantityOverrides = new Array(returnedData[i].SubscriptionProducts.length);
             //var productPriceOverrides = new Array(returnedData[i].SubscriptionProducts.length);
@@ -345,15 +483,15 @@
             //              "<strong>Subscription Scheduled Activation</strong> " + returnedData[i].ScheduledActivationTimestamp + "<br />" +
             //              "<strong>Subscription Remaining Interval</strong> " + returnedData[i].RemainingInterval + "<br />" +
 
-            "<strong>================ Subscription Products ====================</strong>"
+            //"<strong>================ Subscription Products ====================</strong>"
 
             /*=============================== SHOW SUBSCRIPTION PRODUCTS ==============*/
 
             //$("#divItems").append(subscriptionInfo);
 
-            for (var j = 0; j < returnedData[i].SubscriptionProducts.length; j++)
-            {
-                //var subscriptionProductInfo = document.createElement("p");
+            //for (var j = 0; j < returnedData[i].SubscriptionProducts.length; j++)
+            //{
+            //    //var subscriptionProductInfo = document.createElement("p");
                 //subscriptionProduct = returnedData[i].SubscriptionProducts[j].PlanProduct;
                 //subscriptionProductInfo.innerHTML = "<strong>Subscription Product " + j + ": </strong>"  + subscriptionProduct.ProductName + "<br />" +
                 //                                    + "<strong>Quantity</strong>" + subscriptionProduct.Quantity + "<br />" +
@@ -382,8 +520,8 @@
 
             //}
 
-            productQuantityOverridesArray[returnedData[i].Id.toString()] = productQuantityOverrides;
-            productPriceOverridesArray[returnedData[i].Id.toString()] = productPriceOverrides;
+            //productQuantityOverridesArray[returnedData[i].Id.toString()] = productQuantityOverrides;
+            //productPriceOverridesArray[returnedData[i].Id.toString()] = productPriceOverrides;
 
 
             ///* Overrides for subscription name, description, charge amount, and setup amount */
@@ -478,16 +616,21 @@
             //ScheduledActivationTimestamp.id = "scheduledActivationTimestamp_" + returnedData[i].Id;
             //$("#divItems").append(ScheduledActivationTimestamp);
 
-            var RemainingIntervalLabel = document.createElement("p");
-            RemainingIntervalLabel.innerHTML = " Remaining Interval" + "<br />";
-            $("#divItems").append(RemainingIntervalLabel);
-            var RemainingInterval = document.createElement("input");
-            RemainingInterval.id = "remainingInterval_" + returnedData[i].Id;
-            $("#divItems").append(RemainingInterval);
+            //var RemainingIntervalLabel = document.createElement("p");
+            //RemainingIntervalLabel.innerHTML = " Remaining Interval" + "<br />";
+            //$("#divItems").append(RemainingIntervalLabel);
+            //var RemainingInterval = document.createElement("input");
+            //RemainingInterval.id = "remainingInterval_" + returnedData[i].Id;
+            //$("#divItems").append(RemainingInterval);
 
 
 
             /*================================ ADD SUBSCRIPTIONS / PLANS ==========================*/
+
+
+
+
+
 
             for (var k = 0; k < @Model.AvailablePlans.Count; k++)
             {
@@ -580,126 +723,11 @@
             });
 
 
-        }
-        }
+       
 
-        function onDeleteButton(subID)
-        {
-            var subscription = { SubscriptionID: subID };
+       
 
-
-            $.ajax({
-                type: "POST",
-                url: "Subscriptions/DeleteSubscription",
-                dataType: "json",
-                data: subscription,
-                success: function () {
-                    alert("Subscription deleted");
-                },
-                //error: alert("Darn!")
-            });
-        }
-
-        function onProvisionButton(subID)
-        {
-            var subscription = { SubscriptionID: subID };
-
-
-            $.ajax({
-                type: "POST",
-                url: "Subscriptions/ProvisionSubscription",
-                dataType: "json",
-                data: subscription,
-                success: function () {
-                    alert("Subscription provisioned");
-                },
-                //error: alert("Darn!")
-            });
-        }
-
-        function onActivateButton(subID)
-        {
-            var subscription = { SubscriptionID: subID };
-
-
-            $.ajax({
-                type: "POST",
-                url: "Subscriptions/ActivateSubscription",
-                dataType: "json",
-                data: subscription,
-                success: function () {
-                    alert("Subscription activated");
-                },
-                //error: alert("Darn!")
-            });
-        }
-
-        function onCancelButton(subID)
-        {
-            var subscription = { SubscriptionID: subID };
-
-            $.ajax({
-                type: "POST",
-                url: "Subscriptions/CancelSubscription",
-                dataType: "json",
-                data: subscription,
-                success: function () {
-                    alert("Subscription activated");
-                },
-                //error: alert("Darn!")
-            });
-        }
-
-        function onUpdateButton(subID)
-        {
-
-            //this array stores the numerical values of the product overrides arrays' inputs \s
-            var productQuantityOverridesValues = new Array();
-            var productPriceOverridesValues = new Array();
-            var timestampsValues = new Array();
-
-            //place inputs into the numerical array
-            for (var i = 0; i < productQuantityOverridesArray[subID.toString()].length; i++)
-            {
-                productQuantityOverridesValues[i] = productQuantityOverridesArray[subID.toString()][i].value;
-                productPriceOverridesValues[i] = productPriceOverridesArray[subID.toString()][i].value;
-            }
-
-            //i<3 because there are three timestamps. We store the timestamp values in a timestamp array
-            for (var i = 0;i < 3; i++ )
-            {
-                timestampsValues[i] =
-                }
-
-            var postSubscription = {
-                SubscriptionID :subID ,
-                NameOverride : $("#nameOverride_" +subID).val() ,
-                DescriptionOverride : $("#descriptionOverride_" + subID).val(),
-                ChargeOverride : $("#chargeOverride_" + subID).val() ,
-                SetupOverride : $("#setupOverride_" + subID).val() ,
-                Reference : $("#reference_" + subID).val(),
-                ContractStartTimestamp : $("#contractStartTimestamp_" + subID).val() ,
-                ContractEndTimestamp : $("#contractEndTimestamp_" + subID).val() ,
-                ScheduledActivationTimestamp : $("#scheduledActivationTimestamp_" + subID).val(),
-                RemainingInterval : $("#remainingInterval_" + subID).val(),
-                ProductQuantityOverrides : productQuantityOverridesValues,
-                ProductPriceOverrides : productPriceOverridesValues,
-                TimeStamps : timestampsValues
-            };
-
-            alert("onUpdateButton has been called");
-
-            $.ajax( {
-                // contentType: 'application/json; charset=utf-8',
-                dataType : 'json',
-                type: "POST",
-                traditional: true,
-                url: "Subscriptions/UpdateSubscription",
-                data: postSubscription,
-                success: function() {
-                    alert("The update button has successfully posted data to the server!!! WHOOO!!"); }
-            });
-        }
+       
 
     </script>
 

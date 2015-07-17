@@ -8,7 +8,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models
     public class PostSubscriptionVM
     {
         public long SubscriptionID { get; set; }
-        public string NameOverride{ get; set; }
+        public string NameOverride { get; set; }
 
         public string DescriptionOverride { get; set; }
 
@@ -26,6 +26,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models
         public List<int> ProductQuantityOverrides { get; set; }
         public List<decimal> ProductPriceOverrides { get; set; }
 
+        public List<object> SubscriptionOverrides { get; set; }
         public List<DateTime> TimeStamps { get; set; }
 
     }

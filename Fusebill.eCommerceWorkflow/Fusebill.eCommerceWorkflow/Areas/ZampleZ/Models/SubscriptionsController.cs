@@ -11,15 +11,6 @@ using System.Web.Mvc;
 
 namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 {
-    //public class House
-    //{
-    //    public int Number { get; set; }
-    //    public List<int> Numbers { get; set; }
-
-    //    public int[] NumbersArray { get; set; }
-
-    //    public string Name { get; set; }
-    //}
 
     //after a subscription is deleted, refresh the screen to show the updated  subscriptions 
     //cancel options, more options
@@ -30,6 +21,42 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
     //adding label in one line
     //call a function to create labels
 
+
+
+    public class SubsTest
+    {
+        public int Id { get; set; }
+        public string PlanName { get; set; }
+        public string PlanDescription { get; set; }
+        public string PlanReference { get; set; }
+        public string Created { get; set; }
+        public string ContractStartTimestamp { get; set; }
+        public string ContractEndTimestamp { get; set; }
+
+        public string ScheduledActivationTimestamp { get; set; }
+
+        public int ReminaingInterval { get; set; }
+
+        public string Status { get; set; }
+
+        public int Amount { get; set; }
+
+        public List<SubscriptionProducts> SubscriptionProducts { get; set; }
+
+    }
+
+    public class SubscriptionProducts
+    {
+
+        public PlanProduct PlanProduct { get; set; }
+    }
+
+    public class PlanProduct
+    {
+        public string ProductName { get; set; }
+        public int Id { get; set; }
+        public int Quantity { get; set; }
+    }
 
     public class SubscriptionsController : FusebillBaseController
     {
@@ -43,30 +70,31 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
         public ActionResult Index()
         {
-            var demoCustomerIds = ConfigurationManager.AppSettings["DemoCustomerIds"].Split(',');
+            //var demoCustomerIds = ConfigurationManager.AppSettings["DemoCustomerIds"].Split(',');
 
-            var customersAndSubscriptionsVM = new CustomersAndSubscriptionsVM
-            {
-                AvailableCustomers = new List<ApiWrapper.Dto.Get.Customer>(),
-                AvailablePlans = new List<ApiWrapper.Dto.Get.Plan>()
-            };
+            //var customersAndSubscriptionsVM = new CustomersAndSubscriptionsVM
+            //{
+            //    AvailableCustomers = new List<ApiWrapper.Dto.Get.Customer>(),
+            //    AvailablePlans = new List<ApiWrapper.Dto.Get.Plan>()
+            //};
 
-            //add available customers
-            foreach (var customerId in demoCustomerIds)
-            {
-                customersAndSubscriptionsVM.AvailableCustomers.Add(ApiClient.GetCustomer(Convert.ToInt64(customerId)));
-            }
+            ////add available customers
+            //foreach (var customerId in demoCustomerIds)
+            //{
+            //    customersAndSubscriptionsVM.AvailableCustomers.Add(ApiClient.GetCustomer(Convert.ToInt64(customerId)));
+            //}
 
-            //add availalable subscriptions
-            var availablePlanIds = ConfigurationManager.AppSettings["DesiredPlanIds"];
-            var availablePlans = availablePlanIds.Split(',');
+            ////add availalable subscriptions
+            //var availablePlanIds = ConfigurationManager.AppSettings["DesiredPlanIds"];
+            //var availablePlans = availablePlanIds.Split(',');
 
-            foreach (var plan in availablePlans)
-            {
-                customersAndSubscriptionsVM.AvailablePlans.Add(ApiClient.GetPlan(Convert.ToInt64(plan)));
-            }
+            //foreach (var plan in availablePlans)
+            //{
+            //    customersAndSubscriptionsVM.AvailablePlans.Add(ApiClient.GetPlan(Convert.ToInt64(plan)));
+            //}
 
-            return View(customersAndSubscriptionsVM);
+            //return View(customersAndSubscriptionsVM);
+            return View();
         }
 
         public void CancelCustomer(PostCustomerIdVM postCustomerIdVM)
@@ -102,10 +130,85 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
         public ActionResult ListSubscriptionsForCustomer(PostCustomerIdVM postCustomerIdVM)
         {
 
-            long desiredCustomerID = Convert.ToInt64(postCustomerIdVM.CustomerID);
+            //long desiredCustomerID = Convert.ToInt64(postCustomerIdVM.CustomerID);
 
-            var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
-           
+            //var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
+
+            List<SubsTest> subscriptions = new List<SubsTest>();
+            subscriptions.Add(new SubsTest
+            {
+                Amount = 1253223,
+                ContractEndTimestamp = "Later",
+                ContractStartTimestamp = "Now",
+                Created = "Today",
+                Id = 20575151,
+                PlanDescription = "This is the plan's description",
+                PlanName = "This is the plan's name",
+                PlanReference = "This is the plan's reference",
+                ReminaingInterval = 3,
+                ScheduledActivationTimestamp = "Also later",
+                Status = "Good",
+
+                SubscriptionProducts = new List<SubscriptionProducts>() { new SubscriptionProducts {
+             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
+             new SubscriptionProducts {
+             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
+             new SubscriptionProducts {
+             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
+                 }
+
+            });
+
+            subscriptions.Add(new SubsTest
+            {
+                Amount = 123,
+                ContractEndTimestamp = "Later",
+                ContractStartTimestamp = "Now",
+                Created = "Today",
+                Id = 20575151,
+                PlanDescription = "This is the plan's description",
+                PlanName = "This is the plan's name",
+                PlanReference = "This is the plan's reference",
+                ReminaingInterval = 3,
+                ScheduledActivationTimestamp = "Also later",
+                Status = "Good",
+                       SubscriptionProducts = new List<SubscriptionProducts>() { new SubscriptionProducts {
+             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
+             new SubscriptionProducts {
+             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
+             new SubscriptionProducts {
+             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
+               
+                       }
+
+            });
+
+            subscriptions.Add(new SubsTest
+            {
+                Amount = 123,
+                ContractEndTimestamp = "Later",
+                ContractStartTimestamp = "Now",
+                Created = "Today",
+                Id = 20575151,
+                PlanDescription = "This is the plan's description",
+                PlanName = "This is the plan's name",
+                PlanReference = "This is the plan's reference",
+                ReminaingInterval = 3,
+                ScheduledActivationTimestamp = "Also later",
+                Status = "Good",
+                     SubscriptionProducts = new List<SubscriptionProducts>() { new SubscriptionProducts {
+             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
+             new SubscriptionProducts {
+             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
+             new SubscriptionProducts {
+             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
+                 }
+
+
+            });
+
+
+
 
 
             return Json(subscriptions);

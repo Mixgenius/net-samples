@@ -70,31 +70,30 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
         public ActionResult Index()
         {
-            //var demoCustomerIds = ConfigurationManager.AppSettings["DemoCustomerIds"].Split(',');
+            var demoCustomerIds = ConfigurationManager.AppSettings["DemoCustomerIds"].Split(',');
 
-            //var customersAndSubscriptionsVM = new CustomersAndSubscriptionsVM
-            //{
-            //    AvailableCustomers = new List<ApiWrapper.Dto.Get.Customer>(),
-            //    AvailablePlans = new List<ApiWrapper.Dto.Get.Plan>()
-            //};
+            var customersAndSubscriptionsVM = new CustomersAndSubscriptionsVM
+            {
+                AvailableCustomers = new List<ApiWrapper.Dto.Get.Customer>(),
+                AvailablePlans = new List<ApiWrapper.Dto.Get.Plan>()
+            };
 
-            ////add available customers
-            //foreach (var customerId in demoCustomerIds)
-            //{
-            //    customersAndSubscriptionsVM.AvailableCustomers.Add(ApiClient.GetCustomer(Convert.ToInt64(customerId)));
-            //}
+            //add available customers
+            foreach (var customerId in demoCustomerIds)
+            {
+                customersAndSubscriptionsVM.AvailableCustomers.Add(ApiClient.GetCustomer(Convert.ToInt64(customerId)));
+            }
 
-            ////add availalable subscriptions
-            //var availablePlanIds = ConfigurationManager.AppSettings["DesiredPlanIds"];
-            //var availablePlans = availablePlanIds.Split(',');
+            //add availalable subscriptions
+            var availablePlanIds = ConfigurationManager.AppSettings["DesiredPlanIds"];
+            var availablePlans = availablePlanIds.Split(',');
 
-            //foreach (var plan in availablePlans)
-            //{
-            //    customersAndSubscriptionsVM.AvailablePlans.Add(ApiClient.GetPlan(Convert.ToInt64(plan)));
-            //}
+            foreach (var plan in availablePlans)
+            {
+                customersAndSubscriptionsVM.AvailablePlans.Add(ApiClient.GetPlan(Convert.ToInt64(plan)));
+            }
 
-            //return View(customersAndSubscriptionsVM);
-            return View();
+            return View(customersAndSubscriptionsVM);
         }
 
         public void CancelCustomer(PostCustomerIdVM postCustomerIdVM)
@@ -130,87 +129,11 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
         public ActionResult ListSubscriptionsForCustomer(PostCustomerIdVM postCustomerIdVM)
         {
 
-            //long desiredCustomerID = Convert.ToInt64(postCustomerIdVM.CustomerID);
+            long desiredCustomerID = Convert.ToInt64(postCustomerIdVM.CustomerID);
+            
+            var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
 
-            //var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
-
-            List<SubsTest> subscriptions = new List<SubsTest>();
-            subscriptions.Add(new SubsTest
-            {
-                Amount = 1253223,
-                ContractEndTimestamp = "Later",
-                ContractStartTimestamp = "Now",
-                Created = "Today",
-                Id = 20575151,
-                PlanDescription = "This is the plan's description. acerat pfk psspdf sk ppsoksdfs sdfioj sdiofj sofji aioj fosjif osijf osifj sozldfj lxkc lsdkjf sdfi osdifj osdifj  fpskf psofk sdofk spdfok  vel, facilisis nec magna.",
-                PlanName = "This is the plan's name",
-                PlanReference = "This is the plan's reference",
-                ReminaingInterval = 3,
-                ScheduledActivationTimestamp = "Also later",
-                Status = "Good",
-
-                SubscriptionProducts = new List<SubscriptionProducts>() { new SubscriptionProducts {
-             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
-             new SubscriptionProducts {
-             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
-             new SubscriptionProducts {
-             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
-                 }
-
-            });
-
-            subscriptions.Add(new SubsTest
-            {
-                Amount = 123,
-                ContractEndTimestamp = "Later",
-                ContractStartTimestamp = "Now",
-                Created = "Today",
-                Id = 20575151,
-                PlanDescription = "This is the plan's description",
-                PlanName = "This is the plan's name",
-                PlanReference = "This is the plan's reference",
-                ReminaingInterval = 3,
-                ScheduledActivationTimestamp = "Also later",
-                Status = "Good",
-                       SubscriptionProducts = new List<SubscriptionProducts>() { new SubscriptionProducts {
-             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
-             new SubscriptionProducts {
-             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
-             new SubscriptionProducts {
-             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
-               
-                       }
-
-            });
-
-            subscriptions.Add(new SubsTest
-            {
-                Amount = 123,
-                ContractEndTimestamp = "Later",
-                ContractStartTimestamp = "Now",
-                Created = "Today",
-                Id = 20575151,
-                PlanDescription = "This is the plan's description",
-                PlanName = "This is the plan's name",
-                PlanReference = "This is the plan's reference",
-                ReminaingInterval = 3,
-                ScheduledActivationTimestamp = "Also later",
-                Status = "Good",
-                     SubscriptionProducts = new List<SubscriptionProducts>() { new SubscriptionProducts {
-             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
-             new SubscriptionProducts {
-             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
-             new SubscriptionProducts {
-             PlanProduct = new PlanProduct{Id = 1, ProductName = "Product Name", Quantity =2}},
-                 }
-
-
-            });
-
-
-
-
-
+      
             return Json(subscriptions);
         }
 
@@ -223,14 +146,22 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
             for (int i = 0; i < subscription.SubscriptionProducts.Count; i++)
             {
-                //Editing the plan product's quantit             
-                subscription.SubscriptionProducts[i].Quantity = postSubscriptionVM.ProductQuantityOverrides[i];
-
-                //editing the plan product's price
-                subscription.SubscriptionProducts[i].SubscriptionProductPriceOverride = new ApiWrapper.Dto.Get.SubscriptionProductPriceOverride
+                //If the user had inputed a plan product's quantity,  set it, otherwise do nothing
+                if ( !String.IsNullOrEmpty(postSubscriptionVM.ProductQuantityOverrides[i]))
                 {
-                    ChargeAmount = postSubscriptionVM.ProductPriceOverrides[i]
-                };
+                    subscription.SubscriptionProducts[i].Quantity = Convert.ToInt32(postSubscriptionVM.ProductQuantityOverrides[i]);
+                }
+
+                //If the user had inputed a plan product's price,  set it, otherwise, do nothing
+                if (!String.IsNullOrEmpty(postSubscriptionVM.ProductPriceOverrides[i]))
+                {
+                     subscription.SubscriptionProducts[i].SubscriptionProductPriceOverride = new ApiWrapper.Dto.Get.SubscriptionProductPriceOverride
+                     {
+                         ChargeAmount = Convert.ToDecimal(postSubscriptionVM.ProductPriceOverrides[i])
+                     };
+                }
+           
+
 
                 ////Editing a non-mandatory plan product to be included
                 // var inclusion = session.AvailableProducts[i].IsIncluded;
@@ -239,31 +170,46 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
             //Editing a subscription's name, description, charge, setupFee, and ID  NOTE: To verify, uri is not included in the dto but is in the help.fusebill.com documentation. DOes API help mean "Sample" when it writes "Simple"?
 
-            subscription.SubscriptionOverride = new ApiWrapper.Dto.Get.SubscriptionOverride
+            //decimal chargeOverride;
+            //decimal setupOverride;
+
+            //if (postSubscriptionVM.ChargeOverride != null)
+            //{
+            //    chargeOverride = Convert.ToDecimal(postSubscriptionVM.ChargeOverride);
+            //}
+
+            //if (postSubscriptionVM.SetupOverride != null)
+            //{
+            //    setupOverride = Convert.ToDecimal(postSubscriptionVM.SetupOverride);
+            //}
+
+            subscription.SubscriptionOverride = new ApiWrapper.Dto.Get.SubscriptionOverride();
+            if (!String.IsNullOrEmpty(postSubscriptionVM.NameOverride))
             {
-                Name = postSubscriptionVM.NameOverride,
-                Description = postSubscriptionVM.DescriptionOverride,
-                Charge = postSubscriptionVM.ChargeOverride,
-                SetupFee = postSubscriptionVM.SetupOverride,
-                Id = postSubscriptionVM.SubscriptionID
-            };
+                subscription.SubscriptionOverride.Name = postSubscriptionVM.NameOverride;
+            }
+
+              if (!String.IsNullOrEmpty(postSubscriptionVM.DescriptionOverride))
+            {
+                subscription.SubscriptionOverride.Name = postSubscriptionVM.DescriptionOverride;
+            }
 
 
 
-            //Editing the reference
-            subscription.Reference = postSubscriptionVM.Reference;
+            ////Editing the reference
+            //subscription.Reference = postSubscriptionVM.Reference;
 
-            //Editing Contract Start and End Dates
+            ////Editing Contract Start and End Dates
 
-            subscription.ContractStartTimestamp = postSubscriptionVM.ContractStartTimestamp;
-            subscription.ContractEndTimestamp = postSubscriptionVM.ContractEndTimestamp;
+            //subscription.ContractStartTimestamp = postSubscriptionVM.ContractStartTimestamp;
+            //subscription.ContractEndTimestamp = postSubscriptionVM.ContractEndTimestamp;
 
-            //Editing the Scheduled Activation Date
+            ////Editing the Scheduled Activation Date
 
-            //subscription.ScheduledActivationTimestamp = postSubscriptionVM.ScheduledActivationTimestamp;
+            ////subscription.ScheduledActivationTimestamp = postSubscriptionVM.ScheduledActivationTimestamp;
 
-            //Editing the expiration period NOTE: Typo : "This can SET BY submitting..."
-            subscription.RemainingInterval = postSubscriptionVM.RemainingInterval; //setting the RemainingInterval property to 0 will result in an initial charge and then an immediate expiry of the subscription following activation.
+            ////Editing the expiration period NOTE: Typo : "This can SET BY submitting..."
+            //subscription.RemainingInterval = postSubscriptionVM.RemainingInterval; //setting the RemainingInterval property to 0 will result in an initial charge and then an immediate expiry of the subscription following activation.
 
 
             Automapping.SetupSubscriptionGetToPutMapping();
@@ -316,12 +262,11 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
         /// <returns></returns>
         public void ProvisionSubscription(PostSubscriptionIdVM postSubscriptionIdVM)
         {
-
             var postSubscriptionProvision = new Fusebill.ApiWrapper.Dto.Post.SubscriptionProvision
             {
                 Id = postSubscriptionIdVM.SubscriptionID,
-                InvoiceDay = 11,
-                InvoiceMonth = 9
+                InvoiceDay = Convert.ToInt32(postSubscriptionIdVM.InputValuesForActivationAndProvision[0]),
+                InvoiceMonth = Convert.ToInt32(postSubscriptionIdVM.InputValuesForActivationAndProvision[0])
             };
 
             ApiClient.PostSubscriptionProvision(postSubscriptionProvision);
@@ -331,12 +276,11 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
         public void ActivateSubscription(PostSubscriptionIdVM postSubscriptionIdVM)
         {
-
             var postSubscriptionActivation = new Fusebill.ApiWrapper.Dto.Post.SubscriptionActivation
             {
                 Id = postSubscriptionIdVM.SubscriptionID,
-                InvoiceDay = 11,
-                InvoiceMonth = 9
+                InvoiceDay = Convert.ToInt32(postSubscriptionIdVM.InputValuesForActivationAndProvision[0]),
+                InvoiceMonth = Convert.ToInt32(postSubscriptionIdVM.InputValuesForActivationAndProvision[1])
             };
 
             ApiClient.PostSubscriptionActivation(postSubscriptionActivation);

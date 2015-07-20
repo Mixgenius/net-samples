@@ -7,6 +7,9 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models
 {
     public class PostSubscriptionIdVM
     {
+        
         public long SubscriptionID { get; set; }
+
+        public List<string> InputValuesForActivationAndProvision { get; set; }
     }
 }

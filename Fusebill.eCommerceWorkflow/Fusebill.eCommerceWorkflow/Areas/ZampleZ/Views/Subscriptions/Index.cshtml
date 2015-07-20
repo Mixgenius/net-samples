@@ -38,10 +38,9 @@
 </head>
 <body>
   
-    @*@foreach (var customer in Model.AvailableCustomers)*@
-    @for (int i = 0; i < 3; i++)
+    @foreach (var customer in Model.AvailableCustomers)
     {
-        <div class="panel panel-primary col-xs-12 col-md-4" onclick="loadSubscriptions()" @*onclick="loadSubscriptions(@customer.Id)"*@>
+        <div class="panel panel-primary col-xs-12 col-md-4" onclick="loadSubscriptions(@customer.Id)">
             <h3 class="panel-title panel-heading">Demo Customer</h3>
             <div class="panel-body">
 
@@ -49,22 +48,21 @@
                     <tbody>
                         <tr>
                             <td><strong>First name : </strong></td>
-                            <td>@*@customer.FirstName*@</td>
+                            <td>@customer.FirstName</td>
                         </tr>
                         <tr>
                             <td><strong>Last name : </strong></td>
-                            <td>@*@customer.LastName*@</td>
+                            <td>@customer.LastName</td>
                         </tr>
                         <tr>
                             <td><strong>Company name: </strong></td>
-                            <td>@*@customer.CompanyName*@</td>
+                            <td>@customer.CompanyName</td>
                         </tr>
                         <tr>
-                            @*@foreach (var plan in Model.AvailablePlans)*@
-                            @for (int a = 0; a < 2; a++)
+                            @foreach (var plan in Model.AvailablePlans)
                             {
                                 <td>
-                                    <button type="button" @*onclick="addSubscription(@customer.Id, @plan.PlanFrequencies[0].Id)"*@>Add plan @*with PlanFrequencyID of @plan.PlanFrequencies[0].Id for customer with ID of @customer.Id*@</button>
+                                    <button type="button" onclick="addSubscription(@customer.Id, @plan.PlanFrequencies[0].Id)">Add plan with PlanFrequencyID of @plan.PlanFrequencies[0].Id for customer with ID of @customer.Id</button>
                                 </td>
                             }
                         </tr>
@@ -102,6 +100,8 @@
         var timestampCount = 3;
         var subscriptionOverrideCount = 4;
         var buttonCount = 5;
+        var activateInputCount = 2;
+        var provisionInputCount = 2;
 
         $(document).ready(function () {
             model = @Html.HtmlConvertToJson(Model);
@@ -168,15 +168,14 @@
         }
 
 
-        //function loadSubscriptions(id)
-        function loadSubscriptions()
+        function loadSubscriptions(id)
+  
         {
 
             alert("loadSUbscriptions() called");
 
-            //var customer = { CustomerID: id};
-            var customer = { CustomerID: 36};
-
+            var customer = { CustomerID: id};
+            
 
             $.ajax({
                 type: "POST",
@@ -199,8 +198,8 @@
 
         function showAllSubscriptions(returnedData){
             //each subscription is called displayed
-            for (var i = 0; i < 12; i++)
-                //for (var i = 0; i < returnedData.length; i++)
+           
+                for (var i = 0; i < returnedData.length; i++)
             {
                 //main div, inside is a button, which commands another div
                 var subscriptionDiv = document.createElement("div");
@@ -238,6 +237,9 @@
             subscriptionArray["timestamps"] = new Array(timestampCount);
             subscriptionArray["remainingInterval"] = document.createElement("input");
             subscriptionArray["buttons"] = new Array(buttonCount);
+            subscriptionArray["activateInputs"] = new Array(activateInputCount);
+            subscriptionArray["provisionInputs"] = new Array(provisionInputCount);
+
 
             showSubscriptionText(subscription, subscriptionArray["subscriptionOverrides"], subscriptionArray["reference"], subscriptionArray["timestamps"], subscriptionArray["remainingInterval"], divIndex);
             //showSubscriptionOverrides(subscriptionArray["subscriptionOverrides"], divIndex);
@@ -246,7 +248,7 @@
             //showReference(subscriptionArray["reference"], divIndex);
             //showTimestamps(subscriptionArray["timestamps"], divIndex);
             //showRemainingInterval(subscriptionArray["remainingInterval"], divIndex);
-            showButtons(subscriptionArray["buttons"], subscriptionID, divIndex);
+            showButtons(subscription, subscriptionArray["buttons"], subscriptionArray["activateInputs"], subscriptionArray["provisionInputs"], subscriptionID, divIndex);
 
             subscriptionsArray[subscriptionID.toString()] = subscriptionArray;
         }
@@ -281,7 +283,7 @@
 
             var specificPlanName = document.createElement("p");
             specificPlanName.className = "col-md-2 text-center";
-            specificPlanName.innerHTML = "sodfijsdofij";
+            specificPlanName.innerHTML = subscription.PlanName;
             divRowSpecific.appendChild(specificPlanName);
 
             var specificStatus = document.createElement("p");
@@ -298,13 +300,21 @@
 
             $("#button"+divIndex).append(divRowTitle);
 
-            if (subscription.Status == "Good")
+            if (subscription.Status == "Active")
             {
                 $("#button"+divIndex).addClass("btn-success");
             }
-            else
+            else if (subscription.Status == "Cancelled")
             {
-                $("#button"+divIndex).addClass("btn-danger");
+                
+            }
+            else if(subscription.Status == "Draft")
+            {
+                $("#button"+divIndex).addClass("btn-default");
+            }
+            else if(subscription.Status == "Provisioning")
+            {
+                $("#button"+divIndex).addClass("btn-warning");
 
             }
 
@@ -368,7 +378,7 @@
 
 
             var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription Amount : </strong> " + subscription.Amount + "<br />" ;
+            paragraph.innerHTML = "<strong>Subscription Charge Amount : </strong> " + subscription.Amount + "<br />" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
 
             var input = document.createElement("input");
@@ -376,24 +386,21 @@
             subscriptionOverridesArray[2] = input;
 
 
+            if (typeof subscription.PlanFrequency.SetupFees[0] !== "undefined")
+            {
+                var paragraph = document.createElement("p");
+                paragraph.innerHTML = "<strong>Subscription Setup: </strong>" + subscription.PlanFrequency.SetupFees[0].Amount + "<br />" ;
+                $("#informationPanelBody"+divIndex).append(paragraph);
 
-            var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription Override : </strong> " + subscription.SubscriptionOverride + "<br />" ;
-            $("#informationPanelBody"+divIndex).append(paragraph);
+                var input = document.createElement("input");
+                $("#informationPanelBody"+divIndex).append(input);
+                subscriptionOverridesArray[3] = input;
+            }
 
-            var input = document.createElement("input");
-            $("#informationPanelBody"+divIndex).append(input);
-            subscriptionOverridesArray[3] = input;
-
-
-
-            
+     
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Subscription Creation Date : </strong> " + subscription.Created + "<br />" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
-
-            var input = document.createElement("input");
-            $("#informationPanelBody"+divIndex).append(input);
            
 
 
@@ -458,20 +465,20 @@
                     for (var i = 0; i < subscriptionOverridesArray.length; i++)
                     {
                         subscriptionOverridesArray[i].style.visibility = "hidden";
-                        subscriptionOverridesArray[i].style.value = null;
+                        subscriptionOverridesArray[i].value = null;
                     }
                     referenceArray[0].style.visibility = "hidden";
-                    referenceArray[0].style.value = null;
+                    referenceArray[0].value = null;
 
                   
                     for (var i = 0; i < timestampArray.length; i++)
                     {
                         timestampArray[i].style.visibility = "hidden";
-                        timestampArray[i].style.value = null;
+                        timestampArray[i].value = null;
                     }
                     
                     remainingIntervalArray[0].style.visibility = "hidden";
-                    remainingIntervalArray[0].style.value = null;
+                    remainingIntervalArray[0].value = null;
 
 
      
@@ -669,28 +676,28 @@
             $("#overridePanelBody"+divIndex).append(input);
 
 
-            var label = document.createElement("p");
-            label.innerHTML = "Override Charge" + "<br />";
-            $("#subscriptionComponentDiv"+divIndex).append(label);
-            var input = document.createElement("input");
-            //input.id = "chargeOverride_" + returnedData[i].Id;
-            $("#subscriptionComponentDiv"+divIndex).append(input);
-            subscriptionOverridesArray[2] = input;
+            //var label = document.createElement("p");
+            //label.innerHTML = "Override Charge" + "<br />";
+            //$("#subscriptionComponentDiv"+divIndex).append(label);
+            //var input = document.createElement("input");
+            ////input.id = "chargeOverride_" + returnedData[i].Id;
+            //$("#subscriptionComponentDiv"+divIndex).append(input);
+            //subscriptionOverridesArray[2] = input;
 
-            $("#overridePanelBody"+divIndex).append(label);
-            $("#overridePanelBody"+divIndex).append(input);
+            //$("#overridePanelBody"+divIndex).append(label);
+            //$("#overridePanelBody"+divIndex).append(input);
 
 
-            var label = document.createElement("p");
-            label.innerHTML = "Override Setup" + "<br />";
-            $("#subscriptionComponentDiv"+divIndex).append(label);
-            var input = document.createElement("input");
-            //input.id = "setupOverride_" + returnedData[i].Id;
-            $("#subscriptionComponentDiv"+divIndex).append(input);
-            subscriptionOverridesArray[3] = input;
+            //var label = document.createElement("p");
+            //label.innerHTML = "Override Setup" + "<br />";
+            //$("#subscriptionComponentDiv"+divIndex).append(label);
+            //var input = document.createElement("input");
+            ////input.id = "setupOverride_" + returnedData[i].Id;
+            //$("#subscriptionComponentDiv"+divIndex).append(input);
+            //subscriptionOverridesArray[3] = input;
 
-            $("#overridePanelBody"+divIndex).append(label);
-            $("#overridePanelBody"+divIndex).append(input);
+            //$("#overridePanelBody"+divIndex).append(label);
+            //$("#overridePanelBody"+divIndex).append(input);
 
         }
 
@@ -780,7 +787,7 @@
         function showRemainingInterval(remainingInterval, divIndex)
         {
             var label = document.createElement("p");
-            label.innerHTML = " Remaining Interval" + "<br />";
+            label.innerHTML = "Remaining Interval" + "<br />";
             $("#subscriptionComponentDiv"+divIndex).append(label);
             var input = document.createElement("input");
             //RemainingInterval.id = "remainingInterval_" + returnedData[i].Id;
@@ -791,20 +798,31 @@
             $("#overridePanelBody"+divIndex).append(input);
         }
 
-        function showButtons(buttonsArray, subscriptionID, divIndex)
+        function showButtons(subscription,activateArray, provisionArray, buttonsArray, subscriptionID, divIndex)
         {
             //Buttons: update, cancel, delete, provision, and activate
-
-            buttonsArray[0] = createButton("Update", subscriptionID, onUpdateButton, 0, divIndex, "btn btn-info col-md-2");
-            buttonsArray[1] = createButton("Activate", subscriptionID, onActivateButton,1,divIndex, "btn btn-success col-md-2");
-            buttonsArray[2] = createButton("Provision", subscriptionID, onProvisionButton,2,divIndex, "btn btn-warning col-md-2");
-            buttonsArray[3] = createButton("Cancel", subscriptionID, onCancelButton,3,divIndex, "btn btn-default col-md-2");
-            buttonsArray[4] = createButton("Delete", subscriptionID, onDeleteButton,4,divIndex, "btn btn-danger col-md-2");
+            if (subscription.Status == "Cancelled") { /*do nothing, remove this if when refactoring*/ }
+            else if(subscription.Status == "Active") 
+            {
+                buttonsArray[0] = createButton(subscription, "Update", subscriptionID, onUpdateButton, 0, divIndex, "col-md-2 btn btn-info");
+                buttonsArray[3] = createButton(subscription, "Cancel", subscriptionID, onCancelButton,3,divIndex, "col-md-2 btn btn-default");
+            }
+            else if(subscription.Status == "Provisioning")
+            {
+                buttonsArray[0] = createButton("Update", subscriptionID, onUpdateButton, 0, divIndex, "col-md-2 btn btn-info");
+                buttonsArray[1] = createActivateOrProvisionButton(subscription, "Activate", activateArray, provisionArray, subscriptionID, onActivateButton,1,divIndex, "col-md-2", "btn btn-success");
+                buttonsArray[3] = createButton("Cancel", subscriptionID, onCancelButton,3,divIndex, "col-md-2 btn btn-default");
+            }
+            else if (subscription.Status == "Draft")
+            {
+                buttonsArray[0] = createButton(subscription, "Update", subscriptionID, onUpdateButton, 0, divIndex, "col-md-2 btn btn-info");
+                buttonsArray[1] = createActivateOrProvisionButton(subscription, "Activate", activateArray, provisionArray, subscriptionID, onActivateButton, 1,divIndex, "col-md-2","btn btn-success");
+                buttonsArray[2] = createActivateOrProvisionButton(subscription, "Provision, only if scheduled activation already set", activateArray, provisionArray, subscriptionID, onProvisionButton,2,divIndex, "col-md-2", "btn btn-warning");
+                buttonsArray[4] = createButton(subscription, "Delete", subscriptionID, onDeleteButton,4,divIndex, "col-md-2 btn btn-danger");
+            }
         }
 
         //=================== EVENT FUNCTIONS ======================//
-
-     
 
         function onDeleteButton(subID)
         {
@@ -812,16 +830,16 @@
             postAjax(subID, "Subscriptions/DeleteSubscription");
         }
 
-        function onProvisionButton(subID)
+        function onProvisionButton(subID, subscriptionProvisionInput)
         {
             alert("The provision button has been pressed. Id is " + subID);
-            postAjax(subID, "Subscriptions/ProvisionSubscription");
+            postProvisionOrActivateAjax(subID, subscriptionProvisionInput, "Subscriptions/ProvisionSubscription");
         }
 
-        function onActivateButton(subID)
+        function onActivateButton(subID, subscriptionActivateInput)
         {
             alert("The activation button has been pressed. Id is " + subID);
-            postAjax(subID, "Subscriptions/ActivateSubscription");
+            postProvisionOrActivateAjax(subID, subscriptionActivateInput, "Subscriptions/ActivateSubscription");
         }
 
         function onCancelButton(subID)
@@ -866,10 +884,15 @@
                 SubscriptionID : subID,
                 ProductQuantityOverrides : productQuantityOverridesValues,
                 ProductPriceOverrides : productPriceOverridesValues,
-                SubscriptionOverrides : subscriptionOverridesValues,
-                TimeStamps : timestampsValues,
-                Reference : subscriptionToUpdate["reference"].value,
-                RemainingInterval : subscriptionToUpdate["remainingInterval"].value
+                NameOverride: subscriptionOverridesValues[0],
+                DescriptionOverride: subscriptionOverridesValues[1],
+                //ChargeOverride: subscriptionOverridesValues[2],
+                //SetupOverride : subscriptionOverridesValues[3],
+                ContractStartTimestamp:  timestampsValues[0],
+                ContractEndTimestamp: timestampsValues[1],
+                ScheduledActivationTimestamp : timestampsValues[2],
+                Reference : subscriptionToUpdate["reference"][0].value,
+                RemainingInterval : subscriptionToUpdate["remainingInterval"][0].value
             };
 
             alert("onUpdateButton has been called");
@@ -891,22 +914,74 @@
 
         //Buttons: update, cancel, delete, provision, and activate
 
-        function createButton(innerHtml, subscriptionId, clickFunction, index, divIndex, classNames)
+        
+        function createActivateOrProvisionButton(subscription, innerHtml, activateArray, provisionArray, subscriptionId, clickFunction, index, divIndex, classSizeNames, classButtonNames)
+        {
+            var div = document.createElement("div");
+            div.className = classSizeNames;
+            $("#subscriptionComponentDiv"+divIndex).append(div);
+
+            var button = document.createElement("button");
+            button.innerHTML = innerHtml;
+            button.className = classButtonNames;
+            button.id = subscriptionId + "_" + index;
+            div.appendChild(button);
+
+
+            if (innerHtml == "Activate")
+            {
+                var day = document.createElement("input");
+                div.appendChild(day);
+                activateArray[0] = day;
+                var month = document.createElement("input");
+                div.appendChild(month);
+                activateArray[1] = month;
+
+                $("#"+button.id).on("click", function() {
+                    alert("The button was clicked");
+
+                    clickFunction(subscriptionId, activateArray);
+                });
+            }
+
+            if (innerHtml == "Provision, only if scheduled activation already set")
+            {
+                var day = document.createElement("input");
+                div.appendChild(day);
+                provisionArray[0] = day;
+                var month = document.createElement("input");
+                div.appendChild(month);
+                provisionArray[1] = month;
+
+                $("#"+button.id).on("click", function() {
+                    alert("The button was clicked");
+
+                    clickFunction(subscriptionId, provisionArray);
+                });
+            }
+
+
+
+
+            return button;
+        }
+
+        function createButton(subscription, innerHtml, subscriptionId, clickFunction, index, divIndex, classNames)
         {
             var button = document.createElement("button");
             button.innerHTML = innerHtml;
-            button.id = subscriptionId + "_" + index;
             button.className = classNames;
+            button.id = subscriptionId + "_" + index;
             $("#subscriptionComponentDiv"+divIndex).append(button);
-
 
 
             $("#"+button.id).on("click", function() {
                 alert("The button was clicked");
 
-                clickFunction(subscriptionId);
+             clickFunction(subscriptionId);
             });
 
+         
             return button;
         }
 
@@ -919,6 +994,28 @@
                 url: controllerUrl,
                 dataType: "json",
                 data: subscription,
+            });
+        }
+
+        function postProvisionOrActivateAjax(subID, subscriptionInputs, controllerUrl)
+        {
+            alert("called postProvisionOrActivateAjax function");
+            //make a list that conbtains the input values, and pass it to the controller
+            var subscriptionInputsValues = new Array(subscriptionInputs.length);
+            for (var i = 0; i < activateInputCount; i++)
+            {
+                subscriptionInputsValues[i] = subscriptionInputs[i].value;
+            }
+
+            var subscription = { SubscriptionID: subID,
+                InputValuesForActivationAndProvision : subscriptionInputsValues };
+
+            $.ajax({
+                type: "POST",
+                url: controllerUrl,
+                dataType: "json",
+                data: subscription,
+                traditional: true
             });
         }
 

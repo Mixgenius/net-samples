@@ -37,17 +37,14 @@
 
 </head>
 <body>
-    <div>
-
-
-
-    </div>
+  
     @*@foreach (var customer in Model.AvailableCustomers)*@
     @for (int i = 0; i < 3; i++)
     {
         <div class="panel panel-primary col-xs-12 col-md-4" onclick="loadSubscriptions()" @*onclick="loadSubscriptions(@customer.Id)"*@>
             <h3 class="panel-title panel-heading">Demo Customer</h3>
             <div class="panel-body">
+
                 <table class="table table-condensed ">
                     <tbody>
                         <tr>
@@ -238,23 +235,23 @@
             subscriptionArray["overrideButtons"] = new Array (subscription.SubscriptionProducts.length);
             subscriptionArray["subscriptionOverrides"] = new Array(subscriptionOverrideCount);
             subscriptionArray["reference"] = document.createElement("input");
-            subscriptionArray["timestamps"] = new Array();
+            subscriptionArray["timestamps"] = new Array(timestampCount);
             subscriptionArray["remainingInterval"] = document.createElement("input");
             subscriptionArray["buttons"] = new Array(buttonCount);
 
-            showSubscriptionText(subscription, divIndex);
-            showSubscriptionOverrides(subscriptionArray["subscriptionOverrides"], divIndex);
+            showSubscriptionText(subscription, subscriptionArray["subscriptionOverrides"], subscriptionArray["reference"], subscriptionArray["timestamps"], subscriptionArray["remainingInterval"], divIndex);
+            //showSubscriptionOverrides(subscriptionArray["subscriptionOverrides"], divIndex);
 
             showSubscriptionProducts(subscription.SubscriptionProducts, subscriptionArray["overrideButtons"], subscriptionArray["productQuantityOverrides"], subscriptionArray["productPriceOverrides"], divIndex);
-            showReference(subscriptionArray["reference"], divIndex);
-            showTimestamps(subscriptionArray["timestamps"], divIndex);
-            showRemainingInterval(subscriptionArray["remainingInterval"], divIndex);
+            //showReference(subscriptionArray["reference"], divIndex);
+            //showTimestamps(subscriptionArray["timestamps"], divIndex);
+            //showRemainingInterval(subscriptionArray["remainingInterval"], divIndex);
             showButtons(subscriptionArray["buttons"], subscriptionID, divIndex);
 
             subscriptionsArray[subscriptionID.toString()] = subscriptionArray;
         }
 
-        function showSubscriptionText(subscription, divIndex)
+        function showSubscriptionText(subscription, subscriptionOverridesArray, referenceArray, timestampArray, remainingIntervalArray, divIndex)
         {
             //each button has two rows. The top has titles: "Plan Name", "Status", and "Amount"
             //the bottom row display has the fields that corresponds to the titles
@@ -312,7 +309,7 @@
             }
 
             var divPanel = document.createElement("div");
-            divPanel.className = "panel panel-primary col-xs-12 col-md-6";
+            divPanel.className = "panel panel-primary col-xs-12 col-md-12";
 
             var h3PanelHeader = document.createElement("h3");
             h3PanelHeader.innerHTML = "Subscription Information";
@@ -328,24 +325,164 @@
             divPanel.appendChild(panelBody);
             $("#subscriptionComponentDiv"+divIndex).append(divPanel);
 
+            //========================================================
+            //=============== SHOWING TEXT AND OVERRIDES =============
+            //========================================================
+
+            var subscriptionOverrideButton = document.createElement("button");
+            subscriptionOverrideButton.innerHTML = "Add subscription overrides";
+
+            subscriptionOverrideButton.className = "btn btn-success";
+            subscriptionOverrideButton.style.float = "right";
+            subscriptionOverrideButton.style.display = "inline";
+            $("#informationPanelBody"+divIndex).append(subscriptionOverrideButton);
+
+         
+
             var paragraph = document.createElement("p");
-            // paragraph.className = "clearfix";
-            paragraph.innerHTML = "<strong>Subscription ID</strong> " + subscription.Id + "<br />" +
-                "<strong>Subscription Description</strong> " + subscription.PlanDescription + "<br />" +
-                "<strong>Subscription Reference</strong> " + subscription.PlanReference + "<br />" +
-                "<strong>Subscription Override</strong> " + subscription.SubsciptionOverride + "<br />" +
-
-                "<strong>Subscription Created Date</strong> " +  subscription.Created + "<br />" +
-                "<strong>Subscription Starttime</strong> " + subscription.ContractStartTimestamp + "<br />" +
-                "<strong>Subscription Endtime</strong> " + subscription.ContractEndTimestamp + "<br />" +
-                "<strong>Subscription Scheduled Activation</strong> " + subscription.ScheduledActivationTimestamp + "<br />" +
-                "<strong>Subscription Remaining Interval</strong> " + subscription.RemainingInterval + "<br />";
-
-
+            paragraph.innerHTML = "<strong>Subscription Name</strong> " + subscription.PlanName + "<br />" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var input = document.createElement("input");
+            $("#informationPanelBody"+divIndex).append(input);
+            subscriptionOverridesArray[0] = input;
+
+            
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription Description : </strong> " + subscription.PlanDescription + "<br />" ;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var input = document.createElement("input");
+            $("#informationPanelBody"+divIndex).append(input);
+            subscriptionOverridesArray[1] = input;
+
+
+            
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription Reference : </strong> " + subscription.PlanReference + "<br />" ;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var input = document.createElement("input");
+            $("#informationPanelBody"+divIndex).append(input);
+            referenceArray[0] = input;
+
+
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription Amount : </strong> " + subscription.Amount + "<br />" ;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var input = document.createElement("input");
+            $("#informationPanelBody"+divIndex).append(input);
+            subscriptionOverridesArray[2] = input;
+
+
+
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription Override : </strong> " + subscription.SubscriptionOverride + "<br />" ;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var input = document.createElement("input");
+            $("#informationPanelBody"+divIndex).append(input);
+            subscriptionOverridesArray[3] = input;
+
+
+
+            
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription Creation Date : </strong> " + subscription.Created + "<br />" ;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var input = document.createElement("input");
+            $("#informationPanelBody"+divIndex).append(input);
+           
+
+
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription Start Date : </strong> " + subscription.ContractStartTimestamp + "<br />" ;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var input = document.createElement("input");
+            $("#informationPanelBody"+divIndex).append(input);
+            timestampArray[0] = input;
+
+
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription End Date : </strong> " + subscription.ContractEndTimestamp + "<br />" ;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var input = document.createElement("input");
+            $("#informationPanelBody"+divIndex).append(input);
+            timestampArray[1] = input;
+
+
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription Scheduled Activation Date : </strong> " + subscription.ScheduledActivationTimestamp + "<br />" ;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var input = document.createElement("input");
+            $("#informationPanelBody"+divIndex).append(input);
+            timestampArray[2] = input;
+
+
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription Remaining Interval : </strong> " + subscription.RemainingInterval + "<br />" ;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var input = document.createElement("input");
+            $("#informationPanelBody"+divIndex).append(input);
+            remainingIntervalArray[0] = input;
+
+
+            subscriptionOverrideButton.onclick = function() {
+                if (this.innerHTML == "Add subscription overrides")
+                {
+                    //if we add overrides, let all override inputs be visible
+                    for (var i = 0; i < subscriptionOverridesArray.length; i++)
+                    {
+                        subscriptionOverridesArray[i].style.visibility = "visible";
+                    }
+                    referenceArray[0].style.visibility = "visible";
+
+                    for (var i = 0; i < timestampArray.length; i++)
+                    {
+                        timestampArray[i].style.visibility = "visible";
+                    }
+                    
+                    remainingIntervalArray[0].style.visibility = "visible";
+
+                    this.innerHTML = "Remove subscription overrides";
+                    this.style.backgroundColor = "red";
+                }
+                else
+                {
+                    for (var i = 0; i < subscriptionOverridesArray.length; i++)
+                    {
+                        subscriptionOverridesArray[i].style.visibility = "hidden";
+                        subscriptionOverridesArray[i].style.value = null;
+                    }
+                    referenceArray[0].style.visibility = "hidden";
+                    referenceArray[0].style.value = null;
+
+                  
+                    for (var i = 0; i < timestampArray.length; i++)
+                    {
+                        timestampArray[i].style.visibility = "hidden";
+                        timestampArray[i].style.value = null;
+                    }
+                    
+                    remainingIntervalArray[0].style.visibility = "hidden";
+                    remainingIntervalArray[0].style.value = null;
+
+
+     
+                    this.innerHTML = "Add subscription overrides";
+                    this.style.backgroundColor = "green";
+                }
+            };
+
         }
 
-        function showSubscriptionProducts(subscriptionProducts, overrideButtonsArray, productQuantityOverridesArray, productPriceOverridesArray, divIndex)
+        function showSubscriptionProducts(subscriptionProducts, overrideProductsButtonsArray, productQuantityOverridesArray, productPriceOverridesArray, divIndex)
         {
             var divPanel = document.createElement("div");
             divPanel.className = "panel panel-primary col-xs-12";
@@ -367,12 +504,12 @@
             for (var i = 0; i < subscriptionProducts.length; i++)
             {
                 nameAndOverrideButtonDiv = showSubscriptionProductName(subscriptionProducts[i].PlanProduct, divIndex);
-                createOverrideButton(overrideButtonsArray, i, divIndex, nameAndOverrideButtonDiv);
+                createOverrideButton(overrideProductsButtonsArray, i, divIndex, nameAndOverrideButtonDiv);
                 showSubscriptionProductQuantityAndOverride(subscriptionProducts[i].PlanProduct, productQuantityOverridesArray, i, divIndex);
                 showSubscriptionProductPriceAndOverride(subscriptionProducts[i].PlanProduct, productPriceOverridesArray, i, divIndex);
 
                 //we set the onclick event to the override button here instead of in  createOverrideButton(...) because the inputs are now created
-                setOverrideButton(overrideButtonsArray, productQuantityOverridesArray, productPriceOverridesArray, i);
+                setOverrideButton(overrideProductsButtonsArray, productQuantityOverridesArray, productPriceOverridesArray, i);
             }
         }
 
@@ -385,7 +522,8 @@
             var paragraph = document.createElement("p");
             paragraph.innerHTML =
                 "<strong>Subscription Product Name : </strong>"  + subscriptionPlanProduct.ProductName;
-            paragraph.style.display = "inline";
+            paragraph.style.textAlign = "right";
+            paragraph.className = "col-md-7";
 
             div.appendChild(paragraph);
 
@@ -394,14 +532,15 @@
             return div;
         }
 
-        function createOverrideButton(overrideButtonsArray, i, divIndex, nameAndOverrideButtonDiv)
+        function createOverrideButton(overrideProductsButtonsArray, i, divIndex, nameAndOverrideButtonDiv)
         {
             var overrideButton = document.createElement("button");
-            overrideButton.innerHTML = "Add overrides";
+            overrideButton.innerHTML = "Add product overrides";
             overrideButton.className = "btn btn-success";
+            overrideButton.style.float = "right";
             overrideButton.style.display = "inline";
 
-            overrideButtonsArray[i] = overrideButton;
+            overrideProductsButtonsArray[i] = overrideButton;
 
             nameAndOverrideButtonDiv.appendChild(overrideButton);
         }
@@ -413,10 +552,13 @@
 
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Quantity: </strong>"  + subscriptionPlanProduct.Quantity;
+            paragraph.style.textAlign = "right"; 
             paragraph.style.display = "inline";
-            paragraph.className = "col-md-12";
+            paragraph.className = "col-md-6";
+
             var input = document.createElement("input");
             input.placeholder = "Add Quantity Override";
+            input.className = "col-md-2";
             input.style.visibility = "hidden";
 
             div.appendChild(paragraph);
@@ -436,11 +578,13 @@
 
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Price: </strong>"  + subscriptionPlanProduct.Price;
+            paragraph.style.textAlign = "right"; 
             paragraph.style.display = "inline";
-            paragraph.className = "col-md-12";
+            paragraph.className = "col-md-6";
 
             var input = document.createElement("input");
             input.placeholder = "Add Price Override";
+            input.className = "col-md-2";
             input.style.visibility = "hidden";
 
 
@@ -455,14 +599,14 @@
             productPriceOverridesArray[index] = input;
         }
 
-        function setOverrideButton(overrideButtonsArray, productQuantityOverridesArray, productPriceOverridesArray, i)
+        function setOverrideButton(overrideProductsButtonsArray, productQuantityOverridesArray, productPriceOverridesArray, i)
         {
-            overrideButtonsArray[i].onclick = function() {
-                if (this.innerHTML == "Add overrides")
+            overrideProductsButtonsArray[i].onclick = function() {
+                if (this.innerHTML == "Add product overrides")
                 {
                     productQuantityOverridesArray[i].style.visibility = "visible";
                     productPriceOverridesArray[i].style.visibility = "visible";
-                    this.innerHTML = "Remove overrides";
+                    this.innerHTML = "Remove product overrides";
                     this.style.backgroundColor = "red";
                 }
                 else
@@ -471,7 +615,7 @@
                     productQuantityOverridesArray[i].style.visibility = "hidden";
                     productPriceOverridesArray[i].value = null;
                     productPriceOverridesArray[i].style.visibility = "hidden";
-                    this.innerHTML = "Add overrides";
+                    this.innerHTML = "Add product overrides";
                     this.style.backgroundColor = "green";
                 }
 

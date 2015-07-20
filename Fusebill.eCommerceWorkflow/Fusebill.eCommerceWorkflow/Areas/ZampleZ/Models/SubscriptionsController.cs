@@ -161,8 +161,6 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
                      };
                 }
            
-
-
                 ////Editing a non-mandatory plan product to be included
                 // var inclusion = session.AvailableProducts[i].IsIncluded;
                 // subscription.SubscriptionProducts[i].IsIncluded = inclusion;
@@ -196,20 +194,37 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
 
 
-            ////Editing the reference
-            //subscription.Reference = postSubscriptionVM.Reference;
+              //Editing the reference
+            if (!String.IsNullOrEmpty(postSubscriptionVM.Reference))
+            {
+                subscription.Reference = postSubscriptionVM.Reference;
+            }
 
-            ////Editing Contract Start and End Dates
+            //Editing Contract Start and End Dates
+            if (!String.IsNullOrEmpty(postSubscriptionVM.ContractStartTimestamp))
+            {
+                subscription.ContractStartTimestamp = DateTime.Parse(postSubscriptionVM.ContractStartTimestamp);
 
-            //subscription.ContractStartTimestamp = postSubscriptionVM.ContractStartTimestamp;
-            //subscription.ContractEndTimestamp = postSubscriptionVM.ContractEndTimestamp;
+            }
 
-            ////Editing the Scheduled Activation Date
+            if (!String.IsNullOrEmpty(postSubscriptionVM.ContractEndTimestamp))
+            {
+                subscription.ContractEndTimestamp = DateTime.Parse(postSubscriptionVM.ContractEndTimestamp);
+            }
+  
 
-            ////subscription.ScheduledActivationTimestamp = postSubscriptionVM.ScheduledActivationTimestamp;
+            //Editing the Scheduled Activation Date
+            if (!String.IsNullOrEmpty(postSubscriptionVM.ScheduledActivationTimestamp))
+            {
+                subscription.ScheduledActivationTimestamp = DateTime.Parse(postSubscriptionVM.ScheduledActivationTimestamp);
+            }
 
-            ////Editing the expiration period NOTE: Typo : "This can SET BY submitting..."
-            //subscription.RemainingInterval = postSubscriptionVM.RemainingInterval; //setting the RemainingInterval property to 0 will result in an initial charge and then an immediate expiry of the subscription following activation.
+
+            //Editing the expiration period NOTE: Typo : "This can SET BY submitting..."
+            if (!String.IsNullOrEmpty(postSubscriptionVM.RemainingInterval))
+            {
+            subscription.RemainingInterval = Convert.ToInt32(postSubscriptionVM.RemainingInterval); //setting the RemainingInterval property to 0 will result in an initial charge and then an immediate expiry of the subscription following activation.
+            }
 
 
             Automapping.SetupSubscriptionGetToPutMapping();

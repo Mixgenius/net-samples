@@ -16,10 +16,10 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models
         public string SetupOverride { get; set; }
 
         public string Reference { get; set; }
-        public DateTime ContractStartTimestamp { get; set; }
-        public DateTime ContractEndTimestamp { get; set; }
+        public string ContractStartTimestamp { get; set; }
+        public string ContractEndTimestamp { get; set; }
 
-        public DateTime ScheduledActivationTimestamp { get; set; }
+        public string ScheduledActivationTimestamp { get; set; }
 
         public string RemainingInterval { get; set; }
 

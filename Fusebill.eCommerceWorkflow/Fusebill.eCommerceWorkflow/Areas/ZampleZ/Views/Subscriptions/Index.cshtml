@@ -18,7 +18,7 @@
     @*To make dropdown*@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
+    
     @*To make datepicker*@
     <script src="~/Scripts/jquery-1.8.2.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
@@ -27,7 +27,7 @@
     <link href="~/Scripts/jquery-ui.theme.min.css" rel="stylesheet" />
 
     <script src="~/Scripts/bootstrap.min.js"></script>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
 
     <script>
         $(document).ready(function() {
@@ -37,7 +37,7 @@
 
 </head>
 <body>
-  
+
     @foreach (var customer in Model.AvailableCustomers)
     {
         <div class="panel panel-primary col-xs-12 col-md-4" onclick="loadSubscriptions(@customer.Id)">
@@ -76,7 +76,7 @@
 
     @*<button type="button" onclick="reverseCharge(4612017)">Reverse charge for Sevice 7 of Demo Customer 2</button>*@
 
-    </div>
+  
     <div id="divItems">
 
     </div>
@@ -98,7 +98,7 @@
 
         //number of timestamps that exist
         var timestampCount = 3;
-        var subscriptionOverrideCount = 4;
+        var subscriptionOverrideCount = 2;
         var buttonCount = 5;
         var activateInputCount = 2;
         var provisionInputCount = 2;
@@ -118,6 +118,60 @@
 
         function addSubscription(customerID, planFrequencyID)
         {
+            //alert("addSUbscription was called");
+            //var addSubscriptionInputsArray = new Array();
+
+            //var paragraph = document.createElement("p");
+            //paragraph.innerHTML = "<strong>Subscription Override Name: </strong>" ;
+            //$("#divItems").append(paragraph);
+
+            //var input = document.createElement("input");
+            //$("#divItems").append(input);
+            //addSubscriptionInputsArray[0] = input;
+
+
+            //var paragraph = document.createElement("p");
+            //paragraph.innerHTML = "<strong>Subscription Override Description : </strong>" ;
+            //$("#divItems").append(paragraph);
+
+            //var input = document.createElement("input");
+            //$("#divItems").append(input);
+            //addSubscriptionInputsArray[1] = input;
+
+            
+            //var paragraph = document.createElement("p");
+            //paragraph.innerHTML = "<strong>Subscription Reference: </strong>" ;
+            //$("#divItems").append(paragraph);
+
+            //var input = document.createElement("input");
+            //$("#divItems").append(input);
+            //addSubscriptionInputsArray[2] = input;
+
+
+            //var paragraph = document.createElement("p");
+            //paragraph.innerHTML = "<strong>Subscription Remaining Override : </strong>" ;
+            //$("#divItems").append(paragraph);
+
+            //var input = document.createElement("input");
+            //$("#divItems").append(input);
+            //addSubscriptionInputsArray[3] = input;
+
+
+            //var paragraph = document.createElement("p");
+            //paragraph.innerHTML = "<strong>Subscription Scheduled Activation TimeStamp : </strong>" ;
+            //$("#divItems").append(paragraph);
+
+            //var input = document.createElement("input");
+            //$("#divItems").append(input);
+            //addSubscriptionInputsArray[4] = input;
+
+            //var button = document.createElement("button");
+            //overrideButton.innerHTML = "Add subscription";
+            //overrideButton.className = "btn btn-success";
+            //overrideButton.style.float = "right";
+            //overrideButton.style.display = "inline";
+
+
             var subscription = { CustomerID: customerID ,
                 PlanFrequencyID: planFrequencyID };
 
@@ -128,6 +182,11 @@
                 data: subscription,
                 success: function () {
                     alert("Added a subscription to customer");
+                    var div = document.getElementById("divItems");
+                    while (div.firstChild) {
+                        div.removeChild(div.firstChild);
+                    }
+                    alert("Finished while loop");
                 },
                 //error: alert("Darn!")
             });
@@ -169,13 +228,8 @@
 
 
         function loadSubscriptions(id)
-  
         {
-
-            alert("loadSUbscriptions() called");
-
             var customer = { CustomerID: id};
-            
 
             $.ajax({
                 type: "POST",
@@ -184,22 +238,27 @@
                 data: customer,
                 success: function (data) {
                     alert("Successfully returned");
-                    returnedData = data;
-                    showAllSubscriptions(returnedData)
+                    var div = document.getElementById("divItems");
+                    //refresh the divItems, which stores the subscription informations
+                    while (div.firstChild) {
+                        div.removeChild(div.firstChild);
+                    }
 
+                    returnedData = data;
+                    showAllSubscriptions(returnedData, id)
                 },
-                //error: alert("Darn!")
             });
         }
 
-
-
-
-
-        function showAllSubscriptions(returnedData){
+        function showAllSubscriptions(returnedData, customerID){
             //each subscription is called displayed
-           
-                for (var i = 0; i < returnedData.length; i++)
+
+            var paragraph = document.createElement("p");
+            paragraph.className = "jumbotron";
+            paragraph.innerHTML = "Subscriptions for " + customerID;
+            $("#divItems").append(paragraph)
+
+            for (var i = 0; i < returnedData.length; i++)
             {
                 //main div, inside is a button, which commands another div
                 var subscriptionDiv = document.createElement("div");
@@ -244,7 +303,7 @@
             showSubscriptionText(subscription, subscriptionArray["subscriptionOverrides"], subscriptionArray["reference"], subscriptionArray["timestamps"], subscriptionArray["remainingInterval"], divIndex);
             //showSubscriptionOverrides(subscriptionArray["subscriptionOverrides"], divIndex);
 
-            showSubscriptionProducts(subscription.SubscriptionProducts, subscriptionArray["overrideButtons"], subscriptionArray["productQuantityOverrides"], subscriptionArray["productPriceOverrides"], divIndex);
+            showSubscriptionProducts(subscription, subscription.SubscriptionProducts, subscriptionArray["overrideButtons"], subscriptionArray["productQuantityOverrides"], subscriptionArray["productPriceOverrides"], divIndex);
             //showReference(subscriptionArray["reference"], divIndex);
             //showTimestamps(subscriptionArray["timestamps"], divIndex);
             //showRemainingInterval(subscriptionArray["remainingInterval"], divIndex);
@@ -306,7 +365,7 @@
             }
             else if (subscription.Status == "Cancelled")
             {
-                
+
             }
             else if(subscription.Status == "Draft")
             {
@@ -339,157 +398,225 @@
             //=============== SHOWING TEXT AND OVERRIDES =============
             //========================================================
 
-            var subscriptionOverrideButton = document.createElement("button");
-            subscriptionOverrideButton.innerHTML = "Add subscription overrides";
+            if (subscription.Status != "Cancelled")
+            {
+                var subscriptionOverrideButton = document.createElement("button");
+                subscriptionOverrideButton.innerHTML = "Add subscription overrides";
 
-            subscriptionOverrideButton.className = "btn btn-success";
-            subscriptionOverrideButton.style.float = "right";
-            subscriptionOverrideButton.style.display = "inline";
-            $("#informationPanelBody"+divIndex).append(subscriptionOverrideButton);
+                subscriptionOverrideButton.className = "btn btn-success";
+                subscriptionOverrideButton.style.float = "right";
+                subscriptionOverrideButton.style.display = "inline";
+                $("#informationPanelBody"+divIndex).append(subscriptionOverrideButton);
+            }
 
-         
 
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Subscription Name</strong> " + subscription.PlanName + "<br />" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
 
-            var input = document.createElement("input");
-            $("#informationPanelBody"+divIndex).append(input);
-            subscriptionOverridesArray[0] = input;
+            //if ( typeof subscription.SubscriptionOverride === null ||typeof subscription.SubscriptionOverride == 'null'  )
+            //{
+            //    alert("subscription.subscriptionOverride is null");
+            //    var paragraph = document.createElement("p");
+            //    paragraph.innerHTML = "<strong>Subscription Override Name</strong>" + subscription.SubscriptionOverride.Name + "<br />" ;
+            //    $("#informationPanelBody"+divIndex).append(paragraph);
+            //}
 
-            
+            if (subscription.Status != "Cancelled")
+            {
+                var input = document.createElement("input");
+                $("#informationPanelBody"+divIndex).append(input);
+                subscriptionOverridesArray[0] = input;
+            }
+
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Subscription Description : </strong> " + subscription.PlanDescription + "<br />" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
 
-            var input = document.createElement("input");
-            $("#informationPanelBody"+divIndex).append(input);
-            subscriptionOverridesArray[1] = input;
+            //if (typeof subscription.SubscriptionOverride == 'undefined')
+            //{
+            //    alert("subscription.subscriptionOverride is not null");
+            //    //var paragraph = document.createElement("p");
+            //    //paragraph.innerHTML = "<strong>Subscription Override Description : </strong> " + subscription.SubscriptionOverride.Description + "<br />" ;
+            //    //$("#informationPanelBody"+divIndex).append(paragraph);
+            //}
 
+            if (subscription.Status != "Cancelled")
+            {
+                var input = document.createElement("input");
+                $("#informationPanelBody"+divIndex).append(input);
+                subscriptionOverridesArray[1] = input;
+            }
 
-            
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Subscription Reference : </strong> " + subscription.PlanReference + "<br />" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
 
-            var input = document.createElement("input");
-            $("#informationPanelBody"+divIndex).append(input);
-            referenceArray[0] = input;
-
-
-            var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription Charge Amount : </strong> " + subscription.Amount + "<br />" ;
-            $("#informationPanelBody"+divIndex).append(paragraph);
-
-            var input = document.createElement("input");
-            $("#informationPanelBody"+divIndex).append(input);
-            subscriptionOverridesArray[2] = input;
-
-
-            if (typeof subscription.PlanFrequency.SetupFees[0] !== "undefined")
+            if (subscription.Status != "Cancelled")
             {
-                var paragraph = document.createElement("p");
-                paragraph.innerHTML = "<strong>Subscription Setup: </strong>" + subscription.PlanFrequency.SetupFees[0].Amount + "<br />" ;
-                $("#informationPanelBody"+divIndex).append(paragraph);
-
                 var input = document.createElement("input");
                 $("#informationPanelBody"+divIndex).append(input);
-                subscriptionOverridesArray[3] = input;
+                referenceArray[0] = input;
             }
 
-     
+            //var paragraph = document.createElement("p");
+            //paragraph.innerHTML = "<strong>Subscription Charge Amount : </strong> " + subscription.Amount + "<br />" ;
+            //$("#informationPanelBody"+divIndex).append(paragraph);
+
+            //var input = document.createElement("input");
+            //$("#informationPanelBody"+divIndex).append(input);
+            //subscriptionOverridesArray[2] = input;
+
+
+            //if (typeof subscription.PlanFrequency.SetupFees[0] !== "undefined")
+            //{
+            //    var paragraph = document.createElement("p");
+            //    paragraph.innerHTML = "<strong>Subscription Setup: </strong>" + subscription.PlanFrequency.SetupFees[0].Amount + "<br />" ;
+            //    $("#informationPanelBody"+divIndex).append(paragraph);
+
+            //    var input = document.createElement("input");
+            //    $("#informationPanelBody"+divIndex).append(input);
+            //    subscriptionOverridesArray[3] = input;
+            //}
+
+
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Subscription Creation Date : </strong> " + subscription.Created + "<br />" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
-           
+
 
 
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Subscription Start Date : </strong> " + subscription.ContractStartTimestamp + "<br />" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
 
-            var input = document.createElement("input");
-            $("#informationPanelBody"+divIndex).append(input);
-            timestampArray[0] = input;
+            if (subscription.Status != "Cancelled")
+            {
+                var inputStart = document.createElement("input");
+                inputStart.id = "usingDatepickerStart" + divIndex;
+                timestampArray[0] = inputStart;
+                $("#informationPanelBody"+divIndex).append(inputStart);
+            }
 
 
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Subscription End Date : </strong> " + subscription.ContractEndTimestamp + "<br />" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
 
-            var input = document.createElement("input");
-            $("#informationPanelBody"+divIndex).append(input);
-            timestampArray[1] = input;
 
+            if (subscription.Status != "Cancelled")
+            {
+                var inputEnd = document.createElement("input");
+                inputEnd.id = "usingDatepickerEnd" + divIndex;
+                timestampArray[1] = inputEnd;
+                $("#informationPanelBody"+divIndex).append(inputEnd);
+            }
+         
+            if (subscription.Status != "Active" && subscription.Status != "Cancelled")
+            {
+                var paragraph = document.createElement("p");
+                paragraph.innerHTML = "<strong>Subscription Scheduled Activation Date : </strong> " + subscription.ScheduledActivationTimestamp + "<br />" ;
+                $("#informationPanelBody"+divIndex).append(paragraph);
 
-            var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription Scheduled Activation Date : </strong> " + subscription.ScheduledActivationTimestamp + "<br />" ;
-            $("#informationPanelBody"+divIndex).append(paragraph);
-
-            var input = document.createElement("input");
-            $("#informationPanelBody"+divIndex).append(input);
-            timestampArray[2] = input;
-
+                var inputScheduled = document.createElement("input");
+                inputScheduled.id = "usingDatepickerScheduled" + divIndex;
+                timestampArray[2] = inputScheduled;
+                $("#informationPanelBody"+divIndex).append(inputScheduled);
+            }
+            
 
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Subscription Remaining Interval : </strong> " + subscription.RemainingInterval + "<br />" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
 
-            var input = document.createElement("input");
-            $("#informationPanelBody"+divIndex).append(input);
-            remainingIntervalArray[0] = input;
+            if (subscription.Status != "Cancelled")
+            {
+                var input = document.createElement("input");
+                $("#informationPanelBody"+divIndex).append(input);
+                remainingIntervalArray[0] = input;
+            }
 
 
-            subscriptionOverrideButton.onclick = function() {
-                if (this.innerHTML == "Add subscription overrides")
-                {
-                    //if we add overrides, let all override inputs be visible
-                    for (var i = 0; i < subscriptionOverridesArray.length; i++)
-                    {
-                        subscriptionOverridesArray[i].style.visibility = "visible";
-                    }
-                    referenceArray[0].style.visibility = "visible";
-
-                    for (var i = 0; i < timestampArray.length; i++)
-                    {
-                        timestampArray[i].style.visibility = "visible";
-                    }
-                    
-                    remainingIntervalArray[0].style.visibility = "visible";
-
-                    this.innerHTML = "Remove subscription overrides";
-                    this.style.backgroundColor = "red";
+            $("#usingDatepickerStart"+ divIndex).datepicker({
+                minDate : 0,
+                onClose: function( selectedDate ) {
+                    $( "#usingDatepickerEnd" + divIndex).datepicker( "option", "minDate", selectedDate );
+                    $( "#usingDatepickerScheduled" + divIndex).datepicker( "option", "minDate", selectedDate );
                 }
-                else
-                {
-                    for (var i = 0; i < subscriptionOverridesArray.length; i++)
-                    {
-                        subscriptionOverridesArray[i].style.visibility = "hidden";
-                        subscriptionOverridesArray[i].value = null;
-                    }
-                    referenceArray[0].style.visibility = "hidden";
-                    referenceArray[0].value = null;
+            });
 
-                  
-                    for (var i = 0; i < timestampArray.length; i++)
-                    {
-                        timestampArray[i].style.visibility = "hidden";
-                        timestampArray[i].value = null;
-                    }
-                    
-                    remainingIntervalArray[0].style.visibility = "hidden";
-                    remainingIntervalArray[0].value = null;
+            $("#usingDatepickerEnd"+ divIndex).datepicker({
+                onClose: function( selectedDate ) {
+                    $( "#usingDatepickerStart" + divIndex).datepicker( "option", "maxDate", selectedDate );
+                    $( "#usingDatepickerScheduled" + divIndex).datepicker( "option", "maxDate", selectedDate );
 
-
-     
-                    this.innerHTML = "Add subscription overrides";
-                    this.style.backgroundColor = "green";
                 }
-            };
+            });
 
+
+            $("#usingDatepickerScheduled" + divIndex).datepicker({
+                onClose: function( selectedDate ) {
+                    $( "#usingDatepickerStart" + divIndex).datepicker( "option", "maxDate", selectedDate );
+                    $( "#usingDatepickerEnd" + divIndex).datepicker( "option", "minDate", selectedDate );
+                }
+            });
+
+            if (subscription.Status != "Cancelled")
+            {
+
+                subscriptionOverrideButton.onclick = function() {
+                    if (this.innerHTML == "Add subscription overrides")
+                    {
+                        //if we add overrides, let all override inputs be visible
+                        for (var i = 0; i < subscriptionOverridesArray.length; i++)
+                        {
+                            subscriptionOverridesArray[i].style.visibility = "visible";
+                        }
+
+
+                        referenceArray[0].style.visibility = "visible";
+
+                        for (var i = 0; i < timestampArray.length; i++)
+                        {
+                            timestampArray[i].style.visibility = "visible";
+                        }
+
+                        remainingIntervalArray[0].style.visibility = "visible";
+
+                        this.innerHTML = "Remove subscription overrides";
+                        this.style.backgroundColor = "red";
+                    }
+                    else
+                    {
+                        for (var i = 0; i < subscriptionOverridesArray.length; i++)
+                        {
+                            subscriptionOverridesArray[i].style.visibility = "hidden";
+                            subscriptionOverridesArray[i].value = null;
+                        }
+                        referenceArray[0].style.visibility = "hidden";
+                        referenceArray[0].value = null;
+
+
+                        for (var i = 0; i < timestampArray.length; i++)
+                        {
+                            timestampArray[i].style.visibility = "hidden";
+                            timestampArray[i].value = null;
+                        }
+
+                        remainingIntervalArray[0].style.visibility = "hidden";
+                        remainingIntervalArray[0].value = null;
+
+
+
+                        this.innerHTML = "Add subscription overrides";
+                        this.style.backgroundColor = "green";
+                    }
+                };
+
+            }
         }
 
-        function showSubscriptionProducts(subscriptionProducts, overrideProductsButtonsArray, productQuantityOverridesArray, productPriceOverridesArray, divIndex)
+        function showSubscriptionProducts(subscription, subscriptionProducts, overrideProductsButtonsArray, productQuantityOverridesArray, productPriceOverridesArray, divIndex)
         {
             var divPanel = document.createElement("div");
             divPanel.className = "panel panel-primary col-xs-12";
@@ -511,12 +638,18 @@
             for (var i = 0; i < subscriptionProducts.length; i++)
             {
                 nameAndOverrideButtonDiv = showSubscriptionProductName(subscriptionProducts[i].PlanProduct, divIndex);
-                createOverrideButton(overrideProductsButtonsArray, i, divIndex, nameAndOverrideButtonDiv);
+                if (subscription.Status != "Cancelled")
+                {
+                    createOverrideButton(overrideProductsButtonsArray, i, divIndex, nameAndOverrideButtonDiv);
+                }
                 showSubscriptionProductQuantityAndOverride(subscriptionProducts[i].PlanProduct, productQuantityOverridesArray, i, divIndex);
                 showSubscriptionProductPriceAndOverride(subscriptionProducts[i].PlanProduct, productPriceOverridesArray, i, divIndex);
 
+                if (subscription.Status != "Cancelled")
+                {
                 //we set the onclick event to the override button here instead of in  createOverrideButton(...) because the inputs are now created
                 setOverrideButton(overrideProductsButtonsArray, productQuantityOverridesArray, productPriceOverridesArray, i);
+                } 
             }
         }
 
@@ -559,7 +692,7 @@
 
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Quantity: </strong>"  + subscriptionPlanProduct.Quantity;
-            paragraph.style.textAlign = "right"; 
+            paragraph.style.textAlign = "right";
             paragraph.style.display = "inline";
             paragraph.className = "col-md-6";
 
@@ -585,7 +718,7 @@
 
             var paragraph = document.createElement("p");
             paragraph.innerHTML = "<strong>Price: </strong>"  + subscriptionPlanProduct.Price;
-            paragraph.style.textAlign = "right"; 
+            paragraph.style.textAlign = "right";
             paragraph.style.display = "inline";
             paragraph.className = "col-md-6";
 
@@ -655,26 +788,34 @@
             var label = document.createElement("p");
             label.innerHTML = "Override Name"  + "<br />";
             $("#subscriptionComponentDiv"+divIndex).append(label);
-            var input = document.createElement("input");
-            //input.id = "nameOverride_" + returnedData[i].Id;
-            $("#subscriptionComponentDiv"+divIndex).append(input);
-            subscriptionOverridesArray[0] = input;
-
             $("#overridePanelBody"+divIndex).append(label);
-            $("#overridePanelBody"+divIndex).append(input);
+
+
+            if (subscription.Status != "Cancelled")
+            {
+                var input = document.createElement("input");
+                //input.id = "nameOverride_" + returnedData[i].Id;
+                $("#subscriptionComponentDiv"+divIndex).append(input);
+                subscriptionOverridesArray[0] = input;
+                $("#overridePanelBody"+divIndex).append(input);
+            }
+     
 
 
             var label = document.createElement("p");
             label.innerHTML = "Override Description" + "<br />";
             $("#subscriptionComponentDiv"+divIndex).append(label);
             var input = document.createElement("input");
-            //input.id = "descriptionOverride_" + returnedData[i].Id;
-            $("#subscriptionComponentDiv"+divIndex).append(input);
-            subscriptionOverridesArray[1] = input;
-
             $("#overridePanelBody"+divIndex).append(label);
-            $("#overridePanelBody"+divIndex).append(input);
 
+            if (subscription.Status != "Cancelled")
+            {
+                //input.id = "descriptionOverride_" + returnedData[i].Id;
+                $("#subscriptionComponentDiv"+divIndex).append(input);
+                subscriptionOverridesArray[1] = input;
+
+                $("#overridePanelBody"+divIndex).append(input);
+            }
 
             //var label = document.createElement("p");
             //label.innerHTML = "Override Charge" + "<br />";
@@ -800,9 +941,30 @@
 
         function showButtons(subscription,activateArray, provisionArray, buttonsArray, subscriptionID, divIndex)
         {
+            if (subscription.Status != "Cancelled")     
+            { 
+
+                var divPanel = document.createElement("div");
+                divPanel.className = "panel panel-primary col-xs-12";
+
+                var h3PanelHeader = document.createElement("h3");
+                h3PanelHeader.innerHTML = "Subscription Actions";
+                h3PanelHeader.className  = "panel-title panel-heading";
+
+                var panelBody = document.createElement("div");
+                panelBody.className = "panel-body";
+                panelBody.id = "actionPanelBody" + divIndex;
+                //panelBody.appendChild(document.createTextNode("oswijfoiswejfoseijf"));
+
+
+                divPanel.appendChild(h3PanelHeader);
+                divPanel.appendChild(panelBody);
+                $("#subscriptionComponentDiv"+divIndex).append(divPanel);
+            }
+
+
             //Buttons: update, cancel, delete, provision, and activate
-            if (subscription.Status == "Cancelled") { /*do nothing, remove this if when refactoring*/ }
-            else if(subscription.Status == "Active") 
+            if(subscription.Status == "Active")
             {
                 buttonsArray[0] = createButton(subscription, "Update", subscriptionID, onUpdateButton, 0, divIndex, "col-md-2 btn btn-info");
                 buttonsArray[3] = createButton(subscription, "Cancel", subscriptionID, onCancelButton,3,divIndex, "col-md-2 btn btn-default");
@@ -914,7 +1076,7 @@
 
         //Buttons: update, cancel, delete, provision, and activate
 
-        
+
         function createActivateOrProvisionButton(subscription, innerHtml, activateArray, provisionArray, subscriptionId, clickFunction, index, divIndex, classSizeNames, classButtonNames)
         {
             var div = document.createElement("div");
@@ -972,16 +1134,16 @@
             button.innerHTML = innerHtml;
             button.className = classNames;
             button.id = subscriptionId + "_" + index;
-            $("#subscriptionComponentDiv"+divIndex).append(button);
-
+           // $("#subscriptionComponentDiv"+divIndex).append(button);
+            $("#actionPanelBody"+divIndex).append(button)
 
             $("#"+button.id).on("click", function() {
                 alert("The button was clicked");
 
-             clickFunction(subscriptionId);
+                clickFunction(subscriptionId);
             });
 
-         
+
             return button;
         }
 

@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Layout";
+}
+<link href="~/Content/Subscription.css" rel="stylesheet" />
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div style="width: 100%; height: 5em">
+        <nav>
+            <ul id="menu" style="float:right;">
+                <li class="layoutList">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                <li style="display: inline; list-style:none"><a href="http://help.fusebill.com/api-overview" target="_blank">Help</a></li>
+                <li style="display: inline; list-style:none">
+
+                    @Html.ActionLink("Samples", "Index", "Samples", new { area = "" }, null)
+                </li>
+            </ul>
+        </nav>
+    </div>
+   
+</body>
+</html>

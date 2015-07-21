@@ -133,7 +133,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
             
             var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
 
-      
+
             return Json(subscriptions);
         }
 
@@ -189,7 +189,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
 
               if (!String.IsNullOrEmpty(postSubscriptionVM.DescriptionOverride))
             {
-                subscription.SubscriptionOverride.Name = postSubscriptionVM.DescriptionOverride;
+                subscription.SubscriptionOverride.Description = postSubscriptionVM.DescriptionOverride;
             }
 
 
@@ -289,7 +289,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
             var a = 6;
         }
 
-        public void ActivateSubscription(PostSubscriptionIdVM postSubscriptionIdVM)
+        public ActionResult ActivateSubscription(PostSubscriptionIdVM postSubscriptionIdVM)
         {
             var postSubscriptionActivation = new Fusebill.ApiWrapper.Dto.Post.SubscriptionActivation
             {
@@ -298,9 +298,9 @@ namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
                 InvoiceMonth = Convert.ToInt32(postSubscriptionIdVM.InputValuesForActivationAndProvision[1])
             };
 
-            ApiClient.PostSubscriptionActivation(postSubscriptionActivation);
+            var returnedSubscription = ApiClient.PostSubscriptionActivation(postSubscriptionActivation);
 
-            var a = 6;
+            return Json(returnedSubscription);
         }
 
 

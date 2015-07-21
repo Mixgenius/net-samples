@@ -6,6 +6,169 @@
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
 
+/* =============== FUSEBILL CUSTOM STYLES =============== */
+
+/* DRAFT */
+.btn-draft-Fusebill {
+  color: white;
+  background-color: #2e2e2e;
+  border-color: #ccc;
+}
+.btn-draft-Fusebill:focus,
+.btn-draft-Fusebill.focus {
+  color: white;
+  background-color:  #2e2e2e;
+  border-color: #8c8c8c;
+}
+
+.btn-draft-Fusebill:focus p{
+  color: white;
+}
+
+.btn-draft-Fusebill:hover {
+  color: white;
+  background-color: #1C1C1C;
+  border-color: #adadad;
+}
+
+.btn-draft-Fusebill:hover p{
+  color: white;
+
+}
+
+.btn-draft-Fusebill:active,
+.btn-draft-Fusebill.active,
+.open > .dropdown-toggle.btn-draft {
+  color: white;
+  background-color: black;
+  border-color: #adadad;
+}
+.btn-draft-Fusebill:active:hover,
+.btn-draft-Fusebill.active:hover,
+.open > .dropdown-toggle.btn-draft:hover,
+.btn-draft-Fusebill:active:focus,
+.btn-draft-Fusebill.active:focus,
+.open > .dropdown-toggle.btn-draft:focus,
+.btn-draft-Fusebill:active.focus,
+.btn-draft-Fusebill.active.focus,
+.open > .dropdown-toggle.btn-draft-Fusebill.focus {
+  color: white;
+  background-color: black;
+  border-color: #8c8c8c;
+}
+.btn-draft-Fusebill:active,
+.btn-draft-Fusebill.active,
+.open > .dropdown-toggle.btn-draft-Fusebill {
+  background-image: none;
+}
+.btn-draft-Fusebill.disabled,
+.btn-draft-Fusebill[disabled],
+fieldset[disabled] .btn-draft-Fusebill,
+.btn-draft-Fusebill.disabled:hover,
+.btn-draft-Fusebill[disabled]:hover,
+fieldset[disabled] .btn-draft-Fusebill:hover,
+.btn-draft-Fusebill.disabled:focus,
+.btn-draft-Fusebill[disabled]:focus,
+fieldset[disabled] .btn-draft-Fusebill:focus,
+.btn-draft-Fusebill.disabled.focus,
+.btn-draft-Fusebill[disabled].focus,
+fieldset[disabled] .btn-draft.-Fusebillfocus,
+.btn-draft.disabled:active,
+.btn-draft[disabled]:active,
+fieldset[disabled] .btn-draft:active,
+.btn-draft-Fusebill.disabled.active,
+.btn-draft-Fusebill[disabled].active,
+fieldset[disabled] .btn-draft-Fusebill.active {
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-draft-Fusebill .badge {
+  color: #fff;
+  background-color: #333;
+}
+
+
+/* CANCELLED */
+.btn-cancelled-Fusebill {
+  color: white;
+  background-color: #999;
+  border-color: #ccc;
+}
+.btn-cancelled-Fusebill:focus,
+.btn-cancelled-Fusebill.focus {
+  color: white;
+  background-color:  #7A7A7A;
+  border-color: #8c8c8c;
+}
+
+.btn-cancelled-Fusebill:focus p{
+  color: white;
+}
+
+.btn-cancelled-Fusebill:hover {
+  color: white;
+  background-color: #878787;
+  border-color: #adadad;
+}
+
+.btn-cancelled-Fusebill:hover p{
+  color: white;
+
+}
+
+.btn-cancelled-Fusebill:active,
+.btn-cancelled-Fusebill.active,
+.open > .dropdown-toggle.btn-draft {
+  color: white;
+  background-color: black;
+  border-color: #adadad;
+}
+.btn-cancelled-Fusebill:active:hover,
+.btn-cancelled-Fusebill.active:hover,
+.open > .dropdown-toggle.btn-draft-Fusebill:hover,
+.btn-cancelled-Fusebill:active:focus,
+.btn-cancelled-Fusebill.active:focus,
+.open > .dropdown-toggle.btn-draft:focus,
+.btn-cancelled-Fusebill:active.focus,
+.btn-cancelled-Fusebill.active.focus,
+.open > .dropdown-toggle.btn-cancelled-Fusebill.focus {
+  color: white;
+  background-color: #7A7A7A;
+  border-color: #8c8c8c;
+}
+.btn-cancelled-Fusebill:active,
+.btn-cancelled-Fusebill.active,
+.open > .dropdown-toggle.btn-cancelled-Fusebill {
+  background-image: none;
+}
+.btn-cancelled-Fusebill.disabled,
+.btn-cancelled-Fusebill[disabled],
+fieldset[disabled] .btn-cancelled-Fusebill,
+.btn-cancelled-Fusebill.disabled:hover,
+.btn-cancelled-Fusebill[disabled]:hover,
+fieldset[disabled] .btn-cancelled-Fusebill:hover,
+.btn-cancelled-Fusebill.disabled:focus,
+.btn-cancelled-Fusebill[disabled]:focus,
+fieldset[disabled] .btn-cancelled-Fusebill:focus,
+.btn-cancelled-Fusebill.disabled.focus,
+.btn-cancelled-Fusebill[disabled].focus,
+fieldset[disabled] .btn-draft.-Fusebillfocus,
+.btn-cancelled-Fusebill.disabled:active,
+.btn-cancelled-Fusebill[disabled]:active,
+fieldset[disabled] .btn-draft:active,
+.btn-cancelled-Fusebill.disabled.active,
+.btn-cancelled-Fusebill[disabled].active,
+fieldset[disabled] .btn-cancelled-Fusebill.active {
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-cancelled-Fusebill .badge {
+  color: #fff;
+  background-color: #333;
+}
+
+
+/*============ END OF FUSEBILL CUSTOM STYLES =========*/
 
 
 html {
@@ -5754,6 +5917,9 @@ button.list-group-item-danger.active:focus {
   /*border-color: #337ab7;*/
   border-color: darkorange ;
 }
+
+
+
 .panel-primary > .panel-heading {
   color: #fff;
   /*background-color: #337ab7;*/
@@ -5770,6 +5936,14 @@ button.list-group-item-danger.active:focus {
 .panel-primary > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #337ab7;
 }
+
+.panel-primary-hover:hover{
+    border-color: #E0C266;
+    border-width: 0.3em;
+    cursor:pointer;
+    
+}
+
 .panel-success {
   border-color: #d6e9c6;
 }

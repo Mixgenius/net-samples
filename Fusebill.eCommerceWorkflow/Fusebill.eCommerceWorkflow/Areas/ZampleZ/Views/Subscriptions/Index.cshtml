@@ -3,12 +3,6 @@
 
 @model Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models.CustomersAndSubscriptionsVM
 
-@{
-    Layout = null;
-}
-
-
-<!DOCTYPE html>
 
 <html>
 <head>
@@ -29,6 +23,8 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
 
+    @*Datetime conversion*@
+    <script src="~/Scripts/moment.js"></script>
     <script>
         $(document).ready(function() {
             $("#datepicker").datepicker();
@@ -38,51 +34,61 @@
 </head>
 <body>
 
-    @foreach (var customer in Model.AvailableCustomers)
-    {
-        <div class="panel panel-primary col-xs-12 col-md-4" onclick="loadSubscriptions(@customer.Id)">
-            <h3 class="panel-title panel-heading">Demo Customer</h3>
-            <div class="panel-body">
 
-                <table class="table table-condensed ">
-                    <tbody>
-                        <tr>
-                            <td><strong>First name : </strong></td>
-                            <td>@customer.FirstName</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Last name : </strong></td>
-                            <td>@customer.LastName</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Company name: </strong></td>
-                            <td>@customer.CompanyName</td>
-                        </tr>
-                        <tr>
-                            @foreach (var plan in Model.AvailablePlans)
-                            {
-                                <td>
-                                    <button type="button" onclick="addSubscription(@customer.Id, @plan.PlanFrequencies[0].Id)">Add plan with PlanFrequencyID of @plan.PlanFrequencies[0].Id for customer with ID of @customer.Id</button>
-                                </td>
-                            }
-                        </tr>
-                    </tbody>
-                </table>
+    @Html.Partial("~/Areas/ZampleZ/Views/Shared/Layout.cshtml");
 
-                @*<button type="button" onclick="cancelCustomer(@customer.Id)">Cancel customer with ID of @customer.Id</button>*@
+    <div>
+        @foreach (var customer in Model.AvailableCustomers)
+        {
+            <div id="@customer.Id" class="panel panel-primary panel-primary-hover col-xs-12 col-md-4" onclick="loadSubscriptions(@customer.Id, '@customer.FirstName', '@customer.LastName')">
+                <h3 class="panel-title panel-heading">Demo Customer</h3>
+                <div class="panel-body">
+
+                    <table class="table table-condensed ">
+                        <tbody>
+                            <tr>
+                                <td><strong>First name : </strong></td>
+                                <td>@customer.FirstName</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last name : </strong></td>
+                                <td>@customer.LastName</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Company name: </strong></td>
+                                <td>@customer.CompanyName</td>
+                            </tr>
+                            <tr>
+                                @foreach (var plan in Model.AvailablePlans)
+                                {
+                                    <td>
+                                        <button type="button" class="col-md-12 btn btn-warning" onclick="addSubscription(@customer.Id, @plan.PlanFrequencies[0].Id)">
+                                            @if (plan.PlanFrequencies[0].Id == 10802244)
+                                            { <p style="font-weight:bold">Add Bronze Plan</p> }
+                                            else if (plan.PlanFrequencies[0].Id == 10832272)
+                                            { <p style="font-weight:bold">Add Gold Plan</p> }
+                                        </button>
+                                    </td>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    @*<button type="button" onclick="cancelCustomer(@customer.Id)">Cancel customer with ID of @customer.Id</button>*@
+                </div>
             </div>
-        </div>
-    }
-
+        }
+    </div>
     @*<button type="button" onclick="reverseCharge(4612017)">Reverse charge for Sevice 7 of Demo Customer 2</button>*@
 
-  
+
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+    <div id="loadingDiv" style="text-align:center"><img src="~/Content/pacman-loader.gif" /></div>
+
     <div id="divItems">
 
     </div>
-
-    <div id="loadingDiv">Getting your subscriptions...</div>
-
 
     <script>
 
@@ -102,6 +108,7 @@
         var buttonCount = 5;
         var activateInputCount = 2;
         var provisionInputCount = 2;
+        var cusID;
 
         $(document).ready(function () {
             model = @Html.HtmlConvertToJson(Model);
@@ -187,6 +194,7 @@
                         div.removeChild(div.firstChild);
                     }
                     alert("Finished while loop");
+                    $("#"+cusID).trigger("click");
                 },
                 //error: alert("Darn!")
             });
@@ -227,8 +235,9 @@
         }
 
 
-        function loadSubscriptions(id)
+        function loadSubscriptions(id, firstName, lastName)
         {
+            cusID = id;
             var customer = { CustomerID: id};
 
             $.ajax({
@@ -243,20 +252,27 @@
                     while (div.firstChild) {
                         div.removeChild(div.firstChild);
                     }
-
+                    
                     returnedData = data;
-                    showAllSubscriptions(returnedData, id)
+                    showAllSubscriptions(returnedData, firstName, lastName);
                 },
             });
         }
 
-        function showAllSubscriptions(returnedData, customerID){
+        function showAllSubscriptions(returnedData, customerFirstName, customerLastName){
             //each subscription is called displayed
 
-            var paragraph = document.createElement("p");
-            paragraph.className = "jumbotron";
-            paragraph.innerHTML = "Subscriptions for " + customerID;
-            $("#divItems").append(paragraph)
+         
+
+            var h2 = document.createElement("h2");
+            h2.className = "jumbotron";
+            h2.style.textAlign = "center";
+            h2.innerHTML = "Subscriptions for " + customerFirstName + " " + customerLastName;
+     
+
+            $("#divItems").append(h2);
+
+
 
             for (var i = 0; i < returnedData.length; i++)
             {
@@ -293,7 +309,7 @@
             subscriptionArray["overrideButtons"] = new Array (subscription.SubscriptionProducts.length);
             subscriptionArray["subscriptionOverrides"] = new Array(subscriptionOverrideCount);
             subscriptionArray["reference"] = document.createElement("input");
-            subscriptionArray["timestamps"] = new Array(timestampCount);
+            subscriptionArray["timestamps"] = new Array();
             subscriptionArray["remainingInterval"] = document.createElement("input");
             subscriptionArray["buttons"] = new Array(buttonCount);
             subscriptionArray["activateInputs"] = new Array(activateInputCount);
@@ -365,11 +381,11 @@
             }
             else if (subscription.Status == "Cancelled")
             {
-
+                $("#button"+divIndex).addClass("btn-cancelled-Fusebill");
             }
             else if(subscription.Status == "Draft")
             {
-                $("#button"+divIndex).addClass("btn-default");
+                $("#button"+divIndex).addClass("btn-draft-Fusebill");
             }
             else if(subscription.Status == "Provisioning")
             {
@@ -409,105 +425,182 @@
                 $("#informationPanelBody"+divIndex).append(subscriptionOverrideButton);
             }
 
+          
 
             var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription Name</strong> " + subscription.PlanName + "<br />" ;
+            paragraph.innerHTML = "<strong>Subscription Name</strong>";
+            if (subscription.Status != "Cancelled")
+            {
+                paragraph.style.marginLeft = "15em";
+            }
             $("#informationPanelBody"+divIndex).append(paragraph);
 
-            //if ( typeof subscription.SubscriptionOverride === null ||typeof subscription.SubscriptionOverride == 'null'  )
-            //{
-            //    alert("subscription.subscriptionOverride is null");
-            //    var paragraph = document.createElement("p");
-            //    paragraph.innerHTML = "<strong>Subscription Override Name</strong>" + subscription.SubscriptionOverride.Name + "<br />" ;
-            //    $("#informationPanelBody"+divIndex).append(paragraph);
-            //}
+            var paragraph = document.createElement("p");
+            if (subscription.Status != "Cancelled")
+            {
+                paragraph.style.marginLeft = "15em";
+            }
+            paragraph.style.lineHeight = "0em";
+            paragraph.innerHTML = subscription.PlanName;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+
+
+           if (  (subscription.SubscriptionOverride === null) == false )
+           {
+               if ( (subscription.SubscriptionOverride.Name === null) == false)
+               {
+                   var paragraph = document.createElement("p");
+                   paragraph.innerHTML = "<strong>Subscription Name Override</strong>";
+                   $("#informationPanelBody"+divIndex).append(paragraph);
+
+                   var paragraph = document.createElement("p");
+                   paragraph.style.lineHeight = "0em";
+                   paragraph.innerHTML = subscription.SubscriptionOverride.Name + "<br />" ;
+                   $("#informationPanelBody"+divIndex).append(paragraph);
+               }
+            }
 
             if (subscription.Status != "Cancelled")
             {
                 var input = document.createElement("input");
+                input.placeholder = "Add Name Override";
+                input.style.visibility = "hidden";
                 $("#informationPanelBody"+divIndex).append(input);
                 subscriptionOverridesArray[0] = input;
             }
 
+            var a = document.createElement("br");
+            $("#informationPanelBody"+divIndex).append(a);
             var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription Description : </strong> " + subscription.PlanDescription + "<br />" ;
+            paragraph.innerHTML = "<strong>Subscription Description</strong>" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
 
-            //if (typeof subscription.SubscriptionOverride == 'undefined')
-            //{
-            //    alert("subscription.subscriptionOverride is not null");
-            //    //var paragraph = document.createElement("p");
-            //    //paragraph.innerHTML = "<strong>Subscription Override Description : </strong> " + subscription.SubscriptionOverride.Description + "<br />" ;
-            //    //$("#informationPanelBody"+divIndex).append(paragraph);
-            //}
+            var paragraph = document.createElement("p");
+            paragraph.style.lineHeight = "0em";
+            paragraph.innerHTML =  subscription.PlanDescription;
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            if (  (subscription.SubscriptionOverride === null) == false )
+            {
+                if ( (subscription.SubscriptionOverride.Description === null) == false)
+                {
+                    var paragraph = document.createElement("p");
+                    paragraph.innerHTML = "<strong>Subscription Description Override</strong>"; 
+                    $("#informationPanelBody"+divIndex).append(paragraph);
+
+                    var paragraph = document.createElement("p");
+                    paragraph.innerHTML = subscription.SubscriptionOverride.Description + "<br />" ;
+                    paragraph.style.lineHeight = "0em";
+                    $("#informationPanelBody"+divIndex).append(paragraph);
+                }
+            }
 
             if (subscription.Status != "Cancelled")
             {
                 var input = document.createElement("input");
+                input.placeholder = "Add Description Override";
+                input.style.visibility = "hidden";
                 $("#informationPanelBody"+divIndex).append(input);
                 subscriptionOverridesArray[1] = input;
             }
 
+
+            var subscriptionReference;
+            if (subscription.PlanReference == null)
+            {
+                subscriptionReference = "Not yet set";
+            }
+            else 
+            {
+                subscriptionReference = subscription.PlanReference;
+            }
+
+            $("#informationPanelBody"+divIndex).append(document.createElement("br"));
             var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription Reference : </strong> " + subscription.PlanReference + "<br />" ;
+            paragraph.innerHTML = "<strong>Subscription Reference</strong>";
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var paragraph = document.createElement("p");
+            paragraph.style.lineHeight = "0em";
+            paragraph.innerHTML =  subscriptionReference + "<br />";
             $("#informationPanelBody"+divIndex).append(paragraph);
 
             if (subscription.Status != "Cancelled")
             {
                 var input = document.createElement("input");
+                input.placeholder = "Add Reference Override";
+                input.style.visibility = "hidden";
                 $("#informationPanelBody"+divIndex).append(input);
                 referenceArray[0] = input;
-            }
-
-            //var paragraph = document.createElement("p");
-            //paragraph.innerHTML = "<strong>Subscription Charge Amount : </strong> " + subscription.Amount + "<br />" ;
-            //$("#informationPanelBody"+divIndex).append(paragraph);
-
-            //var input = document.createElement("input");
-            //$("#informationPanelBody"+divIndex).append(input);
-            //subscriptionOverridesArray[2] = input;
+            }            
 
 
-            //if (typeof subscription.PlanFrequency.SetupFees[0] !== "undefined")
-            //{
-            //    var paragraph = document.createElement("p");
-            //    paragraph.innerHTML = "<strong>Subscription Setup: </strong>" + subscription.PlanFrequency.SetupFees[0].Amount + "<br />" ;
-            //    $("#informationPanelBody"+divIndex).append(paragraph);
-
-            //    var input = document.createElement("input");
-            //    $("#informationPanelBody"+divIndex).append(input);
-            //    subscriptionOverridesArray[3] = input;
-            //}
-
+           
+            $("#informationPanelBody"+divIndex).append(document.createElement("br"));  
+            var date = new Date(parseFloat(subscription.Created.replace("/Date(", "").replace(")/",""), 10));
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription Creation Date</strong>";
+            $("#informationPanelBody"+divIndex).append(paragraph);
 
             var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription Creation Date : </strong> " + subscription.Created + "<br />" ;
+            paragraph.innerHTML = "<br />" + date;
+            paragraph.style.lineHeight = "0em";
             $("#informationPanelBody"+divIndex).append(paragraph);
 
 
+            var date;
+            if (subscription.ContractStartTimestamp == null)  {  date = "Not yet set"; }
+            else
+            {
+                date = new Date(parseFloat(subscription.ContractStartTimestamp.replace("/Date(", "").replace(")/",""), 10));
+            }
+
+            $("#informationPanelBody"+divIndex).append(document.createElement("br"));
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = "<strong>Subscription Start Date</strong> ";
+            $("#informationPanelBody"+divIndex).append(paragraph);
 
             var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription Start Date : </strong> " + subscription.ContractStartTimestamp + "<br />" ;
+            paragraph.style.lineHeight = "0em";
+            paragraph.innerHTML = date;
             $("#informationPanelBody"+divIndex).append(paragraph);
 
             if (subscription.Status != "Cancelled")
             {
                 var inputStart = document.createElement("input");
                 inputStart.id = "usingDatepickerStart" + divIndex;
+                inputStart.placeholder = "Edit Start Date";
+                inputStart.style.visibility = "hidden";
                 timestampArray[0] = inputStart;
                 $("#informationPanelBody"+divIndex).append(inputStart);
+               
             }
 
 
+            var date;
+            if (subscription.ContractEndTimestamp == null)  {  date = "Not yet set"; }
+            else
+            {
+                date =  new Date(parseInt(subscription.ContractEndTimestamp.replace("/Date(", "").replace(")/",""), 10));
+            }
+            $("#informationPanelBody"+divIndex).append(document.createElement("br"));
             var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription End Date : </strong> " + subscription.ContractEndTimestamp + "<br />" ;
+            paragraph.innerHTML = "<strong>Subscription End Date</strong>" ;
             $("#informationPanelBody"+divIndex).append(paragraph);
 
+            var paragraph = document.createElement("p");
+            paragraph.style.lineHeight = "0em";
+            paragraph.innerHTML =  date;
+            $("#informationPanelBody"+divIndex).append(paragraph);
 
             if (subscription.Status != "Cancelled")
             {
                 var inputEnd = document.createElement("input");
                 inputEnd.id = "usingDatepickerEnd" + divIndex;
+                inputEnd.placeholder = "Edit End Date";
+                inputEnd.style.visibility = "hidden";
+
                 timestampArray[1] = inputEnd;
                 $("#informationPanelBody"+divIndex).append(inputEnd);
             }
@@ -515,23 +608,55 @@
             if (subscription.Status != "Active" && subscription.Status != "Cancelled")
             {
                 var paragraph = document.createElement("p");
-                paragraph.innerHTML = "<strong>Subscription Scheduled Activation Date : </strong> " + subscription.ScheduledActivationTimestamp + "<br />" ;
+                var date;
+                if (subscription.ScheduledActivationTimestamp == null)  {  date = "Not yet set"; }
+                else
+                {
+                    date =  new Date(parseFloat(subscription.ContractStartTimestamp.replace("/Date(", "").replace(")/",""), 10));
+                }
+                $("#informationPanelBody"+divIndex).append(document.createElement("br"));
+                paragraph.innerHTML = "<strong>Subscription Scheduled Activation Date</strong>";
+                $("#informationPanelBody"+divIndex).append(paragraph);
+
+                var paragraph = document.createElement("p");
+                paragraph.style.lineHeight = "0em";
+                paragraph.innerHTML =  date;
                 $("#informationPanelBody"+divIndex).append(paragraph);
 
                 var inputScheduled = document.createElement("input");
                 inputScheduled.id = "usingDatepickerScheduled" + divIndex;
+                inputScheduled.placeholder = "Edit Activation Date";
+                inputScheduled.style.visibility = "hidden";
                 timestampArray[2] = inputScheduled;
                 $("#informationPanelBody"+divIndex).append(inputScheduled);
             }
             
 
+          
+
+            var remaining;
+            if (subscription.RemainingInterval === null)
+            {
+                remaining = "No remaining interval set";
+            }
+            else
+            {
+                remaining = subscription.RemainingInterval;
+            }
             var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Subscription Remaining Interval : </strong> " + subscription.RemainingInterval + "<br />" ;
+            paragraph.innerHTML = "<strong>Subscription Remaining Interval</strong> ";
+            $("#informationPanelBody"+divIndex).append(paragraph);
+
+            var paragraph = document.createElement("p");
+            paragraph.innerHTML = remaining;
+            paragraph.style.lineHeight = "0em";
             $("#informationPanelBody"+divIndex).append(paragraph);
 
             if (subscription.Status != "Cancelled")
             {
                 var input = document.createElement("input");
+                input.placeholder = "Edit Remaining Interval";
+                input.style.visibility = "hidden";
                 $("#informationPanelBody"+divIndex).append(input);
                 remainingIntervalArray[0] = input;
             }
@@ -563,7 +688,6 @@
 
             if (subscription.Status != "Cancelled")
             {
-
                 subscriptionOverrideButton.onclick = function() {
                     if (this.innerHTML == "Add subscription overrides")
                     {
@@ -643,7 +767,7 @@
                     createOverrideButton(overrideProductsButtonsArray, i, divIndex, nameAndOverrideButtonDiv);
                 }
                 showSubscriptionProductQuantityAndOverride(subscriptionProducts[i].PlanProduct, productQuantityOverridesArray, i, divIndex);
-                showSubscriptionProductPriceAndOverride(subscriptionProducts[i].PlanProduct, productPriceOverridesArray, i, divIndex);
+                showSubscriptionProductPriceAndOverride(subscriptionProducts[i], productPriceOverridesArray, i, divIndex);
 
                 if (subscription.Status != "Cancelled")
                 {
@@ -661,7 +785,7 @@
 
             var paragraph = document.createElement("p");
             paragraph.innerHTML =
-                "<strong>Subscription Product Name : </strong>"  + subscriptionPlanProduct.ProductName;
+                "<strong>" + subscriptionPlanProduct.ProductName + "</strong>";
             paragraph.style.textAlign = "right";
             paragraph.className = "col-md-7";
 
@@ -694,11 +818,12 @@
             paragraph.innerHTML = "<strong>Quantity: </strong>"  + subscriptionPlanProduct.Quantity;
             paragraph.style.textAlign = "right";
             paragraph.style.display = "inline";
-            paragraph.className = "col-md-6";
+            paragraph.style.marginLeft = "15em";
+            paragraph.style.marginRight = "3em";
 
             var input = document.createElement("input");
             input.placeholder = "Add Quantity Override";
-            input.className = "col-md-2";
+            input.style.paddingLeft = "1em";
             input.style.visibility = "hidden";
 
             div.appendChild(paragraph);
@@ -711,20 +836,21 @@
             productQuantityOverridesArray[index] = input;
         }
 
-        function showSubscriptionProductPriceAndOverride(subscriptionPlanProduct, productPriceOverridesArray, index, divIndex)
+        function showSubscriptionProductPriceAndOverride(subscriptionProduct, productPriceOverridesArray, index, divIndex)
         {
             var div = document.createElement("div");
             div.className = "row";
 
             var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Price: </strong>"  + subscriptionPlanProduct.Price;
+            paragraph.innerHTML = "<strong>Price:</strong> $"  + subscriptionProduct.Amount;
             paragraph.style.textAlign = "right";
+            paragraph.style.marginLeft = "16.5em";
+            paragraph.style.marginRight = "1.5em";
             paragraph.style.display = "inline";
-            paragraph.className = "col-md-6";
 
             var input = document.createElement("input");
             input.placeholder = "Add Price Override";
-            input.className = "col-md-2";
+            input.style.paddingLeft = "1em";
             input.style.visibility = "hidden";
 
 
@@ -887,7 +1013,7 @@
 
 
             var label = document.createElement("p");
-            label.innerHTML = " Scheduled Activation Timestamp" + "<br />";
+            label.innerHTML = "Scheduled Activation Timestamp" + "<br />";
             $("#subscriptionComponentDiv"+divIndex).append(label);
             var inputScheduled = document.createElement("input");
             inputScheduled.id = "usingDatepickerScheduled" + divIndex;
@@ -971,15 +1097,15 @@
             }
             else if(subscription.Status == "Provisioning")
             {
-                buttonsArray[0] = createButton("Update", subscriptionID, onUpdateButton, 0, divIndex, "col-md-2 btn btn-info");
-                buttonsArray[1] = createActivateOrProvisionButton(subscription, "Activate", activateArray, provisionArray, subscriptionID, onActivateButton,1,divIndex, "col-md-2", "btn btn-success");
-                buttonsArray[3] = createButton("Cancel", subscriptionID, onCancelButton,3,divIndex, "col-md-2 btn btn-default");
+                buttonsArray[0] = createButton(subscription, "Update", subscriptionID, onUpdateButton, 0, divIndex, "col-md-2 btn btn-info");
+                buttonsArray[1] = createActivateOrProvisionButton(subscription, "Activate", activateArray, provisionArray, subscriptionID, onActivateButton, 1,divIndex, "col-md-2", "btn btn-success col-md-12");
+                buttonsArray[3] = createButton(subscription, "Cancel", subscriptionID, onCancelButton,3,divIndex, "col-md-2 btn btn-default");
             }
             else if (subscription.Status == "Draft")
             {
                 buttonsArray[0] = createButton(subscription, "Update", subscriptionID, onUpdateButton, 0, divIndex, "col-md-2 btn btn-info");
-                buttonsArray[1] = createActivateOrProvisionButton(subscription, "Activate", activateArray, provisionArray, subscriptionID, onActivateButton, 1,divIndex, "col-md-2","btn btn-success");
-                buttonsArray[2] = createActivateOrProvisionButton(subscription, "Provision, only if scheduled activation already set", activateArray, provisionArray, subscriptionID, onProvisionButton,2,divIndex, "col-md-2", "btn btn-warning");
+                buttonsArray[1] = createActivateOrProvisionButton(subscription, "Activate", activateArray, provisionArray, subscriptionID, onActivateButton, 1,divIndex, "col-md-2","btn btn-success col-md-12");
+                buttonsArray[2] = createActivateOrProvisionButton(subscription, "Provision", activateArray, provisionArray, subscriptionID, onProvisionButton, 2,divIndex, "col-md-2", "btn btn-warning col-md-12");
                 buttonsArray[4] = createButton(subscription, "Delete", subscriptionID, onDeleteButton,4,divIndex, "col-md-2 btn btn-danger");
             }
         }
@@ -1068,6 +1194,7 @@
                 url: "Subscriptions/UpdateSubscription",
                 data: postSubscription,
                 success: function() {
+                    $("#"+cusID).trigger("click");
                     alert("The update button has successfully posted data to the server!!! WHOOO!!"); }
             });
         }
@@ -1079,23 +1206,35 @@
 
         function createActivateOrProvisionButton(subscription, innerHtml, activateArray, provisionArray, subscriptionId, clickFunction, index, divIndex, classSizeNames, classButtonNames)
         {
-            var div = document.createElement("div");
-            div.className = classSizeNames;
-            $("#subscriptionComponentDiv"+divIndex).append(div);
-
-            var button = document.createElement("button");
-            button.innerHTML = innerHtml;
-            button.className = classButtonNames;
-            button.id = subscriptionId + "_" + index;
-            div.appendChild(button);
-
-
             if (innerHtml == "Activate")
             {
+                var div = document.createElement("div");
+                div.className = classSizeNames ;
+                div.style.backgroundColor = "green";
+                div.style.marginLeft = "1em";
+                div.style.borderRadius = "5px";
+                div.style.paddingBottom = "0.5em";
+                $("#actionPanelBody"+divIndex).append(div);
+
+                var button = document.createElement("button");
+                button.innerHTML = innerHtml;
+                button.className = classButtonNames;
+                button.id = subscriptionId + "_" + index;
+                div.appendChild(button);
+
+
+                div.appendChild(document.createElement("br"));
+                div.appendChild(document.createElement("br"));
                 var day = document.createElement("input");
+                day.placeholder = "Activation Day";
+                day.className = "col-md-12";
                 div.appendChild(day);
                 activateArray[0] = day;
+
+                div.appendChild(document.createElement("br"));
                 var month = document.createElement("input");
+                month.placeholder = "Activation Month";
+                month.className = "col-md-12";
                 div.appendChild(month);
                 activateArray[1] = month;
 
@@ -1106,12 +1245,35 @@
                 });
             }
 
-            if (innerHtml == "Provision, only if scheduled activation already set")
+            if (innerHtml == "Provision" && subscription.ScheduledActivationTimestamp != null)
             {
+                //next two blocks are identical to the first two blocks in "Activation"
+                var div = document.createElement("div");
+                div.className = classSizeNames ;
+                div.style.backgroundColor = "#E9BC36";
+                div.style.marginLeft = "1em";
+                div.style.borderRadius = "5px";
+                div.style.paddingBottom = "0.5em";
+                $("#actionPanelBody"+divIndex).append(div);
+
+                var button = document.createElement("button");
+                button.innerHTML = innerHtml;
+                button.className = classButtonNames;
+                button.id = subscriptionId + "_" + index;
+                div.appendChild(button);
+
+                div.appendChild(document.createElement("br"));
+                div.appendChild(document.createElement("br"));
                 var day = document.createElement("input");
+                day.placeholder = "Provision date";
+                day.className = "col-md-12";
                 div.appendChild(day);
                 provisionArray[0] = day;
+
+                div.appendChild(document.createElement("br"));
                 var month = document.createElement("input");
+                month.placeholder = "Provision month";
+                month.className = "col-md-12";
                 div.appendChild(month);
                 provisionArray[1] = month;
 
@@ -1134,8 +1296,12 @@
             button.innerHTML = innerHtml;
             button.className = classNames;
             button.id = subscriptionId + "_" + index;
-           // $("#subscriptionComponentDiv"+divIndex).append(button);
+            if (button.innerHTML == "Cancel" || button.innerHTML == "Delete")
+            {
+                button.style.float = "right";
+            }
             $("#actionPanelBody"+divIndex).append(button)
+            
 
             $("#"+button.id).on("click", function() {
                 alert("The button was clicked");
@@ -1156,6 +1322,9 @@
                 url: controllerUrl,
                 dataType: "json",
                 data: subscription,
+                sucess: function() {
+                    $("#"+cusID).trigger("click");
+                }
             });
         }
 
@@ -1177,7 +1346,10 @@
                 url: controllerUrl,
                 dataType: "json",
                 data: subscription,
-                traditional: true
+                traditional: true,
+                success: function(){
+                     $("#"+cusID).trigger("click");
+                }
             });
         }
 

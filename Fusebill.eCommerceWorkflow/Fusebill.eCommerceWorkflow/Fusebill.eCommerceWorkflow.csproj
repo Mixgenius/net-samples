@@ -183,7 +183,9 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\pacman-loader.gif" />
     <Content Include="Content\Plan.css" />
+    <Content Include="Content\Subscription.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -252,6 +254,7 @@
     <Content Include="Areas\TestArea\Views\Test\Index.cshtml" />
     <Content Include="Areas\ZampleZ\Views\Web.config" />
     <Content Include="Areas\ZampleZ\Views\Subscriptions\Index.cshtml" />
+    <Content Include="Areas\ZampleZ\Views\Shared\Layout.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Images\fusebill_logo-white.png" />
     <Content Include="ReadMe.txt" />
@@ -287,6 +290,7 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -329,7 +333,6 @@
     <Folder Include="Areas\TestArea\Models\" />
     <Folder Include="Areas\TestArea\Views\Shared\" />
     <Folder Include="Areas\ZampleZ\Controllers\" />
-    <Folder Include="Areas\ZampleZ\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

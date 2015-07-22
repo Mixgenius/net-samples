@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models
+namespace Fusebill.eCommerceWorkflow.Areas.Samples.Models
 {
     public class PostSubscriptionVM
     {

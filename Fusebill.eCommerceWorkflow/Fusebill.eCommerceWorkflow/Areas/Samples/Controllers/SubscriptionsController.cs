@@ -1,5 +1,5 @@
 ﻿using Fusebill.ApiWrapper;
-using Fusebill.eCommerceWorkflow.Areas.ZampleZ.Models;
+using Fusebill.eCommerceWorkflow.Areas.Samples.Models;
 using Fusebill.eCommerceWorkflow.Controllers;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 
 
-namespace Fusebill.eCommerceWorkflow.Areas.ZampleZ.Controllers
+namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
 {
     public class SubscriptionsController : FusebillBaseController
     {

@@ -5,8 +5,10 @@ using System.Web;
 
 namespace Fusebill.eCommerceWorkflow.Areas.Samples.Models
 {
-    public class ListOfCustomersVM
+    public class CreateSubscriptionVM
     {
-        public List<Fusebill.ApiWrapper.Dto.Get.Customer> Customers { get; set; }
+        public long CustomerID { get; set; }
+        public long PlanFrequencyID { get; set; }
+
     }
 }

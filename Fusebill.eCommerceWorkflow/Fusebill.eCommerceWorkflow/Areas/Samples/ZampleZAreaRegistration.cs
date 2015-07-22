@@ -1,22 +1,22 @@
 ﻿using System.Web.Mvc;
 
-namespace Fusebill.eCommerceWorkflow.Areas.Hi
+namespace Fusebill.eCommerceWorkflow.Areas.Samples
 {
-    public class HiAreaRegistration : AreaRegistration
+    public class SamplesAreaRegistration : AreaRegistration
     {
         public override string AreaName
         {
             get
             {
-                return "Hi";
+                return "Samples";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "Hi_default",
-                "Hi/{controller}/{action}/{id}",
+                "Samples_default",
+                "Samples/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

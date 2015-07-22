@@ -36,6 +36,9 @@
 
 
     @Html.Partial("~/Areas/ZampleZ/Views/Shared/Layout.cshtml");
+    <div><h2 style="text-align:center; font-family:cursive;">Modifying Subscriptions</h2>
+    <br /><br />
+    </div>
 
     <div>
         @foreach (var customer in Model.AvailableCustomers)
@@ -612,7 +615,7 @@
                 if (subscription.ScheduledActivationTimestamp == null)  {  date = "Not yet set"; }
                 else
                 {
-                    date =  new Date(parseFloat(subscription.ContractStartTimestamp.replace("/Date(", "").replace(")/",""), 10));
+                    date =  new Date(parseFloat(subscription.ScheduledActivationTimestamp.replace("/Date(", "").replace(")/",""), 10));
                 }
                 $("#informationPanelBody"+divIndex).append(document.createElement("br"));
                 paragraph.innerHTML = "<strong>Subscription Scheduled Activation Date</strong>";
@@ -842,7 +845,14 @@
             div.className = "row";
 
             var paragraph = document.createElement("p");
-            paragraph.innerHTML = "<strong>Price:</strong> $"  + subscriptionProduct.Amount;
+            if ((subscriptionProduct.SubscriptionProductPriceOverride === null ) == false)
+            {
+                paragraph.innerHTML = "<strong>Price:</strong> $"  + subscriptionProduct.SubscriptionProductPriceOverride.ChargeAmount;
+            }
+            else
+            {
+                paragraph.innerHTML = "<strong>Price:</strong> $"  + (subscriptionProduct.Amount / subscriptionProduct.Quantity);
+            }
             paragraph.style.textAlign = "right";
             paragraph.style.marginLeft = "16.5em";
             paragraph.style.marginRight = "1.5em";
@@ -853,13 +863,13 @@
             input.style.paddingLeft = "1em";
             input.style.visibility = "hidden";
 
-
+            
             div.appendChild(paragraph);
             div.appendChild(input);
 
-            div.appendChild(document.createElement("br"));
-            div.appendChild(document.createElement("br"));
 
+            div.appendChild(document.createElement("br"));
+            div.appendChild(document.createElement("br"));
 
             $("#productPanelBody"+divIndex).append(div);
             productPriceOverridesArray[index] = input;
@@ -1322,7 +1332,7 @@
                 url: controllerUrl,
                 dataType: "json",
                 data: subscription,
-                sucess: function() {
+                success: function() {
                     $("#"+cusID).trigger("click");
                 }
             });

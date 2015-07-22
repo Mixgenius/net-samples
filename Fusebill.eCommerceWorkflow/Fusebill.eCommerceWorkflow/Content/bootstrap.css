@@ -5938,10 +5938,15 @@ button.list-group-item-danger.active:focus {
 }
 
 .panel-primary-hover:hover{
+    background: linear-gradient(rgb(235, 226, 155), rgb(159, 130, 44));
     border-color: #E0C266;
     border-width: 0.3em;
     cursor:pointer;
-    
+}
+
+.panel-primary-hover:active {
+    background: linear-gradient(rgb(204, 194, 112), rgb(148, 121, 42));
+    border-color: darkorange;
 }
 
 .panel-success {

@@ -6,17 +6,20 @@
 <html>
 
 <body>
-    <div style="width: 100%; height: 5em">
+    <div style="width: 100%; height: 5em; margin-top: 2em;">
         <nav>
             <ul id="menu" style="float:right;">
                 <li class="layoutList">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                <li style="display: inline; list-style:none"><a href="http://help.fusebill.com/api-overview" target="_blank">Help</a></li>
-                <li style="display: inline; list-style:none">
+                <li class="layoutList"><a href="http://help.fusebill.com/api-overview" target="_blank">Help</a></li>
+                <li class="layoutList">
 
                     @Html.ActionLink("Samples", "Index", "Samples", new { area = "" }, null)
                 </li>
             </ul>
         </nav>
+    </div>
+    <div>
+        <h1 style="margin-left: 20%; color:darkorange">Fusebill Web API</h1>
     </div>
    
 </body>

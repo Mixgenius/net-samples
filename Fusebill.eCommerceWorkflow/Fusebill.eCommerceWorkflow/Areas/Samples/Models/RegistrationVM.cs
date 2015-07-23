@@ -1,5 +1,4 @@
 ﻿using Fusebill.ApiWrapper.Dto.Get;
-using Fusebill.eCommerceWorkflow.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Fusebill.eCommerceWorkflow.Models
+namespace Fusebill.eCommerceWorkflow.Areas.Samples.Models
 {
     public enum FromStep 
     {
@@ -43,7 +42,7 @@ namespace Fusebill.eCommerceWorkflow.Models
         public List<long> AvailablePlanFrequencyIds { get; set; }
 
         /// <summary>
-        /// 
+        /// The PlanFrequencyID of the selected plan
         /// </summary>
         public long SelectedPlanFrequencyID { get; set; }
 

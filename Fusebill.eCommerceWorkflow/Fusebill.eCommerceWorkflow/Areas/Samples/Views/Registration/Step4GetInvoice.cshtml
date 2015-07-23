@@ -1,12 +1,14 @@
 ﻿@using Fusebill.ApiWrapper
 
-@model Fusebill.eCommerceWorkflow.Models.RegistrationVM
+@model Fusebill.eCommerceWorkflow.Areas.Samples.Models.RegistrationVM
 
 
 @{
     ViewBag.Title = "Step4GetInvoice";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@Html.Partial("~/Areas/Samples/Views/Shared/_MainLayout.cshtml");
 <link href="~/Content/Plan.css" rel="stylesheet" />
 
 <body style="padding-bottom: 100px;">

@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Fusebill.eCommerceWorkflow.Models
+namespace Fusebill.eCommerceWorkflow.Areas.Samples.Models
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class MultipleButtonAttribute : ActionNameSelectorAttribute

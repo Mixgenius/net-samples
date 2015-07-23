@@ -159,18 +159,18 @@
     <Compile Include="Areas\Samples\Models\PostSubscriptionIdVM.cs" />
     <Compile Include="Areas\Samples\Models\PostSubscriptionVM.cs" />
     <Compile Include="Areas\Samples\Models\TestVM.cs" />
-    <Compile Include="Areas\Samples\ZampleZAreaRegistration.cs" />
+    <Compile Include="Areas\Samples\SamplesAreaRegistration.cs" />
     <Compile Include="Controllers\FusebillBaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Common\NoLog.cs" />
-    <Compile Include="Controllers\RegistrationController.cs" />
+    <Compile Include="Areas\Samples\Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\SamplesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\MultipleButtonAttribute.cs" />
-    <Compile Include="Models\RegistrationVM.cs" />
+    <Compile Include="Areas\Samples\Models\MultipleButtonAttribute.cs" />
+    <Compile Include="Areas\Samples\Models\RegistrationVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +239,7 @@
     <Content Include="Areas\Samples\Views\Web.config" />
     <Content Include="Areas\Samples\Views\Subscriptions\Index.cshtml" />
     <Content Include="Areas\Samples\Views\Shared\Layout.cshtml" />
+    <Content Include="Areas\Samples\Views\Shared\_MainLayout.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Images\fusebill_logo-white.png" />
     <Content Include="ReadMe.txt" />
@@ -303,15 +304,16 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Samples\Index.cshtml" />
-    <Content Include="Views\Registration\index.cshtml" />
-    <Content Include="Views\Registration\Step2GetPlanProducts.cshtml" />
-    <Content Include="Views\Registration\Step3GetCustomerInformation.cshtml" />
-    <Content Include="Views\Registration\Step4GetInvoice.cshtml" />
-    <Content Include="Views\Registration\Step5GetPayment.cshtml" />
-    <Content Include="Views\Registration\Step6GetActivation.cshtml" />
+    <Content Include="Areas\Samples\Views\Registration\index.cshtml" />
+    <Content Include="Areas\Samples\Views\Registration\Step2GetPlanProducts.cshtml" />
+    <Content Include="Areas\Samples\Views\Registration\Step3GetCustomerInformation.cshtml" />
+    <Content Include="Areas\Samples\Views\Registration\Step4GetInvoice.cshtml" />
+    <Content Include="Areas\Samples\Views\Registration\Step5GetPayment.cshtml" />
+    <Content Include="Areas\Samples\Views\Registration\Step6GetActivation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

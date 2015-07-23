@@ -14,7 +14,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
     public class SubscriptionsController : FusebillBaseController
     {
 
-        // GET: /ZampleZ/Subscriptions/
+        // GET: /Samples/Subscriptions/
         public ActionResult Index()
         {
             var demoCustomerIds = ConfigurationManager.AppSettings["DemoCustomerIds"].Split(',');
@@ -43,7 +43,11 @@ namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
             return View(customersAndSubscriptionsVM);
         }
 
-       
+       /// <summary>
+       /// Returns a list of the selected customer's subscriptions
+       /// </summary>
+       /// <param name="postCustomerIdVM"></param>
+       /// <returns></returns>
         [HttpPost]
         public ActionResult ListSubscriptionsForCustomer(PostCustomerIdVM postCustomerIdVM)
         {

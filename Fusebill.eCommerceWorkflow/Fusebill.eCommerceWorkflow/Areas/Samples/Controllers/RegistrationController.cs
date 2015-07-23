@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using Fusebill.ApiWrapper;
 using Fusebill.ApiWrapper.Dto.Get;
+using Fusebill.eCommerceWorkflow.Areas.Samples.Models;
 using Fusebill.eCommerceWorkflow.Common;
-using Fusebill.eCommerceWorkflow.Models;
+using Fusebill.eCommerceWorkflow.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Fusebill.eCommerceWorkflow.Controllers
+namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
 {
     public class RegistrationController : FusebillBaseController
     {

@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace Fusebill.ApiWrapper.Dto.Get
 {
-    public class CustomerSummary : BaseDto
+    public class CustomerSummary : BaseDto, ICsvSerializable
     {
         [JsonProperty(PropertyName = "fusebillNumber")]
         [DisplayName("Fusebill ID")]

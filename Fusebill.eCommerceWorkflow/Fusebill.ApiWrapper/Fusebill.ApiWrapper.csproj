@@ -91,6 +91,7 @@
     <Compile Include="Dto\Get\DraftCharge.cs" />
     <Compile Include="Dto\Get\DraftChargeGroup.cs" />
     <Compile Include="Dto\Get\DraftDiscount.cs" />
+    <Compile Include="Dto\Get\ICsvSerializable.cs" />
     <Compile Include="Dto\Get\Invoice.cs" />
     <Compile Include="Dto\Get\InvoiceAllocation.cs" />
     <Compile Include="Dto\Get\InvoiceCharge.cs" />

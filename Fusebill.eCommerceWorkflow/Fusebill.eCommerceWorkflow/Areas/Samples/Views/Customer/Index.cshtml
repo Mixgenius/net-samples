@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/knockout-2.2.0.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/Customer.css" rel="stylesheet" />
+@Html.Partial("~/Areas/Samples/Views/Shared/Layout.cshtml");
+
+<div>
+    <h2 style="text-align:center; font-family:cursive;">Creating and Deleting Customers</h2>
+    <br /><br />
+</div>
+
+
+
+<div>
+    <div class="panel panel-primary panelCustomer">
+        <div class="panel-heading">
+            <h3 class="panel-title"><br /><br /><br /><br />Create New Customer</h3>
+        </div>
+        <div class="panel-body">
+            <table class="tableCustomer">
+                <tr>
+                    <td><p><strong>First Name: </strong></p></td>
+                    <td><p>Jack</p></td>
+                </tr>
+                <tr>
+                    <td><p><strong>Last Name: </strong></p></td>
+                    <td><p>Purwell</p></td>
+                </tr>
+                <tr>
+                    <td><p><strong>Primary Email: </strong></p></td>
+                    <td><p>j.Purwell@example.com</p></td>
+                </tr>
+                <tr>
+                    <td><p><strong>Primary Phone: </strong></p></td>
+                    <td><p>1234567890</p></td>
+                </tr>
+            </table>
+          
+            <div class="btn btn-success" onclick="createCustomer()">Create Customer</div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+
+<div data-bind="style: {display: (showCancelCustomerDiv() == 'true') ?  'initial' : 'none'}">
+    <div class="panel panel-primary panelCustomer">
+        <div class="panel-heading">
+            <h3 class="panel-title"><br /><br /><br /><br />Newly Created Customer Information</h3>
+        </div>
+        <div class="panel-body panelBodyCustomer">
+            <p><strong>First Name: </strong></p><p data-bind="text: firstName"></p> <br><br />
+            <p><strong>Last Name: </strong></p><p data-bind="text: lastName"></p><br /><br />
+            <p><strong>Primary Email: </strong></p><p data-bind="text: primaryEmail"></p><br /><br />
+            <p><strong>Primary Phone: </strong></p><p data-bind="text: primaryPhone"></p><br /><br />
+
+            <div class="form-group">
+                <label for="selectCancellationOption">Select Cancellation Option</label>
+                <br />
+                <select class="form-control" id="selectCancellationOption">
+                    <option>None</option>
+                    <option>Unearned</option>
+                    <option>Full</option>
+                </select>
+            </div>
+            <div class="btn btn-danger" onclick="cancelCustomer()">Cancel Newly Created Customer</div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var newCustomer = {
+        id: 'To be set',
+        cancellationOption: 'To be set',
+        firstName: ko.observable(),
+        lastName: ko.observable(),
+        primaryEmail: ko.observable(),
+        primaryPhone: ko.observable(),
+        showCancelCustomerDiv : ko.observable("false")
+    };
+
+
+    var returnedData;
+
+    function createCustomer() {
+
+        $.ajax({
+            type: "POST",
+            url: "Customer/CreateCustomer",
+            success: function (data) {
+                alert("Successfully created customer");
+                returnedData = data;
+                setNewCustomer();
+            }
+        });
+    }
+
+    function setNewCustomer() {
+        newCustomer.id = returnedData.Id;
+        newCustomer.firstName(returnedData.FirstName);
+        newCustomer.lastName(returnedData.LastName);
+        newCustomer.primaryEmail(returnedData.PrimaryEmail);
+        newCustomer.primaryPhone(returnedData.PrimaryPhone);
+        newCustomer.showCancelCustomerDiv("true");
+    }
+
+    function cancelCustomer() {
+        newCustomer.cancellationOption = $("#selectCancellationOption").val();
+
+        $.ajax({
+
+            type: "POST",
+            dataType: "json",
+            url: "Customer/CancelCustomer",
+            data: newCustomer,
+            success: function()
+            {
+                alert("Successfully cancelled customer");
+                newCustomer.showCancelCustomerDiv("false");
+
+            }
+        });
+    }
+
+    ko.applyBindings(newCustomer);
+
+</script>

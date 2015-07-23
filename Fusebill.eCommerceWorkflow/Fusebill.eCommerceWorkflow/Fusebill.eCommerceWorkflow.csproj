@@ -152,8 +152,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Samples\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Samples\Controllers\SubscriptionsController.cs" />
     <Compile Include="Areas\Samples\Models\CreateSubscriptionVM.cs" />
+    <Compile Include="Areas\Samples\Models\CustomerCancellationVM.cs" />
     <Compile Include="Areas\Samples\Models\CustomersAndSubscriptionsVM.cs" />
     <Compile Include="Areas\Samples\Models\PostCustomerIdVM.cs" />
     <Compile Include="Areas\Samples\Models\PostSubscriptionIdVM.cs" />
@@ -177,6 +179,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Customer.css" />
     <Content Include="Content\pacman-loader.gif" />
     <Content Include="Content\Plan.css" />
     <Content Include="Content\Subscription.css" />
@@ -240,6 +243,7 @@
     <Content Include="Areas\Samples\Views\Subscriptions\Index.cshtml" />
     <Content Include="Areas\Samples\Views\Shared\Layout.cshtml" />
     <Content Include="Areas\Samples\Views\Shared\_MainLayout.cshtml" />
+    <Content Include="Areas\Samples\Views\Customer\Index.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Images\fusebill_logo-white.png" />
     <Content Include="ReadMe.txt" />

@@ -1,0 +1,110 @@
+﻿@model Fusebill.eCommerceWorkflow.Areas.Samples.Models.ReversalVM
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+@Html.Partial("~/Areas/Samples/Views/Shared/Layout.cshtml");
+
+<div>
+    <h2 style="text-align:center; font-family:cursive;">Reversals</h2>
+    <br /><br />
+</div>
+
+
+<h3 style="text-align:center">Here are the posted invoices of Jason Smith, one of the demo customers</h3>
+@for (int i = 0; i < Model.invoices.Count; i++)
+{
+    <div style="background-color: orange; margin-top: 5em; width: auto">
+        <div style="text-align:center; padding-top: 1em">
+            <p><strong>Original Invoice Amount: </strong>@Model.invoices[i].InvoiceAmount</p>
+            <p><strong>Outstanding Balance: </strong>@Model.invoices[i].OutstandingBalance</p>
+        </div>
+        @for (int j = 0; j < Model.invoices[i].Charges.Count; j++)
+        {
+            if (Model.invoices[i].Charges[j].IsReversable == true)
+            {
+                <div style="text-align: center; margin-left: 10%; width: 80%; margin-top: 2em; background-color: coral;">
+                    <p><strong>Charge Name: </strong>@Model.invoices[i].Charges[j].Name</p>
+                    <p><strong>Original Charge Amount: </strong>@Model.invoices[i].Charges[j].Amount</p>
+
+                    <div class="form-group" id="form_@Model.invoices[i].Charges[j].Id">
+                        <label for="selectCancellationOption">Select Reversal Option</label>
+                        <br />
+                        <select style="margin-left:40%; width: 20%" class="form-control" id="selectCancellationOption_@Model.invoices[i].Charges[j].Id" onchange="optionsSelected(@Model.invoices[i].Charges[j].Id, @Model.invoices[i].Charges[j].Amount)">
+                            <option>Full</option>
+                            <option>Unearned</option>
+                            <option>Amount</option>
+                        </select>
+                    </div>
+
+                    <label for="reference_@Model.invoices[i].Charges[j].Id">Reference</label><br />
+                    <input id="reference_@Model.invoices[i].Charges[j].Id" /> <br /><br />
+
+                    <div id="inputDiv_@Model.invoices[i].Charges[j].Id" style="display:none">
+                        <label for="inputAmount_@Model.invoices[i].Charges[j].Id">Reverse a specific amount (Max: $@Model.invoices[i].OutstandingBalance)</label><br />
+                        <input id="inputAmount_@Model.invoices[i].Charges[j].Id" /> <br /><br />
+                    </div>
+
+                    <div class="btn btn-info" onclick="reverseInvoice(@Model.invoices[i].Charges[j].Id)">Reverse invoice</div>
+                    <br /><br /> <br />
+                </div>
+            }
+            else
+            {
+                <p style="text-align:center; padding-bottom: 1em">@Model.invoices[i].Charges[j].Name cannot be reversed</p>
+            }
+        }
+    </div>
+}
+
+<script>
+
+
+    function reverseInvoice(invoiceId) {
+        var postInvoice = {
+            reverseOption: $("#selectCancellationOption_" + invoiceId).val(),
+            specificAmount: $("#inputAmount_" + invoiceId).val(),
+            reference: $("#reference_" + invoiceId).val(),
+            invoiceID: invoiceId
+        };
+
+        alert($("#inputAmount_" + invoiceId).val());
+        $.ajax({
+            type: "POST",
+            url: "Reversal/ReverseCharge",
+            dataType: "json",
+            data: postInvoice,
+            success: function () {
+                alert("Your reversal is complete");
+            }
+        });
+    }
+
+
+    function optionsSelected(invoiceId, outstandingBalance) {
+        if ($("#selectCancellationOption_" + invoiceId).val() == "Amount") {
+            $("#inputDiv_" + invoiceId).css("display", "block");
+        }
+        else {
+            $("#inputDiv_" + invoiceId).css("display", "none");
+        }
+
+        //    if ($("#selectCancellationOption").val() == "Amount")
+        //    {
+        //        alert("Amount selected");
+        //        var inputAmount = document.createElement("input");
+        //        inputAmount.id = "inputAmount_" + invoiceID;
+
+        //        var inputAmountLabel = document.createElement("label");
+        //        inputAmountLabel.innerHTML = "Reverse a specific amount (Max: $" + outstandingBalance + ")";
+        //        inputAmountLabel.htmlFor = inputAmount.id;
+
+        //        $("#form_" + invoiceID).append(inputAmountLabel);
+        //        $("#form_" + invoiceID).append(inputAmount);
+        //    }
+    }
+</script>

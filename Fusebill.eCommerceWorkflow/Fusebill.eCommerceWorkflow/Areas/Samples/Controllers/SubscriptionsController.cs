@@ -53,7 +53,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
         {
             long desiredCustomerID = Convert.ToInt64(postCustomerIdVM.CustomerID);
             var subscriptions = ApiClient.GetSubscriptions(desiredCustomerID, new Fusebill.ApiWrapper.QueryOptions()).Results;
-
+           
             return Json(subscriptions);
         }
 

@@ -141,6 +141,8 @@
     <Compile Include="Dto\Post\Payment.cs" />
     <Compile Include="Dto\Post\PaymentAllocation.cs" />
     <Compile Include="Dto\Post\PaymentMethod.cs" />
+    <Compile Include="Dto\Post\Refund.cs" />
+    <Compile Include="Dto\Post\RefundAllocation.cs" />
     <Compile Include="Dto\Post\ReverseCharge.cs" />
     <Compile Include="Dto\Post\Subscription.cs" />
     <Compile Include="Dto\Post\SubscriptionActivation.cs" />

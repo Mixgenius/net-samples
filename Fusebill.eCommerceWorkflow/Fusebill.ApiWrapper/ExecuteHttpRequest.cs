@@ -140,6 +140,7 @@ namespace Fusebill.ApiWrapper
                     apiError = HttpResponseHelper.CreateApiError(response.StatusCode, content);
                 }
 
+                
                 throw new ApiClientException(apiError);
             }
         }

@@ -294,7 +294,11 @@ namespace Fusebill.ApiWrapper
             return GetEntities<Invoice>(url);
         }
 
-  
+        public Payment PostRefund(Fusebill.ApiWrapper.Dto.Post.Refund model)
+        {
+            var url = RestUriBuilder.BuildUri("refunds");
+            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Refund, Payment>(url, model);
+        }
 
 
         #endregion

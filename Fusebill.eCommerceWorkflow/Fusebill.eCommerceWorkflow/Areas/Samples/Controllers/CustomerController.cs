@@ -47,8 +47,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
             {
                 CustomerId = customerCancellation.id,
                 CancellationOption = customerCancellation.cancellationOption
-            }
-            );
+            });
         }
 
     }

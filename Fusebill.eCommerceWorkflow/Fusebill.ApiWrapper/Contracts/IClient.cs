@@ -44,6 +44,7 @@ namespace Fusebill.ApiWrapper.Contracts
         ReverseCharge PostReverseCharge(Fusebill.ApiWrapper.Dto.Post.ReverseCharge reverseCharge);
         ResultList<Invoice> GetInvoicesByCustomerId(long customerId, QueryOptions queryOptions);
         void DeleteSubscription(long id);
+        Payment PostRefund(Fusebill.ApiWrapper.Dto.Post.Refund model);
 
 
     }

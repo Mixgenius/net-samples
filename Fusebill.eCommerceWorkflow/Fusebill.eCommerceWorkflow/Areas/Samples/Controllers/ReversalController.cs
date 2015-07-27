@@ -2,6 +2,7 @@
 using Fusebill.eCommerceWorkflow.Controllers;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,8 +16,8 @@ namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
 
         public ActionResult Index()
         {
-            var customerID = 4622859;
-            var planFrequencyID = 10802244;
+            var customerID = Convert.ToInt64(ConfigurationManager.AppSettings["DemoCustomerIds"].Split(',')[2]);
+            var planFrequencyID = Convert.ToInt64(ConfigurationManager.AppSettings["DemoPlanFrequencyID"]); 
 
             List<decimal> invoiceCharges = new List<decimal>();
 

@@ -22,14 +22,20 @@ namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
         /// Creates a new customer
         /// </summary>
         /// <returns></returns>
-        public ActionResult CreateCustomer()
+        public ActionResult CreateCustomer(CreateCustomerVM createCustomerVM)
         {
             var postCustomer = new Fusebill.ApiWrapper.Dto.Post.Customer
             {
-                FirstName = "Jack",
-                LastName = "Purwell",
-                PrimaryEmail = "J.Purwell@example.com",
-                PrimaryPhone = "1234567890",
+                
+                FirstName = createCustomerVM.firstName,
+                LastName = createCustomerVM.lastName,
+                PrimaryEmail = createCustomerVM.primaryEmail,
+                PrimaryPhone = createCustomerVM.primaryPhone,
+                CompanyName = createCustomerVM.companyName,
+                Reference = createCustomerVM.reference,
+                CustomerReference = new ApiWrapper.Dto.Get.CustomerReference { 
+                    Reference1 = createCustomerVM.customerReference, 
+                }
             };
 
             var returnedCustomer = ApiClient.PostCustomer(postCustomer);

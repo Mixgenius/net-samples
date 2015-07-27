@@ -16,9 +16,7 @@ namespace Fusebill.eCommerceWorkflow.Areas.Samples.Controllers
 
         public ActionResult Index()
         {
-            var x = ApiClient.GetCustomer(Convert.ToInt64(ConfigurationManager.AppSettings["DemoCustomerIds"].Split(',')[2]));
-            var y = ApiClient.GetCustomers(new ApiWrapper.QueryOptions { QuickSearch = "Id" });
-
+          
             return View();
         }
 

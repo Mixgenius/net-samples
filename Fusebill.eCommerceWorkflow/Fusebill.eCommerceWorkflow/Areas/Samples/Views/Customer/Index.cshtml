@@ -20,25 +20,28 @@
             <h3 class="panel-title"><br /><br /><br /><br />Create New Customer</h3>
         </div>
         <div class="panel-body">
-            <table class="tableCustomer">
-                <tr>
-                    <td><p><strong>First Name: </strong></p></td>
-                    <td><p>Jack</p></td>
-                </tr>
-                <tr>
-                    <td><p><strong>Last Name: </strong></p></td>
-                    <td><p>Purwell</p></td>
-                </tr>
-                <tr>
-                    <td><p><strong>Primary Email: </strong></p></td>
-                    <td><p>j.Purwell@example.com</p></td>
-                </tr>
-                <tr>
-                    <td><p><strong>Primary Phone: </strong></p></td>
-                    <td><p>1234567890</p></td>
-                </tr>
-            </table>
-          
+
+            <label for="firstName">First Name</label><br />
+            <input id="firstName" /> <br /> <br />
+
+            <label for="lastName">Last Name</label><br />
+            <input id="lastName" /><br /> <br />
+
+            <label for="companyName">Company Name</label><br />
+            <input id="companyName" /><br /> <br />
+
+            <label for="primaryEmail">Primary Email</label><br />
+            <input id="primaryEmail" /><br /> <br />
+
+            <label for="primaryPhone">Primary Phone</label><br />
+            <input id="primaryPhone" /><br /> <br />
+
+            <label for="reference">Reference</label><br />
+            <input id="reference" /><br /> <br />
+
+            <label for="customerReference">Customer Reference</label><br />
+            <input id="customerReference" /><br /> <br />
+
             <div class="btn btn-success" onclick="createCustomer()">Create Customer</div>
         </div>
     </div>
@@ -57,8 +60,12 @@
         <div class="panel-body panelBodyCustomer">
             <p><strong>First Name: </strong></p><p data-bind="text: firstName"></p> <br><br />
             <p><strong>Last Name: </strong></p><p data-bind="text: lastName"></p><br /><br />
+            <p><strong>Company Name: </strong></p><p data-bind="text: companyName"></p><br /><br />
             <p><strong>Primary Email: </strong></p><p data-bind="text: primaryEmail"></p><br /><br />
             <p><strong>Primary Phone: </strong></p><p data-bind="text: primaryPhone"></p><br /><br />
+            <p><strong>Reference: </strong></p><p data-bind="text: reference"></p><br /><br />
+            <p><strong>Customer Reference: </strong></p><p data-bind="text: customerReference"></p><br /><br />
+
 
             <div class="form-group">
                 <label for="selectCancellationOption">Select Cancellation Option</label>
@@ -82,8 +89,11 @@
         cancellationOption: 'To be set',
         firstName: ko.observable(),
         lastName: ko.observable(),
+        companyName: ko.observable(),
         primaryEmail: ko.observable(),
         primaryPhone: ko.observable(),
+        reference: ko.observable(),
+        customerReference: ko.observable(),
         showCancelCustomerDiv : ko.observable("false")
     };
 
@@ -92,23 +102,39 @@
 
     function createCustomer() {
 
+        var postCustomer = {
+            firstName: $("#firstName").val(),
+            lastName: $("#lastName").val(),
+            companyName: $("#companyName").val(),
+            primaryEmail: $("#primaryEmail").val(),
+            primaryPhone: $("#primaryPhone").val(),
+            reference: $("#reference").val(),
+            customerReference: $("#customerReference").val(),
+        };
+
+
         $.ajax({
             type: "POST",
             url: "Customer/CreateCustomer",
+            data:postCustomer,
             success: function (data) {
-                alert("Successfully created customer");
-                returnedData = data;
-                setNewCustomer();
-            }
-        });
+                    alert("Successfully created customer");
+                    returnedData = data;
+                    showNewCustomer();
+           }
+    });
     }
 
-    function setNewCustomer() {
+    function showNewCustomer() {
         newCustomer.id = returnedData.Id;
         newCustomer.firstName(returnedData.FirstName);
         newCustomer.lastName(returnedData.LastName);
+        newCustomer.companyName(returnedData.CompanyName);
         newCustomer.primaryEmail(returnedData.PrimaryEmail);
         newCustomer.primaryPhone(returnedData.PrimaryPhone);
+        newCustomer.reference(returnedData.PrimaryPhone);
+        newCustomer.customerReference(returnedData.CustomerReference.Reference1);
+        
         newCustomer.showCancelCustomerDiv("true");
     }
 
@@ -124,6 +150,8 @@
             success: function()
             {
                 alert("Successfully cancelled customer");
+
+                $(':input').val('');
                 newCustomer.showCancelCustomerDiv("false");
 
             }

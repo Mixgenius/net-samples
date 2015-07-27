@@ -156,6 +156,7 @@
     <Compile Include="Areas\Samples\Controllers\RefundController.cs" />
     <Compile Include="Areas\Samples\Controllers\ReversalController.cs" />
     <Compile Include="Areas\Samples\Controllers\SubscriptionsController.cs" />
+    <Compile Include="Areas\Samples\Models\CreateCustomerVM.cs" />
     <Compile Include="Areas\Samples\Models\CreateSubscriptionVM.cs" />
     <Compile Include="Areas\Samples\Models\CustomerCancellationVM.cs" />
     <Compile Include="Areas\Samples\Models\CustomersAndSubscriptionsVM.cs" />

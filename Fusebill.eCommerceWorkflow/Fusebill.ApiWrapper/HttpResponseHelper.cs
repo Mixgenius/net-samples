@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 
 namespace Fusebill.ApiWrapper
 {
@@ -9,7 +11,7 @@ namespace Fusebill.ApiWrapper
     {
         public static HttpResponseMessage SetAccessControlHeaders(HttpResponseMessage response)
         {
-            if (response == null) 
+            if (response == null)
                 return null;
 
             response.Headers.Add("Access-Control-Allow-Origin", "*");
@@ -45,25 +47,29 @@ namespace Fusebill.ApiWrapper
             };
         }
 
-        public static HttpResponseMessage CreateResponseWithAccessControlHeaders(HttpRequestMessage request, HttpStatusCode statusCode, string error)
-        {
-            return SetAccessControlHeaders(CreateHttpResponseMessage(request, CreateApiError(statusCode, error)));
-        }
+        //public static HttpResponseMessage CreateResponseWithAccessControlHeaders(HttpRequestMessage request, HttpStatusCode statusCode, string error)
+        //{
+        //    return SetAccessControlHeaders(CreateHttpResponseMessage(request, CreateApiError(statusCode, error)));
+        //}
 
-        public static HttpResponseMessage CreateResponseWithAccessControlHeaders(HttpRequestMessage request, HttpStatusCode statusCode, Exception exception)
-        {
-            return SetAccessControlHeaders(CreateHttpResponseMessage(request, CreateApiError(statusCode, exception)));
-        }
+        //public static HttpResponseMessage CreateResponseWithAccessControlHeaders(HttpRequestMessage request, HttpStatusCode statusCode, Exception exception)
+        //{
+        //    return SetAccessControlHeaders(CreateHttpResponseMessage(request, CreateApiError(statusCode, exception)));
+        //}
 
-        public static HttpResponseMessage CreateHttpResponseMessage(HttpRequestMessage request, HttpStatusCode statusCode, string error)
-        {
-            return SetAccessControlHeaders(CreateHttpResponseMessage(request, CreateApiError(statusCode, error)));
-        }
+        //public static HttpResponseMessage CreateHttpResponseMessage(HttpRequestMessage request, HttpStatusCode statusCode, string error)
+        //{
+        //    return SetAccessControlHeaders(CreateHttpResponseMessage(request, CreateApiError(statusCode, error)));
+        //}
 
-        private static HttpResponseMessage CreateHttpResponseMessage(HttpRequestMessage request, Dto.ApiError apiError)
-        {
-            return request.CreateResponse<Dto.ApiError>(apiError.HttpStatusCode, apiError);
-        }
+        //private static HttpResponseMessage CreateHttpResponseMessage(HttpRequestMessage request, Dto.ApiError apiError)
+        //{
+        //    return new HttpResponseMessage(apiError.HttpStatusCode)
+        //    {
+        //        Content = new StringContent(JsonConvert.SerializeObject(apiError), Encoding.UTF8, "application/json")
+        //    };
+        //    //return request.CreateResponse<Dto.ApiError>(apiError.HttpStatusCode, apiError);
+        //}
 
         private static List<KeyValuePair<string, string>> CreateErrorListFromException(Exception exception)
         {

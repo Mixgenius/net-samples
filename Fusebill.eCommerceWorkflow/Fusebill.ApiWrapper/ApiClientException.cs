@@ -23,23 +23,23 @@ namespace Fusebill.ApiWrapper
             ApiError = apiError;
         }
 
-        public ApiClientException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            if (null != info)
-            {
-                ApiError = (ApiError)info.GetValue("ApiError", typeof(ApiError));
-            }
-        }
+        //public ApiClientException(SerializationInfo info, StreamingContext context)
+        //    : base(info, context)
+        //{
+        //    if (null != info)
+        //    {
+        //        ApiError = (ApiError)info.GetValue("ApiError", typeof(ApiError));
+        //    }
+        //}
 
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
+        //public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        //{
+        //    base.GetObjectData(info, context);
 
-            if (null != info)
-            {
-                info.AddValue("ApiError", ApiError);
-            }
-        }
+        //    if (null != info)
+        //    {
+        //        info.AddValue("ApiError", ApiError);
+        //    }
+        //}
     }
 }

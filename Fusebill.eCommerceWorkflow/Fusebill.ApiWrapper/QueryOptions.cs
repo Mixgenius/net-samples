@@ -63,7 +63,7 @@ namespace Fusebill.ApiWrapper
             if (ShouldChangeDefaultSortOrder())
                 SortOrder = "Descending";
 
-            var currentSortOrder = string.Equals(SortOrder, "Ascending", StringComparison.InvariantCultureIgnoreCase) ? "OrderBy" : "OrderByDescending";
+            var currentSortOrder = string.Equals(SortOrder, "Ascending", StringComparison.OrdinalIgnoreCase) ? "OrderBy" : "OrderByDescending";
             return currentSortOrder;
         }
 

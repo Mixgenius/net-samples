@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fusebill.eCommerceWorkflow", "Fusebill.eCommerceWorkflow\Fusebill.eCommerceWorkflow.csproj", "{9EC80D0D-F54A-43C7-8316-116D3145CF41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fusebill.ApiWrapper", "Fusebill.ApiWrapper\Fusebill.ApiWrapper.csproj", "{D0E8350A-460C-46FC-86E8-CA64842297E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fusebill.ApiWrapper", "Fusebill.ApiWrapper\Fusebill.ApiWrapper.csproj", "{D0E8350A-460C-46FC-86E8-CA64842297E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fusebill.IntegrationTests", "Fusebill.IntegrationTests\Fusebill.IntegrationTests.csproj", "{C82856B7-7D4D-47BC-9E26-6869A481ABF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9EC80D0D-F54A-43C7-8316-116D3145CF41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9EC80D0D-F54A-43C7-8316-116D3145CF41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9EC80D0D-F54A-43C7-8316-116D3145CF41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9EC80D0D-F54A-43C7-8316-116D3145CF41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D0E8350A-460C-46FC-86E8-CA64842297E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D0E8350A-460C-46FC-86E8-CA64842297E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0E8350A-460C-46FC-86E8-CA64842297E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0E8350A-460C-46FC-86E8-CA64842297E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C82856B7-7D4D-47BC-9E26-6869A481ABF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C82856B7-7D4D-47BC-9E26-6869A481ABF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C82856B7-7D4D-47BC-9E26-6869A481ABF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C82856B7-7D4D-47BC-9E26-6869A481ABF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

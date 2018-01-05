@@ -176,8 +176,8 @@ namespace FuseBillCore.IntegrationTests
             var client = GetClient();
             var customer = await client.PostCustomer(new Post.Customer
             {
-                FirstName = "Integration",
-                LastName = "Test",
+                FirstName = "IntegrationTest",
+                LastName = "WhenPostingCustomer",
             });
             customer.Should().NotBeNull();
         }
@@ -188,8 +188,8 @@ namespace FuseBillCore.IntegrationTests
             var client = GetClient();
             var newCustomer = await client.PostCustomer(new Post.Customer
             {
-                FirstName = "Integration",
-                LastName = "Test"
+                FirstName = "IntegrationTest",
+                LastName = "WhenPuttingCustomer"
             });
 
             newCustomer.Status.Should().Be("Draft");
@@ -271,8 +271,8 @@ namespace FuseBillCore.IntegrationTests
             //new customer
             var newCustomer = await client.PostCustomer(new Post.Customer
             {
-                FirstName = "Integration",
-                LastName = "Test",
+                FirstName = "IntegrationTest",
+                LastName = "WhenUpgradingSubscription",
             });
 
             //activate
@@ -291,7 +291,7 @@ namespace FuseBillCore.IntegrationTests
             var ccard = await client.PostCreditCard(new Post.CreditCard
             {
                 CustomerId = newCustomer.Id,
-                Address1 = "test",
+                Address1 = "WhenUpgradingSubscription",
                 CardNumber = "4111111111111111",
                 Cvv = "123",
                 ExpirationMonth = 11,
@@ -300,14 +300,14 @@ namespace FuseBillCore.IntegrationTests
                 LastName = newCustomer.LastName
             });
 
-            await client.PostPayment(new Post.Payment
-            {
-                CustomerId = newCustomer.Id,
-                Amount = 14,
-                Source = "Import",
-                PaymentMethodType = "CreditCard",
-                PaymentMethodTypeId = ccard.Id
-            });
+            //await client.PostPayment(new Post.Payment
+            //{
+            //    CustomerId = newCustomer.Id,
+            //    Amount = 14,
+            //    Source = "Import",
+            //    PaymentMethodType = "CreditCard",
+            //    PaymentMethodTypeId = ccard.Id
+            //});
 
             var updatedSubscription = await client.PostSubscriptionActivation(new Post.SubscriptionActivation
             {
@@ -317,7 +317,7 @@ namespace FuseBillCore.IntegrationTests
             //cancel before upgrade.
             await client.PostSubscriptionCancel(new Post.SubscriptionCancel
             {
-                SubscriptionId = updatedSubscription.Id,
+                SubscriptionId = newAdvancedSubscription.Id,
                 CancellationOption = "Unearned" // prorated
             });
 
@@ -384,7 +384,7 @@ namespace FuseBillCore.IntegrationTests
             {
                 CustomerId = CUSTOMER1,
                 ProductId = ALC_WAV,
-                Name = "test"
+                Name = "WhenPostingPurchase"
             });
             purchase.Should().NotBeNull();
             purchase.PriceRanges.Single().Amount.Should().Be(9.99m); //because purchase is outside of plan

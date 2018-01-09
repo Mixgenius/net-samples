@@ -1,8 +1,11 @@
 ﻿using Fusebill.ApiWrapper.Contracts;
-using Fusebill.ApiWrapper.Dto.Get;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Get = Fusebill.ApiWrapper.Dto.Get;
+using Patch = Fusebill.ApiWrapper.Dto.Patch;
+using Post = Fusebill.ApiWrapper.Dto.Post;
+using Put = Fusebill.ApiWrapper.Dto.Put;
 
 namespace Fusebill.ApiWrapper
 {
@@ -111,10 +114,10 @@ namespace Fusebill.ApiWrapper
         }
 
 
-        public Task<Subscription> PutSubscription(Fusebill.ApiWrapper.Dto.Put.Subscription subscription)
+        public Task<Get.Subscription> PutSubscription(Fusebill.ApiWrapper.Dto.Put.Subscription subscription)
         {
             var url = RestUriBuilder.BuildUri("subscriptions");
-            return PutEntity<Fusebill.ApiWrapper.Dto.Put.Subscription, Subscription>(url, subscription);
+            return PutEntity<Put.Subscription, Get.Subscription>(url, subscription);
         }
 
         protected async Task<TU> PutEntity<T, TU>(string url, T entity)
@@ -123,40 +126,40 @@ namespace Fusebill.ApiWrapper
             return ParseHttpResponse.GetEntity<TU>(await response.Content.ReadAsStringAsync());
         }
 
-        public Task<Customer> PostCustomer(Fusebill.ApiWrapper.Dto.Post.Customer customer)
+        public Task<Get.Customer> PostCustomer(Post.Customer customer)
         {
             var url = RestUriBuilder.BuildUri("customers");
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Customer, Customer>(url, customer);
+            return PostEntity<Post.Customer, Get.Customer>(url, customer);
         }
 
-        public Task<Customer> PutCustomer(Fusebill.ApiWrapper.Dto.Put.Customer customer)
+        public Task<Get.Customer> PutCustomer(Fusebill.ApiWrapper.Dto.Put.Customer customer)
         {
             var url = RestUriBuilder.BuildUri("customers");
-            return PutEntity<Fusebill.ApiWrapper.Dto.Put.Customer, Customer>(url, customer);
+            return PutEntity<Put.Customer, Get.Customer>(url, customer);
         }
 
-        public Task<Address> PostAddress(Fusebill.ApiWrapper.Dto.Post.Address address)
+        public Task<Get.Address> PostAddress(Post.Address address)
         {
             var url = RestUriBuilder.BuildUri("addresses");
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Address, Address>(url, address);
+            return PostEntity<Post.Address, Get.Address>(url, address);
         }
 
-        public Task<Subscription> PostSubscription(Fusebill.ApiWrapper.Dto.Post.Subscription subscription)
+        public Task<Get.Subscription> PostSubscription(Post.Subscription subscription)
         {
             var url = RestUriBuilder.BuildUri("subscriptions");
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Subscription, Subscription>(url, subscription);
+            return PostEntity<Post.Subscription, Get.Subscription>(url, subscription);
         }
 
-        public Task<Subscription> GetSubscription(long id)
+        public Task<Get.Subscription> GetSubscription(long id)
         {
             var url = RestUriBuilder.BuildUri("subscriptions", id);
-            return GetEntity<Subscription>(url);
+            return GetEntity<Get.Subscription>(url);
         }
 
-        public Task<Customer> PostCustomerActivation(Fusebill.ApiWrapper.Dto.Post.CustomerActivation customerActivation, bool preview, bool showZeroDollarCharges)
+        public Task<Get.Customer> PostCustomerActivation(Post.CustomerActivation customerActivation, bool preview, bool showZeroDollarCharges)
         {
             var url = RestUriBuilder.BuildUri("CustomerActivation") + "?preview=" + preview + "&showZeroDollarCharges=" + showZeroDollarCharges;
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.CustomerActivation, Customer>(url, customerActivation);
+            return PostEntity<Post.CustomerActivation, Get.Customer>(url, customerActivation);
         }
 
         public void DeleteSubscription(long id, bool allowForError = false)
@@ -167,16 +170,16 @@ namespace Fusebill.ApiWrapper
             DeleteEntity(url);
         }
 
-        public Task<Payment> PostPayment(Fusebill.ApiWrapper.Dto.Post.Payment payment)
+        public Task<Get.Payment> PostPayment(Post.Payment payment)
         {
             var url = RestUriBuilder.BuildUri("payments");
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Payment, Payment>(url, payment);
+            return PostEntity<Post.Payment, Get.Payment>(url, payment);
         }
 
-        public Task<CreditCard> PostCreditCard(Fusebill.ApiWrapper.Dto.Post.CreditCard paymentMethod)
+        public Task<Get.CreditCard> PostCreditCard(Post.CreditCard paymentMethod)
         {
             var url = RestUriBuilder.BuildUri("paymentmethods");
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.CreditCard, CreditCard>(url, paymentMethod);
+            return PostEntity<Post.CreditCard, Get.CreditCard>(url, paymentMethod);
         }
       
         protected async Task<TU> PostEntity<T, TU>(string url, T entity, string acceptType = "application/json", int timeout = 60)
@@ -213,60 +216,60 @@ namespace Fusebill.ApiWrapper
 
         #region Public Methods
 
-        public Task<List<Country>> GetCountries()
+        public Task<List<Get.Country>> GetCountries()
         {
             var url = RestUriBuilder.BuildUri("countries");
-            return GetEntityList<Country>(url);
+            return GetEntityList<Get.Country>(url);
         }
 
-        public Task<ResultList<Plan>> GetPlans(QueryOptions queryOptions)
+        public Task<ResultList<Get.Plan>> GetPlans(QueryOptions queryOptions)
         {
             var url = RestUriBuilder.BuildUri("Plans", queryOptions);
-            return GetEntities<Plan>(url);
+            return GetEntities<Get.Plan>(url);
         }
 
-        public Task<ResultList<Plan>> GetActivePlans(QueryOptions queryOptions)
+        public Task<ResultList<Get.Plan>> GetActivePlans(QueryOptions queryOptions)
         {
             queryOptions.Query = "Status:Active";
             var url = RestUriBuilder.BuildUri("Plans", queryOptions);
-            return GetEntities<Plan>(url);
+            return GetEntities<Get.Plan>(url);
         }
 
-        public Task<Plan> GetPlan(long id)
+        public Task<Get.Plan> GetPlan(long id)
         {
             var url = RestUriBuilder.BuildUri("plans", id);
-            return GetEntity<Plan>(url);
+            return GetEntity<Get.Plan>(url);
         }
 
-        public Task<ResultList<CustomerSummary>> GetCustomers(QueryOptions queryOptions)
+        public Task<ResultList<Get.CustomerSummary>> GetCustomers(QueryOptions queryOptions)
         {
             //var url = RestUriBuilder.BuildUri("customerSummary", queryOptions);
             var url = RestUriBuilder.BuildUri("customers", queryOptions);
-            return GetEntities<CustomerSummary>(url);
+            return GetEntities<Get.CustomerSummary>(url);
         }
 
-        public Task<Customer> GetCustomer(long id)
+        public Task<Get.Customer> GetCustomer(long id)
         {
             var url = RestUriBuilder.BuildUri("customers", id);
-            return GetEntity<Customer>(url);
+            return GetEntity<Get.Customer>(url);
         }
 
-        public Task<Subscription> PostSubscriptionActivation(Fusebill.ApiWrapper.Dto.Post.SubscriptionActivation subscriptionActivation, bool preview = false, bool showZeroDollarCharges = true, bool temporarilyDisableAutoPost = false)
+        public Task<Get.Subscription> PostSubscriptionActivation(Post.SubscriptionActivation subscriptionActivation, bool preview = false, bool showZeroDollarCharges = true, bool temporarilyDisableAutoPost = false)
         {
             var url = RestUriBuilder.BuildUri("subscriptionActivation", subscriptionActivation.Id) + string.Format("?preview={0}&showZeroDollarCharges={1}&temporarilyDisableAutoPost={2}", preview, showZeroDollarCharges, temporarilyDisableAutoPost);
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.SubscriptionActivation, Subscription>(url, subscriptionActivation);
+            return PostEntity<Post.SubscriptionActivation, Get.Subscription>(url, subscriptionActivation);
         }
 
-        public Task<Subscription> PostSubscriptionProvision(Fusebill.ApiWrapper.Dto.Post.SubscriptionProvision subscriptionProvision, bool preview = false, bool showZeroDollarCharges = true, bool temporarilyDisableAutoPost = false)
+        public Task<Get.Subscription> PostSubscriptionProvision(Post.SubscriptionProvision subscriptionProvision, bool preview = false, bool showZeroDollarCharges = true, bool temporarilyDisableAutoPost = false)
         {
             var url = RestUriBuilder.BuildUri("subscriptionProvision", subscriptionProvision.Id) + string.Format("?preview={0}&showZeroDollarCharges={1}&temporarilyDisableAutoPost={2}", preview, showZeroDollarCharges, temporarilyDisableAutoPost);
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.SubscriptionProvision, Subscription>(url, subscriptionProvision);
+            return PostEntity<Post.SubscriptionProvision, Get.Subscription>(url, subscriptionProvision);
         }
 
-        public Task<ResultList<PlanProduct>> GetPlanProductsByPlanId(long id, QueryOptions queryOptions)
+        public Task<ResultList<Get.PlanProduct>> GetPlanProductsByPlanId(long id, QueryOptions queryOptions)
         {
             var url = RestUriBuilder.BuildUri("plans", id, "planProducts", queryOptions);
-            return GetEntities<PlanProduct>(url);
+            return GetEntities<Get.PlanProduct>(url);
 
         }
 
@@ -278,64 +281,64 @@ namespace Fusebill.ApiWrapper
 
 
 
-        public Task<Subscription> PostSubscriptionCancel(Fusebill.ApiWrapper.Dto.Post.SubscriptionCancel subscriptionCancel)
+        public Task<Get.Subscription> PostSubscriptionCancel(Post.SubscriptionCancel subscriptionCancel)
         {
             var url = RestUriBuilder.BuildUri("subscriptionCancellation", subscriptionCancel.SubscriptionId);
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.SubscriptionCancel, Subscription>(url, subscriptionCancel);
+            return PostEntity<Post.SubscriptionCancel, Get.Subscription>(url, subscriptionCancel);
         }
 
-        public Task<ResultList<Subscription>> GetSubscriptions(long customerId, QueryOptions queryOptions)
+        public Task<ResultList<Get.Subscription>> GetSubscriptions(long customerId, QueryOptions queryOptions)
         {
             var url = RestUriBuilder.BuildUri("customers", customerId, "subscriptions", queryOptions);
-            return GetEntities<Subscription>(url);
+            return GetEntities<Get.Subscription>(url);
         }
 
-        public Task<Customer> PostCustomerCancel(Fusebill.ApiWrapper.Dto.Post.CustomerCancel customer)
+        public Task<Get.Customer> PostCustomerCancel(Post.CustomerCancel customer)
         {
             var url = RestUriBuilder.BuildUri("customerCancellation");
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.CustomerCancel, Customer>(url, customer);
+            return PostEntity<Post.CustomerCancel, Get.Customer>(url, customer);
         }
 
-        public Task<ReverseCharge> PostReverseCharge(Fusebill.ApiWrapper.Dto.Post.ReverseCharge reverseCharge)
+        public Task<Get.ReverseCharge> PostReverseCharge(Post.ReverseCharge reverseCharge)
         {
             var url = RestUriBuilder.BuildUri("reverseCharges");
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.ReverseCharge, ReverseCharge>(url, reverseCharge);
+            return PostEntity<Post.ReverseCharge, Get.ReverseCharge>(url, reverseCharge);
         }
 
-        public Task<ResultList<Invoice>> GetInvoicesByCustomerId(long customerId, QueryOptions queryOptions)
+        public Task<ResultList<Get.Invoice>> GetInvoicesByCustomerId(long customerId, QueryOptions queryOptions)
         {
             var url = RestUriBuilder.BuildUri("customers", customerId, "invoices", queryOptions);
-            return GetEntities<Invoice>(url);
+            return GetEntities<Get.Invoice>(url);
         }
 
-        public Task<Payment> PostRefund(Fusebill.ApiWrapper.Dto.Post.Refund model)
+        public Task<Get.Payment> PostRefund(Post.Refund model)
         {
             var url = RestUriBuilder.BuildUri("refunds");
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Refund, Payment>(url, model);
+            return PostEntity<Post.Refund, Get.Payment>(url, model);
         }
 
 
-        public Task<ResultList<Product>> GetProducts(QueryOptions queryOptions)
+        public Task<ResultList<Get.Product>> GetProducts(QueryOptions queryOptions)
         {
             var url = RestUriBuilder.BuildUri("Products", queryOptions);
-            return GetEntities<Product>(url);
+            return GetEntities<Get.Product>(url);
         }
-        public Task<Product> GetProduct(long id)
+        public Task<Get.Product> GetProduct(long id)
         {
             var url = RestUriBuilder.BuildUri("Products", id);
-            return GetEntity<Product>(url);
+            return GetEntity<Get.Product>(url);
         }
 
-        public Task<Dto.Get.Purchase> PostPurchase(Dto.Post.Purchase purchase)
+        public Task<Get.Purchase> PostPurchase(Dto.Post.Purchase purchase)
         {
             var url = RestUriBuilder.BuildUri("purchases");
-            return PostEntity<Fusebill.ApiWrapper.Dto.Post.Purchase, Purchase>(url, purchase);
+            return PostEntity<Post.Purchase, Get.Purchase>(url, purchase);
         }
 
-        public Task<Dto.Patch.SubscriptionProductItems> PatchSubscriptionProductItems(Dto.Patch.SubscriptionProductItems items)
+        public Task<Patch.SubscriptionProductItems> PatchSubscriptionProductItems(Dto.Patch.SubscriptionProductItems items)
         {
             var url = RestUriBuilder.BuildUri("subscriptionProductItems");
-            return PatchEntity<Fusebill.ApiWrapper.Dto.Patch.SubscriptionProductItems, Dto.Patch.SubscriptionProductItems>(url, items);
+            return PatchEntity<Patch.SubscriptionProductItems, Dto.Patch.SubscriptionProductItems>(url, items);
         }
         #endregion
     }

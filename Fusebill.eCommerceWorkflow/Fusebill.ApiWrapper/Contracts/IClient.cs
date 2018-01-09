@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Get = Fusebill.ApiWrapper.Dto.Get;
 using System.Threading.Tasks;
-using Put = Fusebill.ApiWrapper.Dto.Put;
-using Post = Fusebill.ApiWrapper.Dto.Post;
-
+using Get = Fusebill.ApiWrapper.Dto.Get;
 using Patch = Fusebill.ApiWrapper.Dto.Patch;
+using Post = Fusebill.ApiWrapper.Dto.Post;
+using Put = Fusebill.ApiWrapper.Dto.Put;
 
 namespace Fusebill.ApiWrapper.Contracts
 {

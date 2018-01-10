@@ -422,7 +422,7 @@ namespace FuseBillCore.IntegrationTests
         public async Task WhenGettingCreditCardsByCustomer_exists()
         {
             var client = GetClient();
-            var creditCards = await client.GetCreditCardsByCustomerId(3429120, new QueryOptions());
+            var creditCards = await client.GetCreditCardsByCustomerId(CUSTOMER1, new QueryOptions());
             creditCards.Results.Should().NotBeEmpty();
         }
         #endregion

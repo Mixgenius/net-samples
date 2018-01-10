@@ -400,6 +400,7 @@ namespace FuseBillCore.IntegrationTests
             invoices.Results.Should().NotBeEmpty();
         }
 
+        #region Credit Cards
         [Fact]
         public async Task WhenGettingCreditCard_exists()
         {
@@ -414,7 +415,16 @@ namespace FuseBillCore.IntegrationTests
             var client = GetClient();
             client
                 .Awaiting(c => c.GetCreditCard(INVALID_ID))
-                .ShouldThrow<ApiClientException>().WithMessage($"Creditcard with id {INVALID_ID} not found.");
+                .ShouldThrow<ApiClientException>().WithMessage($"CreditCard with id {INVALID_ID} not found.");
         }
+
+        [Fact]
+        public async Task WhenGettingCreditCardsByCustomer_exists()
+        {
+            var client = GetClient();
+            var creditCards = await client.GetCreditCardsByCustomerId(3429120, new QueryOptions());
+            creditCards.Results.Should().NotBeEmpty();
+        }
+        #endregion
     }
 }

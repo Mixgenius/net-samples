@@ -15,23 +15,30 @@ namespace Fusebill.ApiWrapper
             _httpResponseHeaders = httpResponseHeaders;
         }
 
-        public virtual Dto.Get.PagingHeaderData ExtractPaginationDataFromHeader()
+        public virtual Dto.Get.PagingHeaderData TryExtractPaginationDataFromHeader()
         {
-            var pagingHeaderData = new Dto.Get.PagingHeaderData
+            try
             {
-                Count = ExtractInt64ValueFromHeader("X-Count"),
-                CurrentPage = ExtractInt64ValueFromHeader("X-CurrentPage"),
-                PreviousPage = ExtractInt64ValueFromHeader("X-PreviousPage"),
-                NextPage = ExtractInt64ValueFromHeader("X-NextPage"),
-                MaxCount = ExtractInt64ValueFromHeader("X-MaxCount"),
-                PageSize = ExtractInt64ValueFromHeader("X-PageSize"),
-                MaxPageIndex = ExtractInt64ValueFromHeader("X-MaxPageIndex"),
-                SortExpression = ExtractStringValueFromHeader("X-SortExpression"),
-                SortOrder = ExtractStringValueFromHeader("X-SortOrder")
-            };
+                var pagingHeaderData = new Dto.Get.PagingHeaderData
+                {
+                    Count = ExtractInt64ValueFromHeader("X-Count"),
+                    CurrentPage = ExtractInt64ValueFromHeader("X-CurrentPage"),
+                    PreviousPage = ExtractInt64ValueFromHeader("X-PreviousPage"),
+                    NextPage = ExtractInt64ValueFromHeader("X-NextPage"),
+                    MaxCount = ExtractInt64ValueFromHeader("X-MaxCount"),
+                    PageSize = ExtractInt64ValueFromHeader("X-PageSize"),
+                    MaxPageIndex = ExtractInt64ValueFromHeader("X-MaxPageIndex"),
+                    SortExpression = ExtractStringValueFromHeader("X-SortExpression"),
+                    SortOrder = ExtractStringValueFromHeader("X-SortOrder")
+                };
 
-            return pagingHeaderData;
-        }
+                return pagingHeaderData;
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
+}
 
         public long ExtractInt64ValueFromHeader(string key)
         {
@@ -46,13 +53,13 @@ namespace Fusebill.ApiWrapper
 
         public string ExtractStringValueFromHeader(string key)
         {
-            var value = _httpResponseHeaders.Where(h => h.Key.ToLowerInvariant().Equals(key.ToLowerInvariant())).FirstOrDefault().Value;
-            if (null == value)
+            IEnumerable<string> values;
+            if (!_httpResponseHeaders.TryGetValues(key, out values))
             {
                 throw new KeyNotFoundException(string.Format("{0} does not exist in the headers", key));
             }
 
-            return value.FirstOrDefault();
+            return values.FirstOrDefault();
         }
     }
 }

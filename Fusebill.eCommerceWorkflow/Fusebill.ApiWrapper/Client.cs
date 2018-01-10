@@ -81,7 +81,7 @@ namespace Fusebill.ApiWrapper
             var response = await ExecuteHttpRequest.ExecuteHttpGet(url, acceptType);
 
             resultList.Results = ParseHttpResponse.GetEntities<T>(await response.Content.ReadAsStringAsync());
-            resultList.PagingHeaderData = ParseHttpResponse.GetHeaderData(response.Headers);
+            resultList.PagingHeaderData = ParseHttpResponse.TryGetHeaderData(response.Headers);
 
             return resultList;
         }
@@ -186,6 +186,12 @@ namespace Fusebill.ApiWrapper
         {
             var url = RestUriBuilder.BuildUri("paymentmethods", paymentMethodId);
             return GetEntity<Get.CreditCard>(url);
+        }
+
+        public Task<ResultList<Get.CreditCard>> GetCreditCardsByCustomerId(long customerId, QueryOptions queryOptions)
+        {
+            var url = RestUriBuilder.BuildUri("customers", customerId, "paymentMethods/creditCard", queryOptions);
+            return GetEntities<Get.CreditCard>(url);
         }
 
         protected async Task<TU> PostEntity<T, TU>(string url, T entity, string acceptType = "application/json", int timeout = 60)

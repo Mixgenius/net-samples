@@ -23,10 +23,10 @@ namespace Fusebill.ApiWrapper
             return _jsonDeserializer.DeserializeToEntity<T>(httpContent);
         }
 
-        public Dto.Get.PagingHeaderData GetHeaderData(HttpResponseHeaders responseHeaders)
+        public Dto.Get.PagingHeaderData TryGetHeaderData(HttpResponseHeaders responseHeaders)
         {
             var extractDataFromHeaders = new ExtractDataFromHeaders(responseHeaders);
-            return extractDataFromHeaders.ExtractPaginationDataFromHeader();
+            return extractDataFromHeaders.TryExtractPaginationDataFromHeader();            
         }
     }
 }

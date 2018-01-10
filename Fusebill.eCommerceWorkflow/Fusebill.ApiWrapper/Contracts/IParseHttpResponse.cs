@@ -7,6 +7,6 @@ namespace Fusebill.ApiWrapper.Contracts
     {
         List<T> GetEntities<T>(string httpContent);
         T GetEntity<T>(string httpContent);
-        Dto.Get.PagingHeaderData GetHeaderData(HttpResponseHeaders responseHeaders);
+        Dto.Get.PagingHeaderData TryGetHeaderData(HttpResponseHeaders responseHeaders);
     }
 }

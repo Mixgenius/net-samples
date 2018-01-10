@@ -399,5 +399,22 @@ namespace FuseBillCore.IntegrationTests
             var invoices = await client.GetInvoicesByCustomerId(CUSTOMER2, new QueryOptions());
             invoices.Results.Should().NotBeEmpty();
         }
+
+        [Fact]
+        public async Task WhenGettingCreditCard_exists()
+        {
+            var client = GetClient();
+            var ccard = await client.GetCreditCard(773480);
+            ccard.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void WhenGettingCreditCard_throwNotFound()
+        {
+            var client = GetClient();
+            client
+                .Awaiting(c => c.GetCreditCard(INVALID_ID))
+                .ShouldThrow<ApiClientException>().WithMessage($"Creditcard with id {INVALID_ID} not found.");
+        }
     }
 }

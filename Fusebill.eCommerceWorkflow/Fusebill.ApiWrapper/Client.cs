@@ -181,7 +181,13 @@ namespace Fusebill.ApiWrapper
             var url = RestUriBuilder.BuildUri("paymentmethods");
             return PostEntity<Post.CreditCard, Get.CreditCard>(url, paymentMethod);
         }
-      
+
+        public Task<Get.CreditCard> GetCreditCard(long paymentMethodId)
+        {
+            var url = RestUriBuilder.BuildUri("paymentmethods", paymentMethodId);
+            return GetEntity<Get.CreditCard>(url);
+        }
+
         protected async Task<TU> PostEntity<T, TU>(string url, T entity, string acceptType = "application/json", int timeout = 60)
         {
             var response = await ExecuteHttpRequest.ExecuteHttpPost(url, entity, acceptType, timeout);

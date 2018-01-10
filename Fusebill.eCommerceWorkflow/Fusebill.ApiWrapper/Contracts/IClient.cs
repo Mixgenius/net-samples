@@ -22,6 +22,7 @@ namespace Fusebill.ApiWrapper.Contracts
         Task<ResultList<Get.Plan>> GetPlans(QueryOptions queryOptions);
         Task<ResultList<Get.Plan>> GetActivePlans(QueryOptions queryOptions);
         Task<Get.CreditCard> PostCreditCard(Post.CreditCard paymentMethod);
+        Task<Get.CreditCard> GetCreditCard(long paymentMethodId);
         Task<Get.Subscription> PutSubscription(Put.Subscription model);
         Task<Get.Subscription> PostSubscriptionActivation(Post.SubscriptionActivation subscriptionActivation, bool preview = false, bool showZeroDollarCharges = true, bool temporarilyDisableAutoPost = false);
         Task<Get.Customer> PostCustomer(Post.Customer customer);
